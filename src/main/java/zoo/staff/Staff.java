@@ -2,7 +2,7 @@ package zoo.staff;
 import java.lang.IllegalArgumentException;
 
 /* Abstract class representing staff members in the zoo
-    full time staff can work up to 5 shifts a week, part time staff can work up to 4 shifts a week
+    full time staff can work up to 6 shifts a week (the 6th shift is overtime), part time staff can work up to 4 shifts a week
     shifts are 8 hours each
     raises can be given to staff, but not volunteers (who have a are staff with pay of 0)
     pay is calculated based on the number of shifts worked and the pay rate
@@ -10,12 +10,12 @@ import java.lang.IllegalArgumentException;
  */
 public abstract class Staff {
     public static final int HOURS_PER_SHIFT = 8; // constant for hours in a shift
-    public static final int FULL_TIME_MAX_SHIFTS = 5; // constant for maximum shifts in a week
+    public static final int FULL_TIME_MAX_SHIFTS = 6; // constant for maximum shifts in a week
     public static final int PART_TIME_MAX_SHIFTS = 4; // constant for maximum shifts in a week
 
     private final String id;
     private String name;
-    private double pay;
+    private double pay; // pay rate per hour, can be 0 for volunteers
     private boolean fullTime;
     private int shiftsThisWeek; // each shift is 8 hours
     private boolean suspended; // true means they're suspended, false means they are not
