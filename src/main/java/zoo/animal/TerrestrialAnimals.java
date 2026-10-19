@@ -13,7 +13,8 @@ public class TerrestrialAnimals extends Animal {
 	}
 	
 	public TerrestrialAnimals(boolean dangerous, String name, String scientificName) {
-		super(dangerous, name, scientificName);
+		// TEMP fix so the project compiles: Animal has no scientificName yet, so it is not stored, and isEndangered defaults to false
+		super(dangerous, false, name);
 	}
 
 	public String getFootPrintShape() {

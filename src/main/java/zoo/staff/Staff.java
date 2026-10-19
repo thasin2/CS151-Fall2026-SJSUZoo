@@ -1,81 +1,103 @@
 package zoo.staff;
-import java.lang.IllegalArgumentException;
+import zoo.exception.InvalidPayException;
+import zoo.exception.ShiftLimitException;
 
 /* Abstract class representing staff members in the zoo
     full time staff can work up to 6 shifts a week (the 6th shift is overtime), part time staff can work up to 4 shifts a week
-    shifts are 8 hours each
-    raises can be given to staff, but not volunteers (who have a are staff with pay of 0)
+    full time staff always work at least 5 shifts a week, part time staff at least 3
+    shifts are 8 hours each, and pay must always be positive
     pay is calculated based on the number of shifts worked and the pay rate
     overrides equals and hashCode based on staff ID, which is unique for each staff member
  */
 public abstract class Staff {
-    public static final int HOURS_PER_SHIFT = 8; // constant for hours in a shift
-    public static final int FULL_TIME_MAX_SHIFTS = 6; // constant for maximum shifts in a week
-    public static final int PART_TIME_MAX_SHIFTS = 4; // constant for maximum shifts in a week
+    private static final int HOURS_PER_SHIFT = 8;
+    private static final int FULL_TIME_MAX_SHIFTS = 6; // the 6th shift is overtime
+    private static final int FULL_TIME_REGULAR_SHIFTS = 5; // full-time minimum, and the most shifts before overtime
+    private static final int PART_TIME_MAX_SHIFTS = 4;
+    private static final int PART_TIME_MIN_SHIFTS = 3;
+    private static final int REGULAR_HOURS_PER_WEEK = 40; // hours after this are overtime
+    private static final double OVERTIME_MULTIPLIER = 1.5;
 
     private final String id;
-    private String name;
-    private double pay; // pay rate per hour, can be 0 for volunteers
-    private boolean fullTime;
+    private final String name;
+    private final double pay; // hourly rate or yearly salary, depending on the subclass
+    private final boolean fullTime;
     private int shiftsThisWeek; // each shift is 8 hours
-    private boolean suspended; // true means they're suspended, false means they are not
 
 
     protected Staff(String id, String name, double pay, boolean fullTime) {
-        if (id == null || id.trim().isEmpty()) {
-            throw new IllegalArgumentException("Staff ID cannot be null or empty.");
+        this.id = requireText(id, "Staff ID");
+        this.name = requireText(name, "Staff name");
+        if (pay <= 0) {
+            throw new InvalidPayException("Pay must be positive.");
         }
-        if (name == null || name.trim().isEmpty()) {
-            throw new IllegalArgumentException("Staff name cannot be null or empty.");
-        }
-        if (pay < 0) {
-            throw new IllegalArgumentException("Pay cannot be negative.");
-        }
-
-        this.id = id.trim();
-        this.name = name.trim();
         this.pay = pay;
-        this.fullTime = fullTime; 
-        this.shiftsThisWeek = 0; // default to 0 shifts
-        this.suspended = false; // default to not suspended
+        this.fullTime = fullTime;
+        this.shiftsThisWeek = 0;
     }
 
     protected abstract double calculateWeeklyPay(); // subclasses can calculate weekly pay based on their own rules
 
+    public abstract StaffRole getRole(); // each subclass reports which job it does
+
+    // subclasses that count things during the week (such as hazard shifts) reset them here
+    // called by closeOutWeek after the week's pay is worked out
+    protected void resetWeeklyCounts() {
+    }
+
+    protected int getHoursWorked() {
+        return shiftsThisWeek * HOURS_PER_SHIFT;
+    }
+
+    // for hourly staff: adds the overtime premium for hours past REGULAR_HOURS_PER_WEEK
+    // straightTimePay is every hour at the base rate plus any bonuses
+    // the overtime rate is based on the average hourly pay, so bonuses raise it
+    protected double addOvertimePay(double straightTimePay) {
+        int hoursWorked = getHoursWorked();
+        int overtimeHours = Math.max(0, hoursWorked - REGULAR_HOURS_PER_WEEK);
+        if (overtimeHours == 0) {
+            return straightTimePay;
+        }
+
+        double regularRate = straightTimePay / hoursWorked;
+        double overtimePremium = (OVERTIME_MULTIPLIER - 1) * regularRate * overtimeHours;
+        return straightTimePay + overtimePremium;
+    }
+
     public void workShift() {
-        if (suspended) {
-            throw new IllegalStateException("Cannot work a shift while suspended.");
-        }
-        if (fullTime && shiftsThisWeek >= FULL_TIME_MAX_SHIFTS) {
-            throw new IllegalStateException("Full-time staff cannot work more than " + FULL_TIME_MAX_SHIFTS + " shifts in a week.");
-        }
-        if (!fullTime && shiftsThisWeek >= PART_TIME_MAX_SHIFTS) {
-            throw new IllegalStateException("Part-time staff cannot work more than " + PART_TIME_MAX_SHIFTS + " shifts in a week.");
+        if (shiftsThisWeek >= getMaximumShifts()) {
+            throw new ShiftLimitException((fullTime ? "Full-time" : "Part-time") + " staff cannot work more than "
+                    + getMaximumShifts() + " shifts in a week.");
         }
 
         shiftsThisWeek++;
     }
 
-    public void giveRaise(double percent) {
-        if (percent <= 0) {
-            throw new IllegalArgumentException("Raise percentage cannot be zero or negative.");
-        } else if (percent > 30) {
-            throw new IllegalArgumentException("Raise percentage cannot exceed 30%.");
-        } else if (this.pay == 0) {
-            throw new IllegalStateException("Cannot give a raise to volunteer with zero pay.");
-        }
-
-        pay  = pay + pay * percent / 100;
-    }
-
-    public double closeOutWeek() {
+    // works out the week's pay, then resets the shifts and any weekly counts for the next week
+    public final double closeOutWeek() {
         if (shiftsThisWeek == 0) {
             throw new IllegalStateException("Cannot close out week with zero shifts worked.");
         }
 
-        double weeklyPay = calculateWeeklyPay(); // calculate the weekly pay before resetting shifts
-        shiftsThisWeek = 0; // reset shifts for the new week
-        return weeklyPay; // return the weekly pay for the week that just ended
+        double weeklyPay = calculateWeeklyPay();
+        shiftsThisWeek = 0;
+        resetWeeklyCounts();
+        return weeklyPay;
+    }
+
+    // fewest shifts this staff member must work in a week, even if they are not needed
+    public int getMinimumShifts() {
+        return fullTime ? FULL_TIME_REGULAR_SHIFTS : PART_TIME_MIN_SHIFTS;
+    }
+
+    // most shifts this staff member can work in a week without overtime
+    public int getRegularShiftLimit() {
+        return fullTime ? FULL_TIME_REGULAR_SHIFTS : PART_TIME_MAX_SHIFTS;
+    }
+
+    // most shifts this staff member can work in a week, including overtime
+    public int getMaximumShifts() {
+        return fullTime ? FULL_TIME_MAX_SHIFTS : PART_TIME_MAX_SHIFTS;
     }
 
     // getters
@@ -99,47 +121,16 @@ public abstract class Staff {
         return shiftsThisWeek;
     }
 
-    public boolean isSuspended() {
-        return suspended;
-    }
-
-    // setters
-    public void setName(String name) {
-        if (name == null || name.trim().isEmpty()) {
-            throw new IllegalArgumentException("Staff name cannot be null or empty.");
+    // returns the text trimmed, or throws if it is null or blank
+    private static String requireText(String value, String label) {
+        if (value == null || value.trim().isEmpty()) {
+            throw new IllegalArgumentException(label + " cannot be null or empty.");
         }
-        this.name = name.trim();
-    }
-
-    public void setPay(double pay) {
-        if (pay < 0) {
-            throw new IllegalArgumentException("Pay cannot be negative.");
-        }
-        this.pay = pay;
-    }
-
-    public void suspend() {
-        this.suspended = true;
-    }
-
-    public void reinstate() {
-        this.suspended = false;
-    }
-
-    public void changeToFullTime() {
-        this.fullTime = true;
-    }
-
-    public void changeToPartTime() {
-        if (shiftsThisWeek > PART_TIME_MAX_SHIFTS) {
-            throw new IllegalStateException("Cannot change to part-time while exceeding part-time shift limit.");
-        }
-
-        this.fullTime = false;
+        return value.trim();
     }
 
     // overrides
-    @Override 
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (!(obj instanceof Staff)) return false;
@@ -147,12 +138,12 @@ public abstract class Staff {
         return id.equals(other.id);
     }
 
-    @Override 
+    @Override
     public int hashCode() {
         return id.hashCode();
     }
 
-    @Override 
+    @Override
     public String toString() {
         return getClass().getSimpleName() + "{" +
                 "id='" + id + '\'' +
@@ -160,7 +151,6 @@ public abstract class Staff {
                 ", pay=" + pay +
                 ", fullTime=" + fullTime +
                 ", shiftsThisWeek=" + shiftsThisWeek +
-                ", suspended=" + suspended +
                 '}';
     }
 
