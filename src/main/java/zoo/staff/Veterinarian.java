@@ -1,5 +1,6 @@
 package zoo.staff;
 import zoo.animal.Animal;
+import zoo.exception.StaffSuspendedException;
 
 // For a vet, pay is the yearly salary.
 public class Veterinarian extends Staff {
@@ -32,7 +33,7 @@ public class Veterinarian extends Staff {
             throw new IllegalArgumentException("Animal cannot be null.");
         }
         if (isSuspended()) {
-            throw new IllegalStateException("Cannot handle an emergency while suspended.");
+            throw new StaffSuspendedException("Cannot handle an emergency while suspended.");
         }
         emergenciesThisWeek++;
     }

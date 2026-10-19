@@ -1,5 +1,7 @@
 package zoo.staff;
 import java.lang.IllegalArgumentException;
+import zoo.exception.ShiftLimitException;
+import zoo.exception.StaffSuspendedException;
 
 /* Abstract class representing staff members in the zoo
     full time staff can work up to 6 shifts a week (the 6th shift is overtime), part time staff can work up to 4 shifts a week
@@ -12,6 +14,8 @@ public abstract class Staff {
     public static final int HOURS_PER_SHIFT = 8; // constant for hours in a shift
     public static final int FULL_TIME_MAX_SHIFTS = 6; // constant for maximum shifts in a week
     public static final int PART_TIME_MAX_SHIFTS = 4; // constant for maximum shifts in a week
+    private static final int REGULAR_HOURS_PER_WEEK = 40; // hours after this are overtime
+    private static final double OVERTIME_MULTIPLIER = 1.5;
 
     private final String id;
     private String name;
@@ -42,15 +46,30 @@ public abstract class Staff {
 
     protected abstract double calculateWeeklyPay(); // subclasses can calculate weekly pay based on their own rules
 
+    // for hourly staff: adds the overtime premium for hours past REGULAR_HOURS_PER_WEEK
+    // straightTimePay is every hour at the base rate plus any bonuses
+    // the overtime rate is based on the average hourly pay, so bonuses raise it
+    protected double addOvertimePay(double straightTimePay) {
+        int hoursWorked = shiftsThisWeek * HOURS_PER_SHIFT;
+        int overtimeHours = Math.max(0, hoursWorked - REGULAR_HOURS_PER_WEEK);
+        if (overtimeHours == 0) {
+            return straightTimePay;
+        }
+
+        double regularRate = straightTimePay / hoursWorked;
+        double overtimePremium = (OVERTIME_MULTIPLIER - 1) * regularRate * overtimeHours;
+        return straightTimePay + overtimePremium;
+    }
+
     public void workShift() {
         if (suspended) {
-            throw new IllegalStateException("Cannot work a shift while suspended.");
+            throw new StaffSuspendedException("Cannot work a shift while suspended.");
         }
         if (fullTime && shiftsThisWeek >= FULL_TIME_MAX_SHIFTS) {
-            throw new IllegalStateException("Full-time staff cannot work more than " + FULL_TIME_MAX_SHIFTS + " shifts in a week.");
+            throw new ShiftLimitException("Full-time staff cannot work more than " + FULL_TIME_MAX_SHIFTS + " shifts in a week.");
         }
         if (!fullTime && shiftsThisWeek >= PART_TIME_MAX_SHIFTS) {
-            throw new IllegalStateException("Part-time staff cannot work more than " + PART_TIME_MAX_SHIFTS + " shifts in a week.");
+            throw new ShiftLimitException("Part-time staff cannot work more than " + PART_TIME_MAX_SHIFTS + " shifts in a week.");
         }
 
         shiftsThisWeek++;
@@ -132,7 +151,7 @@ public abstract class Staff {
 
     public void changeToPartTime() {
         if (shiftsThisWeek > PART_TIME_MAX_SHIFTS) {
-            throw new IllegalStateException("Cannot change to part-time while exceeding part-time shift limit.");
+            throw new ShiftLimitException("Cannot change to part-time while exceeding part-time shift limit.");
         }
 
         this.fullTime = false;
