@@ -2,7 +2,6 @@ package zoo.staff;
 import java.util.ArrayList;
 import zoo.Maintainable;
 import zoo.exception.JobLimitException;
-import zoo.exception.StaffSuspendedException;
 
 // For maintenance staff, pay is the hourly rate.
 // They also earn a flat bonus for each job (cleaning or repair) they complete.
@@ -19,19 +18,15 @@ public class MaintenanceStaff extends Staff {
     // does not mean pay is actually given, that is done in closeOutWeek
     @Override
     protected double calculateWeeklyPay() {
-        int hoursWorked = getShiftsThisWeek() * HOURS_PER_SHIFT;
-
         // straight-time pay: every hour at the base rate, plus job bonuses
         double jobPay = JOB_BONUS * jobsThisWeek;
-        double straightTimePay = getPay() * hoursWorked + jobPay;
+        double straightTimePay = getPay() * getHoursWorked() + jobPay;
         return addOvertimePay(straightTimePay);
     }
 
     @Override
-    public double closeOutWeek() {
-        double weeklyPay = super.closeOutWeek(); // pays out using this week's job count
-        jobsThisWeek = 0; // reset for next week
-        return weeklyPay;
+    protected void resetWeeklyCounts() {
+        jobsThisWeek = 0;
     }
 
     // cleans or repairs anything that is Maintainable, such as a habitat or an attraction
@@ -40,9 +35,6 @@ public class MaintenanceStaff extends Staff {
     public void service(Maintainable target) {
         if (target == null) {
             throw new IllegalArgumentException("Maintenance target cannot be null.");
-        }
-        if (isSuspended()) {
-            throw new StaffSuspendedException("Cannot do maintenance while suspended.");
         }
         if (jobsThisWeek >= getShiftsThisWeek() * MAX_JOBS_PER_SHIFT) {
             throw new JobLimitException("Job limit reached. Each shift worked allows " + MAX_JOBS_PER_SHIFT + " jobs. Work another shift to do more jobs.");
@@ -80,22 +72,9 @@ public class MaintenanceStaff extends Staff {
         return urgent;
     }
 
-    // services the target in the worst condition among those that need maintenance
-    // returns the target that was serviced so the caller can report it
-    public Maintainable serviceMostUrgent(ArrayList<Maintainable> targets) {
-        ArrayList<Maintainable> urgent = getUrgentTargets(targets);
-        if (urgent.isEmpty()) {
-            throw new IllegalStateException("Nothing in the list needs maintenance.");
-        }
-
-        Maintainable mostUrgent = urgent.get(0);
-        service(mostUrgent); // throws if suspended or at the job limit
-        return mostUrgent;
-    }
-
-    // getters
-    public int getJobsThisWeek() {
-        return jobsThisWeek;
+    @Override
+    public StaffRole getRole() {
+        return StaffRole.MAINTENANCE;
     }
 
 }

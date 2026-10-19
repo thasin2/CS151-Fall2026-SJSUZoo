@@ -1,6 +1,5 @@
 package zoo.staff;
 import zoo.animal.Animal;
-import zoo.exception.StaffSuspendedException;
 
 // For a vet, pay is the yearly salary.
 public class Veterinarian extends Staff {
@@ -22,25 +21,20 @@ public class Veterinarian extends Staff {
     }
 
     @Override
-    public double closeOutWeek() {
-        double weeklyPay = super.closeOutWeek(); // pays out using this week's emergency count
-        emergenciesThisWeek = 0; // reset for next week
-        return weeklyPay;
+    protected void resetWeeklyCounts() {
+        emergenciesThisWeek = 0;
     }
 
     public void handleEmergency(Animal animal) {
         if (animal == null) {
             throw new IllegalArgumentException("Animal cannot be null.");
         }
-        if (isSuspended()) {
-            throw new StaffSuspendedException("Cannot handle an emergency while suspended.");
-        }
         emergenciesThisWeek++;
     }
 
-    // getters
-    public int getEmergenciesThisWeek() {
-        return emergenciesThisWeek;
+    @Override
+    public StaffRole getRole() {
+        return StaffRole.VETERINARIAN;
     }
 
 }
