@@ -89,8 +89,8 @@ public class Attraction implements zoo.Maintainable {
         return currentVisitors.size() >= capacity;
     }
 
-    // Maintainable interface methods
 
+    // Maintainable interface methods
     public int getCondition() {
         return condition;
     }
