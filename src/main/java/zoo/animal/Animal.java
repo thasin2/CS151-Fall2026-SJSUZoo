@@ -1,35 +1,73 @@
 package zoo.animal;
 
 public class Animal {
-	// need to make at least 3 subclasses
-	// specific animals (ie - Elephants, Crows, etc.), or broader - Canidae, Felidae
 	
-    private final boolean dangerous;
-    private boolean isHungry;
+	
+	// no attributes made final, as we may want to enter or change values later based on constructor used
+    private boolean dangerous;
+    private boolean isHungry; // can implement this as a int level
     private boolean isActive;
-    private final boolean isEndangered;
+    private boolean isEndangered; 
     private String name;
+    private String scientificName;
+    private String diet; // can be used by Staff/Inventory to check what food to be given
+    private boolean injured; // can add a health level as well, will talk with team
+    // CONSTRUCTORS
+    private int trickCount;
     
-    
+    //Default
     public Animal() {
     	this.dangerous = false;
     	this.isHungry = false;
     	this.isActive = false;
     	this.isEndangered = false;
     	this.name = "Unnamed";
+    	this.scientificName = "Unknown";
+    	this.setDiet("Unknown");
+    	this.trickCount = 0;
     }
     
-    public Animal(boolean dangerous, boolean isEndangered, String name) {
+    //most "required" attributes constructor
+    public Animal(boolean dangerous, boolean isEndangered, String scientificName, String diet) {
         this.dangerous = dangerous;
         this.isEndangered = isEndangered;
-        this.name = name;
+        this.scientificName = scientificName;
+        this.diet = diet;
         
     }
     
+    //another constructor with personal name for animal
+    public Animal(boolean dangerous, boolean isEndangered, String scientificName, String name, String diet) {
+        this.dangerous = dangerous;
+        this.isEndangered = isEndangered;
+        this.scientificName = scientificName;
+        this.name = name;
+        this.diet = diet;
+    } 
     
-
+    // methods
+    
+    public void doATrick() {
+    	System.out.println(getName() + "did a cool trick!");
+    	setHungry(true);
+    	trickCount++;
+    }
+    
+    public void tired(int trickCount) {
+    	if ((trickCount>3) && (isHungry)) {
+    		setActive(false);
+    		System.out.println(getName() + "is tired.");
+    	}
+    	
+    }
+    
+    
+    // GETTERS and SETTERS for all private attributes
     public boolean isDangerous() {
         return dangerous;
+    }
+    public void setDangerous(boolean dangerous) {
+    	this.dangerous = dangerous;
     }
     
 	public String getName() {
@@ -46,6 +84,11 @@ public class Animal {
 
 	public void setHungry(boolean isHungry) {
 		this.isHungry = isHungry;
+		
+		if (!isHungry) {
+			setActive(true);
+			setTrickCount(0);
+		}
 	}
 
 	public boolean isActive() {
@@ -54,6 +97,44 @@ public class Animal {
 
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
+	}
+
+	public boolean isEndangered() {
+		return isEndangered;
+	}
+	public void setEndangered(boolean isEndangered) {
+		this.isEndangered = isEndangered;
+	}
+
+	public String getScientificName() {
+		return scientificName;
+	}
+	public void setScientificName(String scientificName) {
+		this.scientificName = scientificName;
+	}
+
+	public String getDiet() {
+		return diet;
+	}
+
+	public void setDiet(String diet) {
+		this.diet = diet;
+	}
+
+	public boolean isInjured() {
+		return injured;
+	}
+
+	public void setInjured(boolean injured) {
+		this.injured = injured;
+	}
+
+	public int getTrickCount() {
+		return trickCount;
+	}
+
+	public void setTrickCount(int trickCount) {
+		this.trickCount = trickCount;
 	}
 
 }

@@ -5,18 +5,27 @@ public class TerrestrialAnimals extends Animal {
 	private String skinType;
 	
 	
+	
+	// Constructors - can add more (ask during meeting)
 	public TerrestrialAnimals() {
 		super();
 		this.setFootPrintShape("None");
-		this.setSkinType("None");
+		this.setSkinType("None");	
+	}
+	public TerrestrialAnimals(boolean dangerous, boolean isEndangered, String scientificName, String diet, String footPrintShape, String skinType) {
+		super(dangerous, isEndangered, scientificName, diet);
+		this.footPrintShape = footPrintShape;
+		this.skinType = skinType;	
+	}
+	
+	@Override
+	public void doATrick() {
+		super.doATrick();
+		System.out.print("The cool trick was a twirl!");
 		
 	}
 	
-	public TerrestrialAnimals(boolean dangerous, String name, String scientificName) {
-		// TEMP fix so the project compiles: Animal has no scientificName yet, so it is not stored, and isEndangered defaults to false
-		super(dangerous, false, name);
-	}
-
+	// Getters and Setters
 	public String getFootPrintShape() {
 		return footPrintShape;
 	}
