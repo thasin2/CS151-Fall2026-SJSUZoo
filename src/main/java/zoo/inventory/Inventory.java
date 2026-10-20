@@ -4,9 +4,6 @@ public class Inventory {
     private int food;
     private int medicine;
     private int supplies;
-    private double foodPrice;
-    private double medicinePrice;
-    private double suppliesPrice;
 
     // Creates an empty inventory
     public Inventory() {
@@ -16,6 +13,7 @@ public class Inventory {
     }
 
     // Creates an inventory with given amounts of food, medicine, and supplies
+    // Should tweak if continuing with Inventory budget concept
     public Inventory(int food, int medicine, int supplies) {
         this.food = food;
         this.medicine = medicine;
@@ -25,61 +23,52 @@ public class Inventory {
     // TBD: if stock and get methods should be combined or individual for each item
     public void stock (String item, int amount) {
         if (item.equalsIgnoreCase("food")) {
-            buyFood(amount);
+            this.food += buyFood(amount);
         }
         else if (item.equalsIgnoreCase("medicine")) {
-            buyMedicine(amount);
+            this.medicine += buyMedicine(amount);
         }
         else if (item.equalsIgnoreCase("supplies")) {
-            buySupplies(amount);
+            this.supplies += buySupplies(amount);
         }
-        // Could add something here that interacts with Zoo's total budget?
         else {
             System.out.println("Invalid item. Could not stock.");
         }
     }
 
     // TBD: Budget concept for inventory items
-    private int budget = 0;
-    public int addToBudget(int amount) {
+    // Budget can either be taken from Zoo class, or managed in Inventory class itself
+    private double foodPrice = 3.49;
+    private double medicinePrice = 20.00;
+    private double suppliesPrice = 9.99;
+    private double budget = 0;
+    private double totalCost;
+    // assuming budget is stored in Inventory as of now
+    public double addToBudget(double amount) {
         budget += amount;
         return budget;
     }
-    private double totalCost = 0;
-    public void buyFood(int amount) {
-        totalCost = amount * foodPrice;
+    private int buyFood(int amount) {
+        return buyItem(amount, foodPrice);
+    }
+    private int buyMedicine(int amount) {
+        return buyItem(amount, medicinePrice);
+    }
+    private int buySupplies(int amount) {
+        return buyItem(amount, suppliesPrice);
+    }
+    private int buyItem(int amount, double price) {
+        totalCost = amount * price;
         if (totalCost > budget) {
-            System.out.println("Not enough budget to buy food.");
+            System.out.println("Not enough budget to buy item.");
+            return 0;
         }
         else {
             budget -= totalCost;
-            this.food += amount;
-            System.out.println("Bought " + amount + " units of food for $" + totalCost);
+            System.out.println("Bought and stocked item for $" + totalCost);
+            return amount;
         }
     }
-    public void buyMedicine(int amount) {
-        totalCost = amount * medicinePrice;
-        if (totalCost > budget) {
-            System.out.println("Not enough budget to buy medicine.");
-        }
-        else {
-            budget -= totalCost;
-            this.medicine += amount;
-            System.out.println("Bought " + amount + " units of medicine for $" + totalCost);
-        }
-    }
-    public void buySupplies(int amount) {
-        totalCost = amount * suppliesPrice;
-        if (totalCost > budget) {
-            System.out.println("Not enough budget to buy supplies.");
-        }
-        else {
-            budget -= totalCost;
-            this.supplies += amount;
-            System.out.println("Bought " + amount + " units of supplies for $" + totalCost);
-        }
-    }
-
     public void setPrice(String item, double price) {
         if (item.equalsIgnoreCase("food")) {
             this.foodPrice = price;
@@ -91,36 +80,47 @@ public class Inventory {
             this.suppliesPrice = price;
         }
         else {
-            System.out.println("Invalid item. Could not set price.");
+            System.out.println("Invalid item.");
         }
     }
+    // End of budget concept
 
-    // May change getFood, getMedicine, useSupplies to take no parameter if only one is used each time
-    public int getFood(int amount) {
-        if (amount > food) {
-            System.out.println("Not enough food in inventory.");
-            return 0;
+    // May change useFood, useMedicine, useSupplies to take no parameter if only one is used each time
+    public boolean use(String item, int amount) {
+        if (amount <= 0) {
+            System.out.println("Cannot use negative amount.");
+            return false;
         }
-        food -= amount;
-        return amount;
-    }
-    public int getMedicine(int amount) {
-        if (amount > medicine) {
-            System.out.println("Not enough medicine in inventory.");
-            return 0;
+        if (item.equalsIgnoreCase("food")) {
+            if (amount > food) {
+                System.out.println("Not enough food in inventory.");
+                return false;
+            }
+            food -= amount;
+            return true;
         }
-        medicine -= amount;
-        return amount;
-    }
-    public int useSupplies(int amount) {
-        if (amount > supplies) {
-            System.out.println("Not enough supplies in inventory.");
-            return 0;
+        else if (item.equalsIgnoreCase("medicine")) {
+            if (amount > medicine) {
+                System.out.println("Not enough medicine in inventory.");
+                return false;
+            }
+            medicine -= amount;
+            return true;
         }
-        supplies -= amount;
-        return amount;
+        else if (item.equalsIgnoreCase("supplies")) {
+            if (amount > supplies) {
+                System.out.println("Not enough supplies in inventory.");
+                return false;
+            }
+            supplies -= amount;
+            return true;
+        }
+        else {
+            System.out.println("Invalid item.");
+            return false;
+        }
     }
-
+    
     public void displayInventory() {
         System.out.println("Current Inventory:" + "\nFood: " + food + "\nMedicine: " + medicine + "\nSupplies: " + supplies);
     }

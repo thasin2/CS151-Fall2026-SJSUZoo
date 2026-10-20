@@ -9,6 +9,7 @@ public class Main {
                 System.out.println();
                 System.out.println("Pick a role to play:");
                 System.out.println("1. Manager");
+                // Add 2nd option for a Zookeeper (one day cycle)
                 ConsoleInput.readInt("Choose a role: ", 1, 1);
                 new ManagerGameMenu().run();
             }
