@@ -1,18 +1,21 @@
 package zoo.attractions;
 
+import zoo.Visitor;
 import java.util.ArrayList; 
 
-public class Attraction {
+public class Attraction implements zoo.Maintainable {
     private boolean isOpen;
 
     private int totalVisited = 0;
-    private ArrayList<String> currentVisitors = new ArrayList<>();
+    private ArrayList<Visitor> currentVisitors = new ArrayList<>();
     private int capacity;
+    private int condition;
 
     // Create an attraction and open it
     public Attraction() {
         this.isOpen = true;
         this.capacity = 5; // default capacity
+        this.condition = 100; // default condition
     }
 
     public Attraction(int capacity) {
@@ -20,8 +23,14 @@ public class Attraction {
         this.capacity = capacity;
     }
 
-    // note to self: change parameters to a visitor object after visitor class is implemented
-    public void admit(String visitor) {
+    public void status() {
+        System.out.println("Attraction is " + (isOpen ? "open" : "closed") + " and is " + (isFull() ? "full" : "not full"));
+        System.out.println("Current visitors: " + getCurrentVisitors());
+        System.out.println("Total visited: " + totalVisited);
+        System.out.println("Capacity: " + capacity);
+    }
+
+    public void admit(Visitor visitor) {
         if (!isOpen) {
             System.out.println("Store is closed. Try again later");
         }
@@ -29,22 +38,39 @@ public class Attraction {
             System.out.println("Attraction is full. Please wait for a visitor to leave.");
         }
         else {
-            System.out.println("Visitor is now attending the attraction");
+            System.out.println(visitor.getName() + " is now attending the attraction");
             totalVisited++;
             currentVisitors.add(visitor);
-        }
-    }
-    public void leaving(String visitor) {
-        currentVisitors.remove(visitor);
-        System.out.println(visitor + " has left the attraction.");
+        }  
     }
 
-    public void close() {
-        isOpen = false;
+    public void leaving(Visitor visitor) {
+        currentVisitors.remove(visitor);
+        condition -= 1; // each visitor reduces condition by 1
+        System.out.println(visitor.getName() + " has left the attraction.");
     }
 
     public void open() {
-        isOpen = true;
+        if (condition > 25) {
+            isOpen = true;
+        }
+        else if (10 < condition && condition < 25) {
+            System.out.println("Attraction is open but in need of maintenance soon");
+            isOpen = true;
+        }
+        else {
+            System.out.println("Attraction is worn out and cannot be opened safely");
+        }
+    }
+
+    public void close() {
+        // removes all visitors
+        for (Visitor visitor : currentVisitors) {
+            leaving(visitor);
+        }
+        System.out.println("All visitors have left and the attraction is now closed.");
+        isOpen = false;
+
     }
 
     public int getCurrentVisitorCount() {
@@ -52,7 +78,7 @@ public class Attraction {
     }
 
     public String getCurrentVisitors() {
-        return String.join(", ", currentVisitors);
+        return String.join(", ", currentVisitors.stream().map(Visitor::getName).collect(java.util.stream.Collectors.toList()));
     }
 
     public int getTotalVisited() {
@@ -63,11 +89,19 @@ public class Attraction {
         return currentVisitors.size() >= capacity;
     }
 
-    public void status() {
-        System.out.println("Attraction is " + (isOpen ? "open" : "closed") + " and is " + (isFull() ? "full" : "not full"));
-        System.out.println("Current visitors: " + getCurrentVisitors());
-        System.out.println("Total visited: " + totalVisited);
-        System.out.println("Capacity: " + capacity);
+    // Maintainable interface methods
+
+    public int getCondition() {
+        return condition;
+    }
+
+    public boolean needsMaintenance() {
+        return condition < 25; // needs maintenance if condition is below 25
+    }
+
+    public void performMaintenance() {
+        condition = 100; // restore condition to 100
+        System.out.println("Attraction has been restored to full condition.");
     }
 
 }
