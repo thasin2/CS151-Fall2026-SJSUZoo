@@ -6,11 +6,11 @@ public class ScheduleGameMenu {
 
     public void run() {
         System.out.println("Welcome to the Schedule Game Menu!");
-        // Starting instructions
+        // Introduction
         printIntroduction();
         readyCheck();
 
-        // Simulation instructions
+        // Simulation information & instruction
         mainInterface();
         readyCheck();
 
@@ -21,8 +21,8 @@ public class ScheduleGameMenu {
 
         attractionsPlay(sgame);
 
+        runDayOne(sgame);
         // Continue here, implementing each day cycle
-
     }
 
     // Introduces user to the start of the simulation
@@ -36,17 +36,19 @@ public class ScheduleGameMenu {
 
 
     // Gives user information about the Simulation to plan ahead
-    // TBD: Can add more information as we go
+    // TBD: Can add more information or change it as we go
     private void mainInterface() {
         System.out.println("------------------------");
         System.out.println("Here is your information:");
         System.out.println("There are currently 20 animals.");
         System.out.println("10 are fed daily, 5 are fed bi-daily, 5 are fed weekly (starting Monday).");
-        System.out.println("Each day, there's a 5% chance an animal gets sick. If an animal is sick without medicine, you fail.");
-        System.out.println("Each day will have around 30 visitors. Around half look at animals, and half go to attractions.");
-        System.out.println("A fresh attraction can handle at most 10 visitors before needing maintenance supplies.");
-        System.out.println("If you do not reach the total quota of 35 attraction visitors, you fail.");
+        System.out.println("Each day, an animal has a 5% chance to get sick.");
+        System.out.println("Each day will have 30 visitors. Around half look at animals, and half go to attractions.");
+        System.out.println("A fresh attraction can handle at most 20 visitors before needing maintenance supplies.");
         System.out.println("Your budget is $300.");
+        System.out.println("Rule #1: If you do not reach the total quota of 35 attraction visitors, you fail.");
+        System.out.println("Rule #2: If an animal is sick without medicine, you fail.");
+        System.out.println("Rule #3: If too many animals go hungry, you fail.");
 
     }
 
@@ -116,13 +118,68 @@ public class ScheduleGameMenu {
         sgame.displayAttraction();
     }
 
+    // Runs the first day
+    private void runDayOne(ScheduleGame sgame) {
+        System.out.println("------------------------");
+        System.out.println("Welcome to the first day!");
+        System.out.println("The day will run it's duration.");
+        readyCheck();
+        sgame.Day1();
+        int endAction = 0;
+        while (endAction != 4) {
+            endDayChoices();
+            endAction = ConsoleInput.readInt("What would you like to do? ", 1, 4);
+            if (endAction == 1) {
+                sgame.inventory.displayInventory();
+            }
+            else if (endAction ==2 ) {
+                sgame.displayAttraction();
+            }
+            else if (endAction == 3) {
+                checkMaintenance(sgame);
+            }
+        }
+
+        System.out.println("------------------------");
+        System.out.println("Congrats on finishing the first day!");
+
+    }
+
+    /* Ideas for the end of each Day Cycle:
+        Able to check inventory & attraction status.
+        Able to check maintenance status for attraction.
+        Able to perform maintenance
+        Optional: Able to feed animals and treat animals (Maybe order staff to do these things)
+        If doesn't repair any broken attractions by end of Day, game ends.
+        */
+    private void endDayChoices() {
+        System.out.println("------------------------");
+        System.out.println("The day has finished. Here are your options.");
+        System.out.println("#1: View inventory");
+        System.out.println("#2: View attraction");
+        System.out.println("#3: View condition and perform maintenance if needed");
+        System.out.println("#4: Finish the day");
+    }
+
+    private void checkMaintenance(ScheduleGame sgame) {
+        System.out.println("------------------------");
+        System.out.println("The condition of your attraction is: " + sgame.attraction.getCondition());
+        if (sgame.attraction.needsMaintenance()) {
+            System.out.println("The attraction is in poor condition and needs maintenance soon");
+        }
+        boolean answer = ConsoleInput.readYesNo("Would you like to perform maintenance? enter y or n ");
+        if (answer) {
+            sgame.maintenanceWork();
+        }
+    }
+
     // Method for buying things in Inventory portion
     private void inventoryBuy(ScheduleGame sgame) {
         System.out.println("------------------------");
         System.out.println("What item would you like to buy?");
-        System.out.println("#1: Food");
-        System.out.println("#2: Medicine");
-        System.out.println("#3: Supplies");
+        System.out.println("#1: Food (3.49 per unit)");
+        System.out.println("#2: Medicine (20.00 per unit)");
+        System.out.println("#3: Supplies (45.99 per unit)");
         int buyChoice = ConsoleInput.readInt("Pick a number from 1-3: ", 1, 3);
         int amount = ConsoleInput.readInt("How much? (1 to 15 units per purchase) ", 1, 15);
         switch (buyChoice) {

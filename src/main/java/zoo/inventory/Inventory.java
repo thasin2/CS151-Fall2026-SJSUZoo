@@ -6,7 +6,7 @@ public class Inventory {
     private int supplies;
     private double foodPrice = 3.49;
     private double medicinePrice = 20.00;
-    private double suppliesPrice = 9.99;
+    private double suppliesPrice = 45.99;
     private double budget = 0;
 
     // Creates an empty inventory
@@ -58,6 +58,7 @@ public class Inventory {
             return amount;
         }
     }
+
 
     // Might remove unless we run a simulation where they can decide price
     public void setPrice(String item, double price) {
