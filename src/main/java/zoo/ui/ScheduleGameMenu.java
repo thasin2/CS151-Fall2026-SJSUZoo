@@ -3,6 +3,7 @@ package zoo.ui;
 import zoo.game.schedule.*;
 
 public class ScheduleGameMenu {
+    private boolean win = false;
 
     public void run() {
         System.out.println("Welcome to the Schedule Game Menu!");
@@ -21,7 +22,23 @@ public class ScheduleGameMenu {
 
         attractionsPlay(sgame);
 
-        runDayOne(sgame);
+
+        if (runDayOne(sgame)) {
+            System.out.println("------------------------");
+            System.out.println("Congrats on finishing the first day!");
+            if (runDayTwo(sgame)) {
+                System.out.println("------------------------");
+                System.out.println("Congrats on finishing the second day!");
+                win = runDayThree(sgame);
+            }
+        }
+
+        if (win) {
+            System.out.println("------------------------");
+            System.out.println("Congrats on winning the game!");
+        }
+
+
         // Continue here, implementing each day cycle
     }
 
@@ -119,30 +136,37 @@ public class ScheduleGameMenu {
     }
 
     // Runs the first day
-    private void runDayOne(ScheduleGame sgame) {
+    private boolean runDayOne(ScheduleGame sgame) {
         System.out.println("------------------------");
         System.out.println("Welcome to the first day!");
         System.out.println("The day will run it's duration.");
         readyCheck();
         sgame.Day1();
-        int endAction = 0;
-        while (endAction != 4) {
-            endDayChoices();
-            endAction = ConsoleInput.readInt("What would you like to do? ", 1, 4);
-            if (endAction == 1) {
-                sgame.inventory.displayInventory();
-            }
-            else if (endAction ==2 ) {
-                sgame.displayAttraction();
-            }
-            else if (endAction == 3) {
-                checkMaintenance(sgame);
-            }
-        }
+        endDayAction(sgame);
 
+        return sgame.failCheck();
+    }
+
+    // Runs the second day
+    private boolean runDayTwo(ScheduleGame sgame) {
         System.out.println("------------------------");
-        System.out.println("Congrats on finishing the first day!");
+        System.out.println("Welcome to the second day!");
+        readyCheck();
+        sgame.Day2();
+        endDayAction(sgame);
 
+        return sgame.failCheck();
+    }
+
+    // Runs the third day
+    private boolean runDayThree(ScheduleGame sgame) {
+        System.out.println("------------------------");
+        System.out.println("Welcome to the final day!");
+        readyCheck();
+        sgame.Day3();
+        endDayAction(sgame);
+
+        return sgame.finalFailCheck();
     }
 
     /* Ideas for the end of each Day Cycle:
@@ -158,7 +182,25 @@ public class ScheduleGameMenu {
         System.out.println("#1: View inventory");
         System.out.println("#2: View attraction");
         System.out.println("#3: View condition and perform maintenance if needed");
+        // Need to add a 4th option for viewing animals and deciding to feed hungry / treat sick animals
         System.out.println("#4: Finish the day");
+    }
+
+    private void endDayAction(ScheduleGame sgame) {
+        int endAction = 0;
+        while (endAction != 4) {
+            endDayChoices();
+            endAction = ConsoleInput.readInt("What would you like to do? ", 1, 4);
+            if (endAction == 1) {
+                sgame.inventory.displayInventory();
+            }
+            else if (endAction ==2 ) {
+                sgame.displayAttraction();
+            }
+            else if (endAction == 3) {
+                checkMaintenance(sgame);
+            }
+        }
     }
 
     private void checkMaintenance(ScheduleGame sgame) {

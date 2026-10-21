@@ -12,6 +12,8 @@ public class ScheduleGame {
     public Attraction attraction;
     Random random = new Random();
     private ArrayList<Visitor> visitors = new ArrayList<>();
+    private int left_hungry;
+    private boolean health;
 
     private static final ArrayList<String> names = new ArrayList<>(List.of("Angie", "Ang", "Aaron", "Ashley", "Amy", 
     "Andrew", "Arthur", "Ant", "Bart", "Beatrice", "Beth", "Bethany", "Cat", "Ced", "Dart", "Darren", "Dez", "Enda",
@@ -66,11 +68,19 @@ public class ScheduleGame {
        attraction.close();
 
        // Must add something to do with Food & Medicine
-
+       // Placeholder for it (Food: 20 -> 10 -> 15), (Medicine: 1 -> 1 -> 1)
+       // For each time food cannot be used, left_hungry is incremented
+       for (int i = 0; i < 20; ++i) {
+        if (!inventory.use("food", 1));
+        left_hungry++;
+       }
+       // If animal is not treated, health fails
+       health = inventory.use("medicine", 1);
+       // Probably move this to Menu and add it as part of endOfDay tasks
     }
 
     public void Day2() {
-
+        
         attraction.open();
 
     }
@@ -115,6 +125,30 @@ public class ScheduleGame {
     Handle an angry visitor that wants to enter a full attraction
     */
 
+    // Checks at the end of day 1 and 2 if user failed simulation (left more than 5 animals hungry or left a sick animal)
+    public boolean failCheck() {
+        boolean check = true;
+        if (left_hungry >= 5) {
+            failMessage(0);
+            check = false;
+        }
+        else if (!health) {
+            failMessage(1);
+            check = false;
+        }
+        return check;
+
+    }
+
+    // Checks if user succeeded after final day (Same as failCheck + if Quota of 35 attraction visitors not met)
+    public boolean finalFailCheck() {
+        boolean check = failCheck();
+        if (attraction.getTotalVisited() < 35) {
+            failMessage(2);
+            check = false;
+        }
+        return check;
+    }
 
     // 50% chance for a current visitor to leave a full attraction when another visitor wants to enter
     public void checkIfFull() {
@@ -124,6 +158,21 @@ public class ScheduleGame {
                 Visitor remVisitor = (attraction.getCurrentVisitor());
                 attraction.remove(remVisitor);
             }
+        }
+    }
+
+    public void failMessage(int x) {
+        System.out.println("------------------------");
+        System.out.println("Sadly, you have failed the zoo simulation");
+        if (x == 0) {
+            System.out.println("Unfortunately, you did not feed enough animals");
+        }
+        else if (x == 1) {
+            System.out.println("Unfortunately, you left an animal sick at the end of the day");
+        }
+        else if (x == 2) {
+            System.out.println("Unfortunately, you only had " + attraction.getTotalVisited() +
+            "total visitors, not meeting the quota of 35");
         }
     }
 

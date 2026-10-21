@@ -16,11 +16,6 @@ public class Inventory {
         this.supplies = 0;
     }
 
-    // Might remove unless there's a simulation where budget is set by user
-    public void setBudget(double amount) {
-        budget = amount;
-    }
-
     // TBD: if stock and get methods should be combined or individual for each item
     public void stock (String item, int amount) {
         if (item.equalsIgnoreCase("food")) {
@@ -60,6 +55,10 @@ public class Inventory {
     }
 
 
+    // Might remove unless there's a simulation where budget is set by user
+    public void setBudget(double amount) {
+        budget = amount;
+    }
     // Might remove unless we run a simulation where they can decide price
     public void setPrice(String item, double price) {
         if (item.equalsIgnoreCase("food")) {
