@@ -15,9 +15,9 @@ public class Inventory {
     // Creates an inventory with given amounts of food, medicine, and supplies
     // Should tweak if continuing with Inventory budget concept
     public Inventory(int food, int medicine, int supplies) {
-        this.food = food;
-        this.medicine = medicine;
-        this.supplies = supplies;
+        this.food = buyFood(food);
+        this.medicine = buyMedicine(medicine);
+        this.supplies = buySupplies(supplies);
     }
 
     // TBD: if stock and get methods should be combined or individual for each item
@@ -42,11 +42,9 @@ public class Inventory {
     private double medicinePrice = 20.00;
     private double suppliesPrice = 9.99;
     private double budget = 0;
-    private double totalCost;
     // assuming budget is stored in Inventory as of now
-    public double addToBudget(double amount) {
-        budget += amount;
-        return budget;
+    public void setBudget(double amount) {
+        budget = amount;
     }
     private int buyFood(int amount) {
         return buyItem(amount, foodPrice);
@@ -58,14 +56,14 @@ public class Inventory {
         return buyItem(amount, suppliesPrice);
     }
     private int buyItem(int amount, double price) {
-        totalCost = amount * price;
-        if (totalCost > budget) {
+        double purchaseCost = amount * price;
+        if (purchaseCost > budget) {
             System.out.println("Not enough budget to buy item.");
             return 0;
         }
         else {
-            budget -= totalCost;
-            System.out.println("Bought and stocked item for $" + totalCost);
+            budget -= purchaseCost;
+            System.out.println("Bought and stocked item for $" + purchaseCost);
             return amount;
         }
     }
@@ -85,7 +83,7 @@ public class Inventory {
     }
     // End of budget concept
 
-    // May change useFood, useMedicine, useSupplies to take no parameter if only one is used each time
+    // May change use to take no int parameter if only one unit is used each time
     public boolean use(String item, int amount) {
         if (amount <= 0) {
             System.out.println("Cannot use negative amount.");
@@ -122,7 +120,11 @@ public class Inventory {
     }
     
     public void displayInventory() {
-        System.out.println("Current Inventory:" + "\nFood: " + food + "\nMedicine: " + medicine + "\nSupplies: " + supplies);
+        System.out.println("Current Inventory:");
+        System.out.println("Food: " + food);
+        System.out.println("Medicine: " + medicine);
+        System.out.println("Supplies: " + supplies);
+        System.out.println("Budget: $" + budget);
     }
 
 }

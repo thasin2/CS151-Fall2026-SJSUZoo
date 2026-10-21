@@ -40,6 +40,7 @@ public class Attraction implements zoo.Maintainable {
         else {
             System.out.println(visitor.getName() + " is now attending the attraction");
             totalVisited++;
+            condition -= 1; // each visitor reduces condition by 1
             currentVisitors.add(visitor);
         }  
     }
