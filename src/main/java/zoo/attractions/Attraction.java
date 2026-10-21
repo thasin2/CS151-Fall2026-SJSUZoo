@@ -34,22 +34,16 @@ public class Attraction implements zoo.Maintainable {
     }
 
     public boolean admit(Visitor visitor) {
-        if (!isOpen) {
-            System.out.println("Attraction is closed. Try again later");
-        }
-        else if (condition <= 0) {
-            System.out.println("Attraction condition is bad. Try again later");
-        }
-        else if (currentVisitors.size() >= capacity) {
-            System.out.println("Attraction is full. Please wait for a visitor to leave.");
+        if (!isOpen || condition <= 0 || currentVisitors.size() >= capacity) {
+            return false;
         }
         else {
             System.out.println(visitor.getName() + " is now attending the attraction");
             totalVisited++;
-            condition -= 10; // each visitor reduces condition by 1
+            condition -= 5; // each visitor reduces condition by 5
             currentVisitors.add(visitor);
+            return true;
         }
-        return isOpen;
     }
 
     public boolean remove(Visitor visitor) {
@@ -71,9 +65,7 @@ public class Attraction implements zoo.Maintainable {
 
     public void close() {
         // removes all visitors
-        for (Visitor visitor : currentVisitors) {
-            remove(visitor);
-        }
+        currentVisitors.clear();
         isOpen = false;
     }
 
@@ -86,6 +78,10 @@ public class Attraction implements zoo.Maintainable {
             return "None";
         }
         return String.join(", ", currentVisitors.stream().map(Visitor::getName).collect(java.util.stream.Collectors.toList()));
+    }
+
+    public Visitor getCurrentVisitor() {
+        return currentVisitors.get(0);
     }
 
     public int getTotalVisited() {
@@ -119,7 +115,6 @@ public class Attraction implements zoo.Maintainable {
 
     public void performMaintenance() {
         condition = 100; // restore condition to 100
-        System.out.println("Attraction has been restored to full condition.");
     }
 
 }
