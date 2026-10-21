@@ -21,6 +21,7 @@ public class Attraction implements zoo.Maintainable {
     public Attraction(int capacity) {
         this.isOpen = true;
         this.capacity = capacity;
+        this.condition = 100;
     }
 
     public void status() {
@@ -32,7 +33,10 @@ public class Attraction implements zoo.Maintainable {
 
     public void admit(Visitor visitor) {
         if (!isOpen) {
-            System.out.println("Store is closed. Try again later");
+            System.out.println("Attraction is closed. Try again later");
+        }
+        else if (condition <= 0) {
+            System.out.println("Attraction condition is bad. Try again later");
         }
         else if (currentVisitors.size() >= capacity) {
             System.out.println("Attraction is full. Please wait for a visitor to leave.");
@@ -40,14 +44,13 @@ public class Attraction implements zoo.Maintainable {
         else {
             System.out.println(visitor.getName() + " is now attending the attraction");
             totalVisited++;
-            condition -= 1; // each visitor reduces condition by 1
+            condition -= 10; // each visitor reduces condition by 1
             currentVisitors.add(visitor);
-        }  
+        }
     }
 
     public void leaving(Visitor visitor) {
         currentVisitors.remove(visitor);
-        condition -= 1; // each visitor reduces condition by 1
         System.out.println(visitor.getName() + " has left the attraction.");
     }
 

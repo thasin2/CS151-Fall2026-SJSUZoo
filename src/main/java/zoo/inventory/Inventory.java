@@ -58,6 +58,7 @@ public class Inventory {
         }
     }
 
+    // Might remove unless it finds a usage
     public void setPrice(String item, double price) {
         if (item.equalsIgnoreCase("food")) {
             this.foodPrice = price;
