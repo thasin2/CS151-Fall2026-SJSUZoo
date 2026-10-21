@@ -16,6 +16,7 @@ public class Inventory {
         this.supplies = 0;
     }
 
+    // Might remove unless there's a simulation where budget is set by user
     public void setBudget(double amount) {
         budget = amount;
     }
@@ -58,7 +59,7 @@ public class Inventory {
         }
     }
 
-    // Might remove unless it finds a usage
+    // Might remove unless we run a simulation where they can decide price
     public void setPrice(String item, double price) {
         if (item.equalsIgnoreCase("food")) {
             this.foodPrice = price;
@@ -114,7 +115,7 @@ public class Inventory {
         System.out.println("Food: " + food);
         System.out.println("Medicine: " + medicine);
         System.out.println("Supplies: " + supplies);
-        System.out.println("Budget: $" + budget);
+        System.out.println("Remaining Budget: $" + budget);
     }
 
 }
