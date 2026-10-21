@@ -38,7 +38,7 @@ public class ScheduleGameMenu {
             System.out.println("Congrats on winning the game!");
         }
 
-
+        System.out.println("------------------------");
         // Continue here, implementing each day cycle
     }
 
@@ -132,7 +132,6 @@ public class ScheduleGameMenu {
         }
         System.out.println("------------------------");
         System.out.println("Congrats on finishing the attraction portion!");
-        sgame.displayAttraction();
     }
 
     // Runs the first day

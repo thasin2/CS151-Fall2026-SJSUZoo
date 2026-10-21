@@ -38,7 +38,6 @@ public class Attraction implements zoo.Maintainable {
             return false;
         }
         else {
-            System.out.println(visitor.getName() + " is now attending the attraction");
             totalVisited++;
             condition -= 5; // each visitor reduces condition by 5
             currentVisitors.add(visitor);
@@ -51,15 +50,11 @@ public class Attraction implements zoo.Maintainable {
     }
 
     public void open() {
-        if (condition > 25) {
-            isOpen = true;
-        }
-        else if (10 < condition && condition < 25) {
-            System.out.println("Attraction is open but in need of maintenance soon");
+        if (condition > 5) {
             isOpen = true;
         }
         else {
-            System.out.println("Attraction is worn out and cannot be opened safely");
+            System.out.println("Attraction is worn out and cannot be opened");
         }
     }
 
