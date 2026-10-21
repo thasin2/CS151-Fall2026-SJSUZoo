@@ -1,7 +1,9 @@
 package test;
 import org.junit.*;
-import zoo.staff.*;
 
 public class staffTest {
-    
+    @Test 
+    public void testStaff() {
+        // Test code
+    }
 }

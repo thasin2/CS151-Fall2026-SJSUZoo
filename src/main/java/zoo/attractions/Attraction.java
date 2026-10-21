@@ -10,6 +10,7 @@ public class Attraction implements zoo.Maintainable {
     private ArrayList<Visitor> currentVisitors = new ArrayList<>();
     private int capacity;
     private int condition;
+    private String name = "Unknown";
 
     // Create an attraction and open it
     public Attraction() {
@@ -21,18 +22,23 @@ public class Attraction implements zoo.Maintainable {
     public Attraction(int capacity) {
         this.isOpen = true;
         this.capacity = capacity;
+        this.condition = 100;
     }
 
     public void status() {
+        System.out.println("Attraction name: " + name);
         System.out.println("Attraction is " + (isOpen ? "open" : "closed") + " and is " + (isFull() ? "full" : "not full"));
         System.out.println("Current visitors: " + getCurrentVisitors());
         System.out.println("Total visited: " + totalVisited);
         System.out.println("Capacity: " + capacity);
     }
 
-    public void admit(Visitor visitor) {
+    public boolean admit(Visitor visitor) {
         if (!isOpen) {
-            System.out.println("Store is closed. Try again later");
+            System.out.println("Attraction is closed. Try again later");
+        }
+        else if (condition <= 0) {
+            System.out.println("Attraction condition is bad. Try again later");
         }
         else if (currentVisitors.size() >= capacity) {
             System.out.println("Attraction is full. Please wait for a visitor to leave.");
@@ -40,15 +46,14 @@ public class Attraction implements zoo.Maintainable {
         else {
             System.out.println(visitor.getName() + " is now attending the attraction");
             totalVisited++;
-            condition -= 1; // each visitor reduces condition by 1
+            condition -= 10; // each visitor reduces condition by 1
             currentVisitors.add(visitor);
-        }  
+        }
+        return isOpen;
     }
 
-    public void leaving(Visitor visitor) {
-        currentVisitors.remove(visitor);
-        condition -= 1; // each visitor reduces condition by 1
-        System.out.println(visitor.getName() + " has left the attraction.");
+    public boolean remove(Visitor visitor) {
+        return currentVisitors.remove(visitor);
     }
 
     public void open() {
@@ -67,11 +72,9 @@ public class Attraction implements zoo.Maintainable {
     public void close() {
         // removes all visitors
         for (Visitor visitor : currentVisitors) {
-            leaving(visitor);
+            remove(visitor);
         }
-        System.out.println("All visitors have left and the attraction is now closed.");
         isOpen = false;
-
     }
 
     public int getCurrentVisitorCount() {
@@ -79,6 +82,9 @@ public class Attraction implements zoo.Maintainable {
     }
 
     public String getCurrentVisitors() {
+        if (currentVisitors.size() == 0) {
+            return "None";
+        }
         return String.join(", ", currentVisitors.stream().map(Visitor::getName).collect(java.util.stream.Collectors.toList()));
     }
 
@@ -90,6 +96,17 @@ public class Attraction implements zoo.Maintainable {
         return currentVisitors.size() >= capacity;
     }
 
+    public boolean isOpen() {
+        return isOpen;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
 
     // Maintainable interface methods
     public int getCondition() {
