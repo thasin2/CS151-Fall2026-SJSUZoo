@@ -9,6 +9,9 @@ public class Main {
                 System.out.println();
                 System.out.println("Pick a role to play:");
                 System.out.println("1. Manager");
+                // Add 2nd option for a Zookeeper (uses visitors, attractions, zoo, inventory, animal/habitat?)
+                // Add 3rd option for a Veterinarian (focuses on animal, inventory, habitat?)
+                // Or have a 2nd option for a Zoo simulation
                 ConsoleInput.readInt("Choose a role: ", 1, 1);
                 new ManagerGameMenu().run();
             }
