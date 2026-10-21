@@ -69,9 +69,7 @@ public class Attraction implements zoo.Maintainable {
         for (Visitor visitor : currentVisitors) {
             leaving(visitor);
         }
-        System.out.println("All visitors have left and the attraction is now closed.");
         isOpen = false;
-
     }
 
     public int getCurrentVisitorCount() {
@@ -90,6 +88,9 @@ public class Attraction implements zoo.Maintainable {
         return currentVisitors.size() >= capacity;
     }
 
+    public boolean isOpen() {
+        return isOpen;
+    }
 
     // Maintainable interface methods
     public int getCondition() {

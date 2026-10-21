@@ -4,6 +4,10 @@ public class Inventory {
     private int food;
     private int medicine;
     private int supplies;
+    private double foodPrice = 3.49;
+    private double medicinePrice = 20.00;
+    private double suppliesPrice = 9.99;
+    private double budget = 0;
 
     // Creates an empty inventory
     public Inventory() {
@@ -12,12 +16,8 @@ public class Inventory {
         this.supplies = 0;
     }
 
-    // Creates an inventory with given amounts of food, medicine, and supplies
-    // Should tweak if continuing with Inventory budget concept
-    public Inventory(int food, int medicine, int supplies) {
-        this.food = buyFood(food);
-        this.medicine = buyMedicine(medicine);
-        this.supplies = buySupplies(supplies);
+    public void setBudget(double amount) {
+        budget = amount;
     }
 
     // TBD: if stock and get methods should be combined or individual for each item
@@ -36,16 +36,6 @@ public class Inventory {
         }
     }
 
-    // TBD: Budget concept for inventory items
-    // Budget can either be taken from Zoo class, or managed in Inventory class itself
-    private double foodPrice = 3.49;
-    private double medicinePrice = 20.00;
-    private double suppliesPrice = 9.99;
-    private double budget = 0;
-    // assuming budget is stored in Inventory as of now
-    public void setBudget(double amount) {
-        budget = amount;
-    }
     private int buyFood(int amount) {
         return buyItem(amount, foodPrice);
     }
@@ -67,6 +57,7 @@ public class Inventory {
             return amount;
         }
     }
+
     public void setPrice(String item, double price) {
         if (item.equalsIgnoreCase("food")) {
             this.foodPrice = price;
@@ -81,9 +72,7 @@ public class Inventory {
             System.out.println("Invalid item.");
         }
     }
-    // End of budget concept
 
-    // May change use to take no int parameter if only one unit is used each time
     public boolean use(String item, int amount) {
         if (amount <= 0) {
             System.out.println("Cannot use negative amount.");

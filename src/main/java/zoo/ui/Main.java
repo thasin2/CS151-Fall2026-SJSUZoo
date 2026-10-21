@@ -7,13 +7,15 @@ public class Main {
         try {
             while (true) {
                 System.out.println();
-                System.out.println("Pick a role to play:");
-                System.out.println("1. Manager");
-                // Add 2nd option for a Zookeeper (uses visitors, attractions, zoo, inventory, animal/habitat?)
-                // Add 3rd option for a Veterinarian (focuses on animal, inventory, habitat?)
-                // Or have a 2nd option for a Zoo simulation
-                ConsoleInput.readInt("Choose a role: ", 1, 1);
-                new ManagerGameMenu().run();
+                System.out.println("Pick what you want to do:");
+                System.out.println("1. Play as a Manager");
+                System.out.println("2. Plan a Zoo schedule");
+                int choice = ConsoleInput.readInt("Choose a role: ", 1, 2);
+                if (choice == 1) {
+                    new ManagerGameMenu().run();
+                } else {
+                    new ScheduleGameMenu().run();
+                }
             }
         } catch (ExitRequestedException e) {
             System.out.println("Goodbye!");
