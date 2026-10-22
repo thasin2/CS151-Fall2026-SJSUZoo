@@ -26,7 +26,7 @@ public class ScheduleGame {
 
     public ScheduleGame() {
         inventory = new Inventory();
-        inventory.setBudget(300);
+        inventory.addBudget(300);
     }
 
     public void setUpAttraction(String name, int capacity) {
@@ -56,41 +56,61 @@ public class ScheduleGame {
     public void Day1() {
        setUpVisitors();
 
-       // 13 to 17 visitors will want to attend a attraction
-       for (int j = random.nextInt(5) + 14; j > 0; --j) {
-        Visitor attVisitor = visitors.remove(j);
-        checkIfFull();
-        boolean success = attraction.admit(attVisitor);
-        if (success) {
-            continue;
-        }
-       }
+       // Simulates visitors to attractions through one day
+       attractionCycle();
+
        attraction.close();
 
-       // Must add something to do with Food & Medicine
-       // Placeholder for it (Food: 20 -> 10 -> 15), (Medicine: 1 -> 1 -> 1)
-       // For each time food cannot be used, left_hungry is incremented
-       for (int i = 0; i < 20; ++i) {
-        if (!inventory.use("food", 1));
-        left_hungry++;
-       }
-       // If animal is not treated, health fails
-       health = inventory.use("medicine", 1);
-       // Probably move this to Menu and add it as part of endOfDay tasks
+       // Tweakable later to have the user control this
+       feedAnimals(20);
+       health = inventory.use("medicine");
+
+       // Removes all visitors from the zoo
+       visitors.clear();
     }
 
     public void Day2() {
-        
         attraction.open();
+        setUpVisitors();
+        attractionCycle();
+        attraction.close();
 
+        feedAnimals(10);
+        health = inventory.use("medicine");
+        visitors.clear();
     }
 
     public void Day3() {
+        attraction.open();
+        setUpVisitors();
+        attractionCycle();
+        attraction.close();
 
+        feedAnimals(15);
+        health = inventory.use("medicine");
+        visitors.clear();
     }
 
+    public void attractionCycle() {
+        // 13 to 17 visitors will want to attend a attraction
+       for (int j = random.nextInt(5) + 14; j > 0; --j) {
+        Visitor attVisitor = visitors.remove(0);
+        checkIfFull();
+        attraction.admit(attVisitor);
+       }
+    }
+    // feeds animal and tallies if animal is not fed
+    public void feedAnimals(int amount) {
+       for (int i = 0; i < amount; ++i) {
+        if (!inventory.use("food")) {
+            left_hungry++;
+        }
+       }
+    }
+
+    // performs maintenance work if possible
     public void maintenanceWork() {
-        if (inventory.use("supplies", 1)) {
+        if (inventory.use("supplies")) {
             attraction.performMaintenance();
             System.out.println("------------------------");
             System.out.println("Successfully performed maintenance.");
@@ -102,28 +122,18 @@ public class ScheduleGame {
     }
 
     
+    // adds 30 visitors to the simulation (stored in visitors arrayList)
     public void setUpVisitors() {
 
         for (int i = 0; i < 30; ++i) {
             // generates a random age from 8 to 80
             int age = random.nextInt(72) + 8;
             // picks a random name from the list
-            String name = names.remove(random.nextInt(names.size()));
+            String name = names.get(random.nextInt(names.size()));
             // creates a visitor and adds it to a list
             visitors.add(new Visitor(name, age));
         }
-
     }
-
-    public void removeAllVisitors() {
-        visitors.clear();
-    }
-
-    /* For days 2 or 3, add spontaneous events for users to do stuff hands-on in zoo
-    Ideas:
-    Feed or not feed angry animal
-    Handle an angry visitor that wants to enter a full attraction
-    */
 
     // Checks at the end of day 1 and 2 if user failed simulation (left more than 5 animals hungry or left a sick animal)
     public boolean failCheck() {
@@ -153,7 +163,7 @@ public class ScheduleGame {
     // 50% chance for a current visitor to leave a full attraction when another visitor wants to enter
     public void checkIfFull() {
         if (attraction.isFull()) {
-            int leave = random.nextInt(1);
+            int leave = random.nextInt(2);
             if (leave == 0) {
                 Visitor remVisitor = (attraction.getCurrentVisitor());
                 attraction.remove(remVisitor);

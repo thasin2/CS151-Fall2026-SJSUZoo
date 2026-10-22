@@ -56,7 +56,7 @@ public class Inventory {
 
 
     // Might remove unless there's a simulation where budget is set by user
-    public void setBudget(double amount) {
+    public void addBudget(double amount) {
         budget = amount;
     }
     // Might remove unless we run a simulation where they can decide price
@@ -75,33 +75,30 @@ public class Inventory {
         }
     }
 
-    public boolean use(String item, int amount) {
-        if (amount <= 0) {
-            System.out.println("Cannot use negative amount.");
-            return false;
-        }
+    // One unit at a time, "uses" an item, returns false if cannot retrieve
+    public boolean use(String item) {
         if (item.equalsIgnoreCase("food")) {
-            if (amount > food) {
+            if (food < 1) {
                 System.out.println("Not enough food in inventory.");
                 return false;
             }
-            food -= amount;
+            food--;
             return true;
         }
         else if (item.equalsIgnoreCase("medicine")) {
-            if (amount > medicine) {
+            if (medicine < 1) {
                 System.out.println("Not enough medicine in inventory.");
                 return false;
             }
-            medicine -= amount;
+            medicine--;
             return true;
         }
         else if (item.equalsIgnoreCase("supplies")) {
-            if (amount > supplies) {
+            if (supplies < 1) {
                 System.out.println("Not enough supplies in inventory.");
                 return false;
             }
-            supplies -= amount;
+            supplies--;
             return true;
         }
         else {

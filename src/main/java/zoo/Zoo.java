@@ -340,7 +340,7 @@ public class Zoo {
         }
         int serviced = 0;
         for (Maintainable item : needsWork) {
-            if (!inventory.use("supplies", suppliesEach)) {
+            if (!inventory.use("supplies")) {
                 System.out.println("Ran out of supplies. " + (needsWork.size() - serviced) + " item(s) still need work.");
                 break;
             }
