@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 public class Attraction implements zoo.Maintainable {
     private boolean isOpen;
-
     private int totalVisited = 0;
     private ArrayList<Visitor> currentVisitors = new ArrayList<>();
     private int capacity;

@@ -12,7 +12,7 @@ public class ScheduleGame {
     public Attraction attraction;
     Random random = new Random();
     private ArrayList<Visitor> visitors = new ArrayList<>();
-    private int left_hungry;
+    private int leftHungry;
     private boolean health;
 
     // List of made-up names for Visitors
@@ -58,7 +58,7 @@ public class ScheduleGame {
     }
 
     // Simulates one day in the zoo simulation (Makes visitors, runs the attraction, takes inventory to feed & treat animals)
-    public void Day1() {
+    public void DayOneCycle() {
        setUpVisitors();
        attractionCycle();
        attraction.close();
@@ -69,7 +69,7 @@ public class ScheduleGame {
     }
 
     // Simulates second day in the zoo simulation
-    public void Day2() {
+    public void DayTwoCycle() {
         attraction.open();
         setUpVisitors();
         attractionCycle();
@@ -81,7 +81,7 @@ public class ScheduleGame {
     }
 
     // Simulates third day in the zoo simulation
-    public void Day3() {
+    public void DayThreeCycle() {
         attraction.open();
         setUpVisitors();
         attractionCycle();
@@ -90,24 +90,6 @@ public class ScheduleGame {
         feedAnimals(15);
         health = inventory.use("medicine");
         visitors.clear();
-    }
-
-    // Around 14 to 18 visitors will attend an attraction per day.
-    public void attractionCycle() {
-       for (int j = random.nextInt(5) + 14; j > 0; --j) {
-        Visitor attVisitor = visitors.remove(0);
-        checkIfFull();
-        attraction.admit(attVisitor);
-       }
-    }
-
-    // feeds animal and tallies how many animals are not fed.
-    public void feedAnimals(int amount) {
-       for (int i = 0; i < amount; ++i) {
-        if (!inventory.use("food")) {
-            left_hungry++;
-        }
-       }
     }
 
     // performs maintenance work if possible
@@ -123,24 +105,10 @@ public class ScheduleGame {
         }
     }
 
-    
-    // adds 30 visitors to the simulation (stored in visitors arrayList)
-    public void setUpVisitors() {
-
-        for (int i = 0; i < 30; ++i) {
-            // generates a random age from 8 to 80
-            int age = random.nextInt(72) + 8;
-            // picks a random name from the list
-            String name = names.get(random.nextInt(names.size()));
-            // creates a visitor and adds it to a list
-            visitors.add(new Visitor(name, age));
-        }
-    }
-
     // Checks at the end of day 1 and 2 if user failed simulation (more than 5 animals hungry or a sick animal)
     public boolean failCheck() {
         boolean check = true;
-        if (left_hungry >= 5) {
+        if (leftHungry >= 5) {
             failMessage(0);
             check = false;
         }
@@ -152,18 +120,49 @@ public class ScheduleGame {
 
     }
 
-    // Checks if user succeeded after final day (Same as failCheck + if Quota of 35 attraction visitors not met)
+    // Checks if user succeeded after final day (Same as failCheck + if Quota of 30 attraction visitors not met)
     public boolean finalFailCheck() {
         boolean check = failCheck();
-        if (attraction.getTotalVisited() < 35) {
+        if (attraction.getTotalVisited() < 30) {
             failMessage(2);
             check = false;
         }
         return check;
     }
 
+    // Around 13 to 17 visitors will attend an attraction per day.
+    private void attractionCycle() {
+       for (int j = random.nextInt(5) + 13; j > 0; --j) {
+        Visitor attVisitor = visitors.remove(0);
+        checkIfFull();
+        attraction.admit(attVisitor);
+       }
+    }
+
+    // feeds animal and tallies how many animals are not fed.
+    private void feedAnimals(int amount) {
+       for (int i = 0; i < amount; ++i) {
+        if (!inventory.use("food")) {
+            leftHungry++;
+        }
+       }
+    }
+
+    // adds 30 visitors to the simulation (stored in visitors arrayList)
+    private void setUpVisitors() {
+
+        for (int i = 0; i < 30; ++i) {
+            // generates a random age from 8 to 80
+            int age = random.nextInt(72) + 8;
+            // picks a random name from the list
+            String name = names.get(random.nextInt(names.size()));
+            // creates a visitor and adds it to a list
+            visitors.add(new Visitor(name, age));
+        }
+    }
+
     // 50% chance for a current visitor to leave a full attraction when another visitor wants to enter
-    public void checkIfFull() {
+    private void checkIfFull() {
         if (attraction.isFull()) {
             int leave = random.nextInt(2);
             if (leave == 0) {
@@ -174,7 +173,7 @@ public class ScheduleGame {
     }
 
     // messages given when failing rules 1, 2, or 3.
-    public void failMessage(int x) {
+    private void failMessage(int x) {
         System.out.println("------------------------");
         System.out.println("Sadly, you have failed the zoo simulation");
         if (x == 0) {
@@ -185,7 +184,7 @@ public class ScheduleGame {
         }
         else if (x == 2) {
             System.out.println("Unfortunately, you only had " + attraction.getTotalVisited() +
-            " total visitors, not meeting the quota of 35");
+            " total visitors, not meeting the quota of 30");
         }
     }
 
