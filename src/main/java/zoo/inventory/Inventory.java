@@ -49,6 +49,11 @@ public class Inventory {
         }
     }
 
+    // Added a getter for budget, since it is a private value and needs access in AnimalGame.java
+    public double getBudget() {
+        return budget;
+    }
+
     // One unit at a time, "uses" an item, returns false if cannot retrieve
     public boolean use(String item) {
         if (item.equalsIgnoreCase("food")) {
@@ -105,9 +110,5 @@ public class Inventory {
 
 
     }
-    // Added a getter for budget, since it is a private value and needs access in AnimalGame.java
-        public double getBudget() {
-            return budget;
-        }
 
 }

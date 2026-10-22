@@ -18,6 +18,7 @@ public class Attraction implements zoo.Maintainable {
         this.condition = 100; // default condition
     }
 
+    // Creates an attraction with a custom capacity
     public Attraction(int capacity) {
         this.isOpen = true;
         this.capacity = capacity;
@@ -31,6 +32,7 @@ public class Attraction implements zoo.Maintainable {
         totalVisited + "\nCapacity: " + capacity;
     }
 
+    // Adds visitor to the attraction if possible
     public boolean admit(Visitor visitor) {
         if (!isOpen || condition <= 0 || currentVisitors.size() >= capacity) {
             return false;
@@ -43,20 +45,25 @@ public class Attraction implements zoo.Maintainable {
         }
     }
 
+    // Opens attraction if in good enough condition
     public void open() {
         if (condition > 5) {
             isOpen = true;
+            System.out.println("The attraction is now open.");
         }
         else {
-            System.out.println("Attraction is worn out and cannot be opened");
+            System.out.println("Attraction is worn out and cannot be opened.");
         }
     }
 
+    // Removes all visitors and closes attraction
     public void close() {
         currentVisitors.clear();
         isOpen = false;
+        System.out.println("The attraction is now closed.");
     }
 
+    // Returns all visitor names
     public String getCurrentVisitors() {
         if (currentVisitors.size() == 0) {
             return "None";
@@ -68,6 +75,7 @@ public class Attraction implements zoo.Maintainable {
         return currentVisitors.size();
     }
 
+    // Return the first visitor in an attraction
     public Visitor getCurrentVisitor() {
         return currentVisitors.get(0);
     }
@@ -76,6 +84,7 @@ public class Attraction implements zoo.Maintainable {
         return totalVisited;
     }
 
+    // Returns a specific visitor from the attraction
     public boolean remove(Visitor visitor) {
         return currentVisitors.remove(visitor);
     }
@@ -107,6 +116,7 @@ public class Attraction implements zoo.Maintainable {
 
     public void performMaintenance() {
         condition = 100; // restore condition to 100
+        System.out.println("Attraction " + name + " successfully repaired");
     }
 
 }
