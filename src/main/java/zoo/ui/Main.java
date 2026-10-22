@@ -11,13 +11,16 @@ public class Main {
                 System.out.println("1. Play as a Manager");
                 System.out.println("2. Schedule the zoo for 3 days");
                 System.out.println("3. Observe an Animal!");
-                int choice = ConsoleInput.readInt("Choose a role: ", 1, 3); // will change this when my game is ready
+                System.out.println("4. Build your own zoo");
+                int choice = ConsoleInput.readInt("Choose a role: ", 1, 4); // will change this when my game is ready
                 if (choice == 1) {
                     new ManagerGameMenu().run();
                 } else if (choice == 2) {
                     new ScheduleGameMenu().run();
                 } else if (choice == 3) {
                     new AnimalGameMenu().run();
+                } else if (choice == 4) {
+                    new ZooBuilderMenu().run();
                 }
                 System.out.println();
             }
