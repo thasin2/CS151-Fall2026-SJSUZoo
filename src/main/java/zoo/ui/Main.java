@@ -25,7 +25,6 @@ public class Main {
                 } else if (choice == 5) {
                     new HabitatGameMenu().run();
                 }
-
                 System.out.println();
             }
         } catch (ExitRequestedException e) {

@@ -2,6 +2,7 @@ package test;
 import org.junit.*;
 import zoo.attractions.*;
 import zoo.Visitor;
+import zoo.inventory.*;
 
 public class attractionsTest {
     @Test 
@@ -43,5 +44,39 @@ public class attractionsTest {
         joyRide.close(); // Should remove all visitors and close attraction
         Assert.assertEquals(joyRide.getCurrentVisitors(), "None");
         Assert.assertEquals(joyRide.getTotalVisited(), 6);
+        Assert.assertEquals(joyRide.getCondition(), 70);
+
+        // Should wear down the attraction
+        for (int i = 0; i < 3; i++) {
+            joyRide.open();
+            joyRide.admit(visitor1);
+            joyRide.admit(visitor2);
+            joyRide.admit(visitor3);
+            joyRide.admit(visitor4);
+            joyRide.admit(visitor6);
+            joyRide.close();
+        }
+
+        Assert.assertEquals(joyRide.getCondition(), 0);
+        joyRide.open();
+        Assert.assertEquals(joyRide.isOpen(), false); // shouldn't open as below condition
+
+        // Repairs the attraction
+        Inventory inventory = new Inventory();
+        inventory.addBudget(50);
+        inventory.stock("supplies", 1);
+        if (inventory.use("supplies")) {
+            joyRide.performMaintenance();
+        }
+        Assert.assertEquals(joyRide.getCondition(), 100);
+
+        // Final attraction tests
+        joyRide.open();
+        joyRide.admit(visitor1);
+        Assert.assertEquals(joyRide.getCurrentVisitor(), visitor1);
+        joyRide.remove(visitor1);
+        Assert.assertEquals(joyRide.getCurrentVisitors(), "None");
+        joyRide.close();
+        Assert.assertEquals(joyRide.getTotalVisited(), 21);
     }
 }
