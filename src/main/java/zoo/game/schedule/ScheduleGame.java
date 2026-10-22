@@ -68,38 +68,25 @@ public class ScheduleGame {
     }
 
     // Simulates one day in the zoo simulation (Makes visitors, runs the attraction, takes inventory to feed & treat animals)
-    public void dayOneCycle() {
+    public void dayCycle(int day) {
+        attraction.open();
        setUpVisitors();
        attractionCycle();
        attraction.close();
 
-       feedAnimals(20);
+       switch (day) {
+        case 1:
+            feedAnimals(20);
+            break;
+        case 2:
+            feedAnimals(10);
+            break;
+        case 3:
+            feedAnimals(15);
+            break;
+       }
        health = inventory.use("medicine");
        visitors.clear();
-    }
-
-    // Simulates second day in the zoo simulation
-    public void dayTwoCycle() {
-        attraction.open();
-        setUpVisitors();
-        attractionCycle();
-        attraction.close();
-
-        feedAnimals(10);
-        health = inventory.use("medicine");
-        visitors.clear();
-    }
-
-    // Simulates third day in the zoo simulation
-    public void dayThreeCycle() {
-        attraction.open();
-        setUpVisitors();
-        attractionCycle();
-        attraction.close();
-
-        feedAnimals(15);
-        health = inventory.use("medicine");
-        visitors.clear();
     }
 
     // performs maintenance work if possible
