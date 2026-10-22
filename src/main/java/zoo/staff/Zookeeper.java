@@ -56,6 +56,7 @@ public class Zookeeper extends Staff {
 
     public boolean maintainHabitat(Habitat environ, Inventory storage){
         if (environ.needsMaintenance()){
+            System.out.println("Oh no! Your habitat needs some maintenance! Let's call in the Zookeeper.");
             if (storage.use("supplies")){
                 environ.setCondition(100);
                 System.out.println(environ.getName() + " has been maintained! The zookeeper did a great job!");

@@ -5,16 +5,22 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+
+import zoo.animal.Animal;
 import zoo.attractions.Attraction;
 import zoo.exception.DuplicateEntryException;
 import zoo.exception.InsufficientFundsException;
 import zoo.exception.ZooFullException;
+import zoo.habitat.Habitat;
  
 /* The zoo itself: its attractions, its visitors, and ticket sales
     a day goes: openForDay() -> visitors arrive, go on attractions, and leave -> closeForTheDay()
     the zoo tracks how many attraction visits happen each day and in total, so games can check a quota
     MAXIMUM_INSTANCES is defined only here, and every class uses Zoo.checkLimit to enforce it
  */
+
+// Thaneesha edit: I added a List<Animal>, as I wanted to test the 100 instances using the tools in Zoo
+
 public class Zoo {
     public static final int MAXIMUM_INSTANCES = 100;
  
@@ -24,6 +30,8 @@ public class Zoo {
     private final List<Attraction> attractions = new ArrayList<>();
     private final List<Visitor> registeredVisitors = new ArrayList<>();
     private final List<Visitor> visitorsInside = new ArrayList<>();
+    private final List<Animal> registeredAnimals = new ArrayList<>();
+    private final List<Habitat> registeredHabitats = new ArrayList<>();
  
     private boolean open;
     private int dayNumber;
@@ -108,6 +116,32 @@ public class Zoo {
         }
         return null;
     }
+
+    // Animal addition - Thaneesha (100 limit enforced) - not associated with a habitat, this is Zoo-wide (100 total)
+    // did not implement find, remove, as this functionality is not important to my class
+    public void registerAnimal(Animal animal) {
+        if (animal == null) {
+            throw new IllegalArgumentException("Animal cannot be empty.");
+        }
+        if (registeredAnimals.contains(animal)) {
+            throw new DuplicateEntryException("A animal named " + animal.getName() + " is already registered.");
+        }
+        checkLimit(registeredAnimals, "animal");
+        registeredAnimals.add(animal);
+    }
+
+    // Habitat addition
+    public void registerHabitat(Habitat habitat) {
+        if (habitat == null) {
+            throw new IllegalArgumentException("Habitat cannot be empty.");
+        }
+        if (registeredHabitats.contains(habitat)) {
+            throw new DuplicateEntryException("A habitat named " + habitat.getName() + " is already registered.");
+        }
+        checkLimit(registeredHabitats, "habitat");
+        registeredHabitats.add(habitat);
+    }
+
  
     // OPEN/CLOSING =====
  
@@ -253,6 +287,7 @@ public class Zoo {
             throw new IllegalArgumentException("Chance must be from 0.0 to 1.0.");
         }
     }
+    
  
     // GETTERS =====
  
@@ -274,6 +309,14 @@ public class Zoo {
  
     public List<Visitor> getRegisteredVisitors() {
         return Collections.unmodifiableList(registeredVisitors);
+    }
+    // addition for animalTest.java
+    public List<Animal> getRegisteredAnimals(){
+        return Collections.unmodifiableList(registeredAnimals);
+    }
+    // addition for habitatTest.java
+    public List<Habitat> getRegisteredHabitats(){
+    return Collections.unmodifiableList(registeredHabitats);
     }
  
     public boolean isFull() {
