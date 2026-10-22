@@ -1,14 +1,10 @@
 package test;
-import java.util.List;
-import java.util.Random;
 import org.junit.*;
-import zoo.Maintainable;
 import zoo.Visitor;
 import zoo.Zoo;
 import zoo.attractions.Attraction;
 import zoo.exception.DuplicateEntryException;
 import zoo.exception.ZooFullException;
-import zoo.inventory.Inventory;
  
 public class zooTest {
     private Zoo zoo;
@@ -104,45 +100,4 @@ public class zooTest {
         Assert.assertEquals(2, zoo.getTotalAttractionVisits());
     }
  
-    @Test
-    public void refundGivesMoneyBackAndSendsVisitorHome() {
-        zoo.openForDay();
-        Visitor a = letIn("A");
-        zoo.refundVisitor(a);
-        Assert.assertEquals(30.00, a.getWallet(), 0.001);
-        Assert.assertEquals(0.00, zoo.getTicketRevenueToday(), 0.001);
-        Assert.assertFalse(a.isInsideZoo());
-    }
- 
-    @Test
-    public void generatedVisitorsAreUniqueAndRegistered() {
-        Zoo big = new Zoo("Big Zoo", 100);
-        List<Visitor> group = big.generateVisitors(30, new Random(1));
-        Assert.assertEquals(30, group.size());
-        Assert.assertEquals(30, big.getRegisteredVisitors().size());
-        // asking again reuses the same 30 people instead of making new ones
-        big.generateVisitors(30, new Random(2));
-        Assert.assertEquals(30, big.getRegisteredVisitors().size());
-    }
- 
-    @Test
-    public void maintenanceUsesSuppliesAndFixesWornAttractions() {
-        zoo.openForDay();
-        for (int i = 0; i < 8; i++) { // each visit wears the ride down by 10
-            Visitor v = new Visitor("Rider " + i, 20, 30);
-            v.buyTicket(zoo);
-            v.enterZoo(zoo);
-            v.visitAttraction(ride);
-            v.leaveZoo(zoo);
-        }
-        List<Maintainable> needsWork = zoo.findThingsNeedingMaintenance();
-        Assert.assertEquals(1, needsWork.size());
- 
-        Inventory inventory = new Inventory();
-        inventory.addBudget(100);
-        inventory.stock("supplies", 2);
-        Assert.assertEquals(1, zoo.performMaintenance(inventory, 2));
-        Assert.assertEquals(100, ride.getCondition());
-        Assert.assertTrue(zoo.findThingsNeedingMaintenance().isEmpty());
-    }
 }

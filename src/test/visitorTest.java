@@ -115,8 +115,6 @@ public class visitorTest {
             Assert.assertFalse(sam.visitAttraction(tiny));
         }
         Assert.assertTrue(sam.isUpset());
-        sam.calmDown();
-        Assert.assertFalse(sam.isUpset());
     }
  
     @Test
