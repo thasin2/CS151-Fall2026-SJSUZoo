@@ -2,6 +2,7 @@ package zoo.staff;
 
 
 import zoo.animal.Animal;
+import zoo.habitat.Habitat;
 import zoo.inventory.Inventory;
 
 // For a zookeeper, pay is the hourly rate.
@@ -38,12 +39,12 @@ public class Zookeeper extends Staff {
         }
     }
 
-    public boolean feedAnimal(Animal x, Inventory y){
-        if (x.isHungry()){
-            if (y.use("food")) {
-            x.setHungry(false);
-            System.out.println(x.getName() + " has been fed. It is not hungry anymore! Also the animal is active!");
-            x.setActive(true);
+    public boolean feedAnimal(Animal anim, Inventory storage){
+        if (anim.isHungry()){
+            if (storage.use("food")) {
+            anim.setHungry(false);
+            System.out.println(anim.getName() + " has been fed. It is not hungry anymore! Also the animal is active!");
+            anim.setActive(true);
             return true;
             }
             System.out.println("Stock the inventory!");
@@ -52,6 +53,20 @@ public class Zookeeper extends Staff {
         System.out.println("The animal is not hungry!");
         return true;
         }
+
+    public boolean maintainHabitat(Habitat environ, Inventory storage){
+        if (environ.needsMaintenance()){
+            if (storage.use("supplies")){
+                environ.setCondition(100);
+                System.out.println(environ.getName() + " has been maintained! The zookeeper did a great job!");
+                return true;
+            }
+            System.out.println("Stock the inventory!");
+            return false;
+        }
+        System.out.println("The environment does not need maintenance.");
+        return true;
+    }
 
     @Override
     public StaffRole getRole() {

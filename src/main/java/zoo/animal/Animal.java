@@ -95,7 +95,7 @@ public class Animal {
 	public boolean setHungry(boolean isHungry) {
 		this.isHungry = isHungry;
 
-		// should have a check here that asks the zookeeper to feed (zoo keeper can say no or yes, can lead to animal becoming hungry)
+		
 
 		if (!isHungry) {
 			setActive(true);
