@@ -25,7 +25,7 @@ public class HabitatGameMenu {
         System.out.println("----------------------------------------------------");
         System.out.println(".....................................................");
 
-        System.out.println("Now that you get the jist of the simulation, play on until you do not want to, by typing EXIT");
+        System.out.println("Now that you get the gist of the simulation, play on until you do not want to, by typing EXIT");
 
         while(true){
             System.out.println("----------------------------------------------------");
