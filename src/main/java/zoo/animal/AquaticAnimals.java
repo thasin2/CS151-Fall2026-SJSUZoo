@@ -16,6 +16,10 @@ public class AquaticAnimals extends Animal {
 		super(name, dangerous);
 		this.depthResided = depthResided;
 	}
+	public AquaticAnimals(String name, int depthResided){
+		super(name);
+		this.depthResided = depthResided;
+	}
 	public AquaticAnimals(String name) {
 		super(name);
 		this.depthResided = 100;
@@ -23,14 +27,15 @@ public class AquaticAnimals extends Animal {
 	
 	// methods
 	@Override
-	public void doATrick() {
-		super.doATrick();
+	public boolean doATrick() {
 		System.out.println("The cool trick was jumping out of the water! It swam from the depth of " + depthResided + " feet all the way to the top!");
+		super.doATrick();
+		return tired(getTrickCount());
 	}
 
 	@Override
 	public boolean existInZoo(){
-		System.out.println(getName() + "decided to swim on top of the water, and a bunch of visitors took pictures with it.");
+		System.out.println(getName() + " decided to swim on top of the water, and a bunch of visitors took pictures with it.");
 		boolean x = super.existInZoo();
 		return x;
 	}

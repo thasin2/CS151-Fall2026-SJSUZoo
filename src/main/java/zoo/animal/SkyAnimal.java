@@ -19,18 +19,25 @@ public class SkyAnimal extends Animal {
 		super(name);
 		this.setMaxHeight(100);
 	}
+
+	public SkyAnimal(String name, int maxHeight) {
+		super(name);
+		this.setMaxHeight(maxHeight);
+	}
+
 	//methods
 	
 	@Override
-	public void doATrick() {
-		super.doATrick();
+	public boolean doATrick() {
 		System.out.println("The cool trick was flying all the way to " + getMaxHeight() + " ft and all the way back down. Super awesome!");
+		super.doATrick();
+		return tired(getTrickCount());
 	}
 
 	@Override
 	public boolean existInZoo(){
 		
-		System.out.println(getName() + "decided to fly close to the ground, visitors are able to observe the feathers it has!");
+		System.out.println(getName() + " decided to fly close to the ground, visitors are able to observe the feathers it has!");
 		boolean x = super.existInZoo();
 		return x;
 	}

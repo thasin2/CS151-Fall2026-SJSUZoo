@@ -3,7 +3,7 @@ package zoo.habitat;
 import java.util.ArrayList;
 import zoo.animal.*;
 
-public class Habitat implements zoo.Maintainable{
+public class Habitat implements zoo.Maintainable { // Extends Maintainable interface
 
 	// PRIVATE INSTANCE VARIABLES ------------------------------------------------------------------------------------------
 	

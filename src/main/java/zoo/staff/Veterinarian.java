@@ -49,7 +49,7 @@ public class Veterinarian extends Staff {
                 return true;
             }
             else {
-                System.out.println("Stock the inventory!");
+                System.out.println("The vet left, we have to stock the inventory! (Medicine not available)");
                 return false;
             }
         }
