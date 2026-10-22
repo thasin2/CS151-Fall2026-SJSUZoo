@@ -23,7 +23,6 @@ public class Visitor {
     private boolean insideZoo;
     private Attraction currentAttraction; // null when the visitor is not on an attraction
     private int patience = MAX_PATIENCE;
-    private int attractionsVisited;
  
     // a visitor who has not brought any money yet
     public Visitor(String name, int age) {
@@ -122,7 +121,6 @@ public class Visitor {
         attraction.admit(this);
         if (attraction.getCurrentVisitorCount() > countBefore) {
             currentAttraction = attraction;
-            attractionsVisited++;
             return true;
         }
         if (patience > 0) {
@@ -141,16 +139,6 @@ public class Visitor {
         currentAttraction.remove(this);
         System.out.println(name + " left " + currentAttraction.getName() + ".");
         currentAttraction = null;
-    }
- 
-    // the zoo gives the ticket money back to an upset visitor, who then leaves
-    void receiveRefund(double amount) {
-        wallet += amount;
-    }
- 
-    // staff can calm an upset visitor down (for example with an apology or a free snack)
-    public void calmDown() {
-        patience = MAX_PATIENCE;
     }
  
     public boolean isUpset() {
@@ -183,18 +171,6 @@ public class Visitor {
  
     public boolean isAtAttraction() {
         return currentAttraction != null;
-    }
- 
-    public Attraction getCurrentAttraction() {
-        return currentAttraction;
-    }
- 
-    public int getPatience() {
-        return patience;
-    }
- 
-    public int getAttractionsVisited() {
-        return attractionsVisited;
     }
  
     @Override
