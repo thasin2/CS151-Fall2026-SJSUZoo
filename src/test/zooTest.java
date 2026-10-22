@@ -139,7 +139,7 @@ public class zooTest {
         Assert.assertEquals(1, needsWork.size());
  
         Inventory inventory = new Inventory();
-        inventory.setBudget(100);
+        inventory.addBudget(100);
         inventory.stock("supplies", 2);
         Assert.assertEquals(1, zoo.performMaintenance(inventory, 2));
         Assert.assertEquals(100, ride.getCondition());

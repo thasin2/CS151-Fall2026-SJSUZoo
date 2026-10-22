@@ -25,12 +25,11 @@ public class Attraction implements zoo.Maintainable {
         this.condition = 100;
     }
 
-    public void status() {
-        System.out.println("Attraction name: " + name);
-        System.out.println("Attraction is " + (isOpen ? "open" : "closed") + " and is " + (isFull() ? "full" : "not full"));
-        System.out.println("Current visitors: " + getCurrentVisitors());
-        System.out.println("Total visited: " + totalVisited);
-        System.out.println("Capacity: " + capacity);
+    @Override
+    public String toString() {
+        return "Attraction name: " + name + "\nAttraction is " + (isOpen ? "open" : "closed") + " and is " +
+        (isFull() ? "full" : "not full") + "\nCurrent visitors: " + getCurrentVisitors() + "\nTotal visited: " +
+        totalVisited + "\nCapacity: " + capacity;
     }
 
     public boolean admit(Visitor visitor) {
@@ -45,10 +44,6 @@ public class Attraction implements zoo.Maintainable {
         }
     }
 
-    public boolean remove(Visitor visitor) {
-        return currentVisitors.remove(visitor);
-    }
-
     public void open() {
         if (condition > 5) {
             isOpen = true;
@@ -59,13 +54,8 @@ public class Attraction implements zoo.Maintainable {
     }
 
     public void close() {
-        // removes all visitors
         currentVisitors.clear();
         isOpen = false;
-    }
-
-    public int getCurrentVisitorCount() {
-        return currentVisitors.size();
     }
 
     public String getCurrentVisitors() {
@@ -75,12 +65,20 @@ public class Attraction implements zoo.Maintainable {
         return String.join(", ", currentVisitors.stream().map(Visitor::getName).collect(java.util.stream.Collectors.toList()));
     }
 
+    public int getCurrentVisitorCount() {
+        return currentVisitors.size();
+    }
+
     public Visitor getCurrentVisitor() {
         return currentVisitors.get(0);
     }
 
     public int getTotalVisited() {
         return totalVisited;
+    }
+
+    public boolean remove(Visitor visitor) {
+        return currentVisitors.remove(visitor);
     }
 
     public boolean isFull() {
