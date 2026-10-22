@@ -1,6 +1,6 @@
 package zoo.staff;
 import zoo.animal.Animal;
-import zoo.inventory.Inventory;
+import zoo.inventory.*;
 
 // For a vet, pay is the yearly salary.
 public class Veterinarian extends Staff {
@@ -42,7 +42,7 @@ public class Veterinarian extends Staff {
         System.out.println("The vet is here!");
         if (x.isInjured()){
             System.out.println("The vet found the injury on " + x.getName() + "! The vet is making a prompt diagnosis and treatment plan.");
-            if (y.use("medicine")) {
+            if (y.use(Item.MEDICINE)) {
                 x.setInjured(false);
                 x.setActive(true);
                 System.out.println("The animal is healed! It is back out and active!");

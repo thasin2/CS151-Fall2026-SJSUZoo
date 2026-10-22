@@ -57,44 +57,32 @@ public class ScheduleGame {
         }
     }
 
-    // Simulates one day in the zoo simulation (Makes visitors, runs the attraction, takes inventory to feed & treat animals)
-    public void DayOneCycle() {
+    // Simulates aday in the zoo simulation (Makes visitors, runs the attraction, feeds & treats animals)
+    public void DayCycle(int day) {
+        attraction.open();
        setUpVisitors();
        attractionCycle();
        attraction.close();
 
-       feedAnimals(20);
-       health = inventory.use("medicine");
+       switch (day) {
+        case 1:
+            feedAnimals(20);
+            break;
+        case 2:
+            feedAnimals(10);
+            break;
+        case 3:
+            feedAnimals(15);
+            break;
+       }
+
+       health = inventory.use(Item.MEDICINE);
        visitors.clear();
-    }
-
-    // Simulates second day in the zoo simulation
-    public void DayTwoCycle() {
-        attraction.open();
-        setUpVisitors();
-        attractionCycle();
-        attraction.close();
-
-        feedAnimals(10);
-        health = inventory.use("medicine");
-        visitors.clear();
-    }
-
-    // Simulates third day in the zoo simulation
-    public void DayThreeCycle() {
-        attraction.open();
-        setUpVisitors();
-        attractionCycle();
-        attraction.close();
-
-        feedAnimals(15);
-        health = inventory.use("medicine");
-        visitors.clear();
     }
 
     // performs maintenance work if possible
     public void maintenanceWork() {
-        if (inventory.use("supplies")) {
+        if (inventory.use(Item.SUPPLIES)) {
             attraction.performMaintenance();
             System.out.println("------------------------");
             System.out.println("Successfully performed maintenance.");
@@ -142,7 +130,7 @@ public class ScheduleGame {
     // feeds animal and tallies how many animals are not fed.
     private void feedAnimals(int amount) {
        for (int i = 0; i < amount; ++i) {
-        if (!inventory.use("food")) {
+        if (!inventory.use(Item.FOOD)) {
             leftHungry++;
         }
        }

@@ -3,7 +3,7 @@ package zoo.staff;
 
 import zoo.animal.Animal;
 import zoo.habitat.Habitat;
-import zoo.inventory.Inventory;
+import zoo.inventory.*;
 
 // For a zookeeper, pay is the hourly rate.
 public class Zookeeper extends Staff {
@@ -41,7 +41,7 @@ public class Zookeeper extends Staff {
 
     public boolean feedAnimal(Animal anim, Inventory storage){
         if (anim.isHungry()){
-            if (storage.use("food")) {
+            if (storage.use(Item.FOOD)) {
             anim.setHungry(false);
             System.out.println(anim.getName() + " has been fed. It is not hungry anymore! Also the animal is active!");
             anim.setActive(true);
@@ -56,7 +56,7 @@ public class Zookeeper extends Staff {
 
     public boolean maintainHabitat(Habitat environ, Inventory storage){
         if (environ.needsMaintenance()){
-            if (storage.use("supplies")){
+            if (storage.use(Item.SUPPLIES)){
                 environ.setCondition(100);
                 System.out.println(environ.getName() + " has been maintained! The zookeeper did a great job!");
                 return true;

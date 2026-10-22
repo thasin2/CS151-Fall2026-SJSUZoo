@@ -1,6 +1,7 @@
 package zoo.ui;
 
 import zoo.game.schedule.*;
+import zoo.inventory.*;
 
 public class ScheduleGameMenu {
     private boolean win = false;
@@ -137,7 +138,7 @@ public class ScheduleGameMenu {
         System.out.println("Welcome to the first day!");
         System.out.println("The day will run it's duration.");
         readyCheck();
-        sgame.DayOneCycle();
+        sgame.DayCycle(1);
         endDayAction(sgame);
 
         return sgame.failCheck();
@@ -148,7 +149,7 @@ public class ScheduleGameMenu {
         System.out.println("------------------------");
         System.out.println("Welcome to the second day!");
         readyCheck();
-        sgame.DayTwoCycle();
+        sgame.DayCycle(2);
         endDayAction(sgame);
 
         return sgame.failCheck();
@@ -159,7 +160,7 @@ public class ScheduleGameMenu {
         System.out.println("------------------------");
         System.out.println("Welcome to the final day!");
         readyCheck();
-        sgame.DayThreeCycle();
+        sgame.DayCycle(3);
         endDayAction(sgame);
 
         return sgame.finalFailCheck();
@@ -219,13 +220,13 @@ public class ScheduleGameMenu {
         int amount = ConsoleInput.readInt("How much? (1 to 15 units per purchase) ", 1, 15);
         switch (buyChoice) {
             case 1:
-                sgame.inventory.stock("food", amount);
+                sgame.inventory.stock(Item.FOOD, amount);
                 break;
             case 2:
-                sgame.inventory.stock("medicine", amount);
+                sgame.inventory.stock(Item.MEDICINE, amount);
                 break;
             case 3:
-                sgame.inventory.stock("supplies", amount);
+                sgame.inventory.stock(Item.SUPPLIES, amount);
                 break;
         }
     }

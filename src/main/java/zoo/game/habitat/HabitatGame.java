@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import zoo.animal.Animal;
 import zoo.game.animal.AnimalGame;
 import zoo.habitat.Habitat;
-import zoo.inventory.Inventory;
+import zoo.inventory.*;
 import zoo.staff.Zookeeper;
 import zoo.ui.ConsoleInput;
 
@@ -138,12 +138,12 @@ public class HabitatGame {
         }
         else {
             System.out.println("Let's go to the stocking area!");
-            stockingProcess("supplies");
+            stockingProcess(Item.SUPPLIES);
             maintenance(hab, stor);
         }
     }
 
-    public void stockingProcess(String item){
+    public void stockingProcess(Item item){
     System.out.println("Welcome to the stocking area! Here is everything you have:");
     System.out.println(habGameInv.toString());
     System.out.println("---------------------------------------------------");
@@ -164,13 +164,13 @@ public class HabitatGame {
     }
     System.out.println(habGameInv.toString());
     int numberAvail = 1;
-    if (item.equals("food")){
+    if (item == Item.FOOD){
         numberAvail = ((int)(habGameInv.getBudget() / 3.49));
     }
-    if (item.equals("medicine")){
+    if (item == Item.MEDICINE){
         numberAvail = ((int)(habGameInv.getBudget() / 20));
     }
-    if (item.equals("supplies")){
+    if (item == Item.SUPPLIES){
         numberAvail = ((int)(habGameInv.getBudget()/45.99));
     }
     int numberToStock = ConsoleInput.readInt("How much do you want to stock? Enter a reasonable number in our budget. " , 1, numberAvail);
@@ -182,7 +182,7 @@ public void feed(Animal a){
     boolean hunger = zooHabGame.feedAnimal(a, habGameInv);
     if (!hunger){
         System.out.println("Let's go to the stocking area!");
-        stockingProcess("food");
+        stockingProcess(Item.FOOD);
         feed(a);
     }
 }
