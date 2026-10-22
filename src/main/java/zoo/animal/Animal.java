@@ -15,7 +15,7 @@ public class Animal {
     public Animal() {
     	this.dangerous = false;
     	this.isHungry = false;
-    	this.isActive = false;
+    	this.isActive = true;
     	this.name = "Unnamed";
     	this.trickCount = 0;
     }
@@ -24,12 +24,14 @@ public class Animal {
     public Animal(String name, boolean dangerous) {
 		this.name = name;
         this.dangerous = dangerous;
+		this.isActive = true;
     }
     
     //another constructor with name for only
     public Animal(String name) {
         this.dangerous = false;
         this.name = name;
+		this.isActive = true;
     }
     
     // METHODS ------------------------------------------
@@ -50,7 +52,7 @@ public class Animal {
     
 	// method 2
     public boolean tired(int trickCount) {
-    	if ((trickCount>2) && (isHungry())) {
+    	if ((trickCount>=2) && (isHungry())) {
     		setActive(false);
     		System.out.println(getName() + " is tired. Please feed the animal");
 			return true;
@@ -63,7 +65,7 @@ public class Animal {
 		System.out.println(getName() + " is in front of the visitors right now. So cool!");
 
 		int x = (int)(Math.random() * 10); // will generate random numbers from 0 to 10
-		if ((x<5) && (getTrickCount()>=1)){
+		if ((x<7) && (getTrickCount()>=1)){
 			setInjured(true);
 			System.out.println("Aw man! The animal was just existing, and it got randomly injured. Please get the vet to fix the animal.");
 			setActive(false);

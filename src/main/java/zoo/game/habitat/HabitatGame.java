@@ -14,11 +14,12 @@ public class HabitatGame {
     Inventory habGameInv = new Inventory();
     Zookeeper zooHabGame = new Zookeeper("1245", "Greta", 10000, true);
     AnimalGame temp = new AnimalGame();
+    private boolean opened = false;
 
     public Habitat makeHabitat(){
         System.out.println("Let's get some basic info to create your habitat!");
         String habitatName = ConsoleInput.readLine("What do you want to name your Habitat? ");
-        int capacity = ConsoleInput.readInt("How many animals can your habitat hold?", 1, 10);
+        int capacity = ConsoleInput.readInt("How many animals can your habitat hold? ", 1, 10);
         System.out.println("You need to create a beginner Animal object to add to your habitat. A note - whatever type of Animal you choose, you have to ensure that all other animals added are of the same type.");
         String animalName = ConsoleInput.readLine("What do you want to name your Animal? ");
         Animal firstAnimal = temp.createAnimalObj(animalName);
@@ -34,6 +35,7 @@ public class HabitatGame {
             add(hab);
         }
         else if (choice == 2){
+            setOpened(true);
             open(hab);
         }
         else {
@@ -42,17 +44,19 @@ public class HabitatGame {
     }
 
     public void secondPart(Habitat hab){
-        System.out.println("You can either 1 - Add animals to your habitat, or 2 - Open your habitat. 3 - Close your habitat");
+        System.out.println("You can either 1 - Add animals to your habitat, or 2 - Open your habitat. 3 - Close your habitat. Note - you can only close a habitat after it has been open. You can continue 'opening' a habitat, as this acts like opening shifts to continue the simulation.");
         int choice = ConsoleInput.readInt("1, 2, or 3 ", 1, 3);
         if (choice == 1){
             add(hab);
             secondPart(hab);
         }
         else if (choice == 2){
+            setOpened(true);
             open(hab);
             option2(hab);
         }
-        else if (choice == 3){
+        else if ((choice == 3) && (isOpened())){
+            setOpened(false);
             close(hab);
             option3(hab);
         }
@@ -69,7 +73,8 @@ public class HabitatGame {
             add(hab);
             secondPart(hab);
         }
-        else if (choice == 2){
+        else if ((choice == 2) && (isOpened())){
+            setOpened(false);
             close(hab);
             option3(hab);
         }
@@ -82,6 +87,7 @@ public class HabitatGame {
             System.out.println("Now, you can 1 - Open your habitat. 2 - Add animals");
         int choice = ConsoleInput.readInt("1 or 2 ", 1, 2);
         if (choice == 1){
+            setOpened(true);
             open(hab);
             option2(hab);
         }
@@ -100,14 +106,19 @@ public class HabitatGame {
         String animalName = ConsoleInput.readLine("What do you want to name your Animal? ");
         Animal animalAddition = temp.createAnimalObj(animalName);
         boolean y = x.addToAnimals(animalAddition);
-        if (!y){
-            System.out.println("Do you want to try adding the animal again (with the correct type this time)?");
+        while(!y){
+            System.out.println("Do you want to try adding the animal again?");
             String choose = ConsoleInput.readLine("yes/no ");
             if (choose.equalsIgnoreCase("yes")){
                 add(x);
+                y = true;
+            }
+            else if ((choose.equalsIgnoreCase("no"))){
+                y = true;
             }
             else {
-                return;
+                System.out.println("Please enter yes or no. ");
+                y = false;
             }
         }
     }
@@ -125,7 +136,7 @@ public class HabitatGame {
         System.out.println("Since you want to close the habitat, we have to feed and make the animals sleep.");
         ArrayList<Animal> listOfAnimals = hab.getAnimals();
         for (Animal x: listOfAnimals){
-            temp.feed(x);
+            feed(x);
             System.out.println("Fed " + x.getName() + ".");
         }
         hab.habitatClose();
@@ -138,12 +149,12 @@ public class HabitatGame {
         }
         else {
             System.out.println("Let's go to the stocking area!");
-            stockingProcess("supplies");
+            stockingProcesses("supplies");
             maintenance(hab, stor);
         }
     }
 
-    public void stockingProcess(String item){
+    public void stockingProcesses(String item){
     System.out.println("Welcome to the stocking area! Here is everything you have:");
     System.out.println(habGameInv.toString());
     System.out.println("---------------------------------------------------");
@@ -159,7 +170,7 @@ public class HabitatGame {
     }
     else {
         System.out.println("Enter a correct response");
-        stockingProcess(item);
+        stockingProcesses(item);
         return;
     }
     System.out.println(habGameInv.toString());
@@ -179,13 +190,22 @@ public class HabitatGame {
 
 }
 public void feed(Animal a){
-    boolean hunger = zooHabGame.feedAnimal(a, habGameInv);
-    if (!hunger){
+    boolean hungerNotSolved = zooHabGame.feedAnimal(a, habGameInv);
+    if (!hungerNotSolved){
         System.out.println("Let's go to the stocking area!");
-        stockingProcess("food");
+        stockingProcesses("food");
         feed(a);
     }
 }
+
+
+public boolean isOpened() {
+    return opened;
+    }
+
+public void setOpened(boolean opened) {
+    this.opened = opened;
+    }
 
     
 }

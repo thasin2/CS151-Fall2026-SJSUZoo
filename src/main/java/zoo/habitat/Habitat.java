@@ -21,6 +21,12 @@ public class Habitat implements zoo.Maintainable { // Extends Maintainable inter
 		this.animals = new ArrayList<Animal>();
 		this.condition = 100;
 	}
+	public Habitat(String name) {
+		this.name = name; // Assuming this as a baseline habitat
+		this.capacity = 10;
+		this.animals = new ArrayList<Animal>();
+		this.condition = 100;
+	}
 
 	// Constructor, in the case that the user has a prespecified animal list
 	public Habitat(String name, int capacity, ArrayList<Animal> animals) {
@@ -95,21 +101,28 @@ public class Habitat implements zoo.Maintainable { // Extends Maintainable inter
 			System.out.println("Animal added!");
 			return true;
 		}
-		if (animals.size() <= capacity) {
+		if (animals.size() < capacity) {
 		Animal current = animals.get(0);
-		if ((current instanceof AquaticAnimals) && (animal instanceof AquaticAnimals)){
+		if (((current instanceof AquaticAnimals) || (current.getClass().getSimpleName().equals("Animal"))) && ((animal instanceof AquaticAnimals) || (animal.getClass().getSimpleName().equals("Animal")))){
 			System.out.println("The animal you want to add is an aquatic animal, and is thus, compatible.");
 			return true;
 		}
-		else if ((current instanceof TerrestrialAnimals) && (animal instanceof TerrestrialAnimals)){
+		else if (((current instanceof TerrestrialAnimals) || (current.getClass().getSimpleName().equals("Animal"))) && ((animal instanceof TerrestrialAnimals) || (animal.getClass().getSimpleName().equals("Animal")))){
 			System.out.println("The animal you want to add is a terrestrial animal, and is thus, compatible.");
 			return true;
 		}
-		else if ((current instanceof SkyAnimal) && (animal instanceof SkyAnimal)){
+		else if (((current instanceof SkyAnimal) || (current.getClass().getSimpleName().equals("Animal"))) && ((animal instanceof SkyAnimal) || (animal.getClass().getSimpleName().equals("Animal")))){
 			System.out.println("The animal is compatible with the habitat. It has been added.");
 			return true;
 		}
 		else {
+			if(current.getClass().getSimpleName().equals("Animal") && (animal.getClass().getSimpleName().equals("Animal"))){
+				System.out.println(current.getClass().getSimpleName());
+				System.out.println(animal.getClass().getSimpleName());
+				System.out.println("The animal is compatible with the habitat. It has been added.");
+				return true;
+
+			}
 			System.out.println("The animal you want to add is not compatible with the habitat.");
 			System.out.println("Try again with another animal! The following type will be compatible: " + current.getClass().getSimpleName());
 			return false;
@@ -135,7 +148,6 @@ public class Habitat implements zoo.Maintainable { // Extends Maintainable inter
 	@Override
 	public boolean needsMaintenance() {
 		if (condition<30){
-			System.out.println("Oh no! Your habitat needs some maintenance! Let's call in the Zookeeper.");
 			return true;
 		}
 		return false;
