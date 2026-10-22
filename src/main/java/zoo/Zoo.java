@@ -124,7 +124,7 @@ public class Zoo {
             throw new IllegalArgumentException("Animal cannot be empty.");
         }
         if (registeredAnimals.contains(animal)) {
-            throw new DuplicateEntryException("A animal named " + animal.getName() + " is already registered.");
+            throw new DuplicateEntryException("An animal named " + animal.getName() + " is already registered.");
         }
         checkLimit(registeredAnimals, "animal");
         registeredAnimals.add(animal);
