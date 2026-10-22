@@ -137,7 +137,7 @@ public class ScheduleGameMenu {
         System.out.println("Welcome to the first day!");
         System.out.println("The day will run its duration.");
         readyCheck();
-        sgame.dayOneCycle();
+        sgame.dayCycle(1);
         endDayAction(sgame);
 
         return sgame.failCheck();
@@ -148,7 +148,7 @@ public class ScheduleGameMenu {
         System.out.println("------------------------");
         System.out.println("Welcome to the second day!");
         readyCheck();
-        sgame.dayTwoCycle();
+        sgame.dayCycle(2);
         endDayAction(sgame);
 
         return sgame.failCheck();
@@ -159,7 +159,7 @@ public class ScheduleGameMenu {
         System.out.println("------------------------");
         System.out.println("Welcome to the final day!");
         readyCheck();
-        sgame.dayThreeCycle();
+        sgame.dayCycle(3);
         endDayAction(sgame);
 
         return sgame.finalFailCheck();
