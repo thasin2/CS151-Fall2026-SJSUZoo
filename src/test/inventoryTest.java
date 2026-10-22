@@ -7,6 +7,6 @@ public class inventoryTest {
     public void testInventory() {
         // Test code 
         Inventory inventory = new Inventory();
-        inventory.setBudget(150);
+        inventory.addBudget(150);
     }
 }

@@ -17,27 +17,31 @@ public class attractionsTest {
         Visitor visitor6 = new Visitor("David",32);
         Visitor visitor7 = new Visitor("Grace", 16);
 
-        // Testing closed & full properties
+        // Testing closed & open properties
         Attraction joyRide = new Attraction();
         Assert.assertEquals(joyRide.isOpen(), true);
         joyRide.close();
         Assert.assertEquals(joyRide.isOpen(), false);
         joyRide.admit(visitor1); // Should not admit John
         Assert.assertEquals(joyRide.getCurrentVisitorCount(), 0);
-        joyRide.status();
+        System.out.println(joyRide);
+
+        // Testing admits & full capacity
         joyRide.open();
         joyRide.admit(visitor1);
         joyRide.admit(visitor2);
         joyRide.admit(visitor3);
         joyRide.admit(visitor4);
         joyRide.admit(visitor5);
-        Assert.assertEquals(joyRide.isFull(), true); // Should print "Attraction is full. Please wait for a visitor to leave."
-        joyRide.admit(visitor6); // Should print "Attraction is full. Please wait for a visitor to leave."
-        joyRide.leaving(visitor3);
-        joyRide.admit(visitor7);
-        joyRide.status();
+        Assert.assertEquals(joyRide.isFull(), true);
+        Assert.assertEquals(joyRide.admit(visitor6), false);
+        joyRide.remove(visitor3);
+        Assert.assertEquals(joyRide.admit(visitor7), true); // should return true now that a visitor has left
+        joyRide.setName("Joyride");
+        System.out.println(joyRide);
         Assert.assertEquals(joyRide.getCurrentVisitorCount(), 5);
         joyRide.close(); // Should remove all visitors and close attraction
-
+        Assert.assertEquals(joyRide.getCurrentVisitors(), "None");
+        Assert.assertEquals(joyRide.getTotalVisited(), 6);
     }
 }

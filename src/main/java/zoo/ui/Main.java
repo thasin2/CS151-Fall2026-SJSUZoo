@@ -16,6 +16,7 @@ public class Main {
                 } else if (choice == 2) {
                     new ScheduleGameMenu().run();
                 }
+                System.out.println();
             }
         } catch (ExitRequestedException e) {
             System.out.println("Goodbye!");
