@@ -3,23 +3,25 @@ import zoo.inventory.*;
 import zoo.attractions.*;
 import zoo.Visitor;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 import java.util.List;
 
 
 public class ScheduleGame {
-    public Inventory inventory;
-    public Attraction attraction;
-    Random random = new Random();
+    private static final int VISITORS_PER_DAY = 30;
+    private Inventory inventory;
+    private Attraction attraction;
+    private final Random random = new Random();
     private ArrayList<Visitor> visitors = new ArrayList<>();
     private int leftHungry;
     private boolean health;
 
-    // List of made-up names for Visitors
-    private static final ArrayList<String> names = new ArrayList<>(List.of("Angie", "Ang", "Aaron", "Ashley", "Amy", 
+    // List of made-up names for Visitors, each name only once, so no two visitors in a day are the same
+    private static final List<String> NAMES = new ArrayList<>(List.of("Angie", "Ang", "Aaron", "Ashley", "Amy", 
     "Andrew", "Arthur", "Ant", "Bart", "Beatrice", "Beth", "Bethany", "Cat", "Ced", "Dart", "Darren", "Dez", "Enda",
     "Farrah", "Fez", "Gia", "Geo", "Gan", "Guppo", "Hannah", "Han", "Hart", "Heather", "Ingrid", "Jack", "Joe", 
-    "Jack", "Justin", "Justine", "Jana", "Jan", "Karen", "Kat", "Kam", "Kon", "Lia", "Leo", "Lan", "Laya", "Matt",
+    "Jade", "Justin", "Justine", "Jana", "Jan", "Karen", "Kat", "Kam", "Kon", "Lia", "Leo", "Lan", "Laya", "Matt",
     "Mat", "Maddy", "Mark", "Mandy", "Matthew", "Neal", "Nick", "Nic", "Noel", "Noelle", "Nia", "Niya", "Nico",
     "Nicky", "Oat", "Oak", "Orta", "Oakley", "Owna", "Patt", "Pat", "Picka", "Polly", "Pam", "Pit", "Qan", "Rhett",
     "Rick", "Ron", "Resa", "Riza", "Rock", "Sam", "San", "Soul", "Sammie", "Sona", "Sont", "Sean", "Shet", "Tan",
@@ -47,6 +49,14 @@ public class ScheduleGame {
         }
     }
 
+    public Inventory getInventory() {
+        return inventory;
+    }
+
+    public Attraction getAttraction() {
+        return attraction;
+    }
+
     // Shows the attraction to user
     public void displayAttraction() {
         if (attraction == null) {
@@ -58,7 +68,7 @@ public class ScheduleGame {
     }
 
     // Simulates one day in the zoo simulation (Makes visitors, runs the attraction, takes inventory to feed & treat animals)
-    public void DayOneCycle() {
+    public void dayOneCycle() {
        setUpVisitors();
        attractionCycle();
        attraction.close();
@@ -69,7 +79,7 @@ public class ScheduleGame {
     }
 
     // Simulates second day in the zoo simulation
-    public void DayTwoCycle() {
+    public void dayTwoCycle() {
         attraction.open();
         setUpVisitors();
         attractionCycle();
@@ -81,7 +91,7 @@ public class ScheduleGame {
     }
 
     // Simulates third day in the zoo simulation
-    public void DayThreeCycle() {
+    public void dayThreeCycle() {
         attraction.open();
         setUpVisitors();
         attractionCycle();
@@ -150,14 +160,14 @@ public class ScheduleGame {
 
     // adds 30 visitors to the simulation (stored in visitors arrayList)
     private void setUpVisitors() {
-
-        for (int i = 0; i < 30; ++i) {
+        // shuffles the names, so every visitor today gets a different name
+        ArrayList<String> shuffledNames = new ArrayList<>(NAMES);
+        Collections.shuffle(shuffledNames, random);
+        for (int i = 0; i < VISITORS_PER_DAY; ++i) {
             // generates a random age from 8 to 80
             int age = random.nextInt(72) + 8;
-            // picks a random name from the list
-            String name = names.get(random.nextInt(names.size()));
             // creates a visitor and adds it to a list
-            visitors.add(new Visitor(name, age));
+            visitors.add(new Visitor(shuffledNames.get(i), age));
         }
     }
 
@@ -186,6 +196,12 @@ public class ScheduleGame {
             System.out.println("Unfortunately, you only had " + attraction.getTotalVisited() +
             " total visitors, not meeting the quota of 30");
         }
+    }
+
+    @Override
+    public String toString() {
+        return "ScheduleGame{attraction=" + (attraction == null ? "none" : attraction.getName())
+                + ", animalsLeftHungry=" + leftHungry + ", medicineUsedToday=" + health + "}";
     }
 
 
