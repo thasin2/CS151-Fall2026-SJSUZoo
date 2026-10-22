@@ -18,11 +18,12 @@ public class ScheduleGameMenu {
         // Inventory Game (Sets up stock + Uses money)
         ScheduleGame sgame = new ScheduleGame();
         inventoryPlay(sgame);
-        // should only return here once option 3 (finish) is selected, inventory portion is done & finalized
 
+        // Attraction Game (Sets up attraction)
         attractionsPlay(sgame);
 
 
+        // Runs the three day simulation, stopping after any failed day
         if (runDayOne(sgame)) {
             System.out.println("------------------------");
             System.out.println("Congrats on finishing the first day!");
@@ -61,8 +62,9 @@ public class ScheduleGameMenu {
         System.out.println("3. Each day, an animal has a 5% chance to get sick.");
         System.out.println("4. Each day will have 30 visitors. About half go to attractions.");
         System.out.println("5. A fresh attraction can handle at most 20 visitors before needing maintenance supplies.");
-        System.out.println("6. Your starting budget is $300.");
-        System.out.println("\nRule #1: If you do not reach the total quota of 35 attraction visitors, you fail.");
+        System.out.println("6. There's only a 50% chance a visitor will end up entering a full attraction.");
+        System.out.println("7. Your starting budget is $300.");
+        System.out.println("\nRule #1: If you do not reach the total quota of 30 attraction visitors, you fail.");
         System.out.println("Rule #2: If an animal is sick without medicine, you fail.");
         System.out.println("Rule #3: If too many animals go hungry, you fail.");
     }
@@ -126,7 +128,6 @@ public class ScheduleGameMenu {
                 }
             }
         }
-        System.out.println("------------------------");
         System.out.println("Congrats on finishing the attraction portion!");
     }
 
@@ -136,7 +137,7 @@ public class ScheduleGameMenu {
         System.out.println("Welcome to the first day!");
         System.out.println("The day will run it's duration.");
         readyCheck();
-        sgame.Day1();
+        sgame.DayOneCycle();
         endDayAction(sgame);
 
         return sgame.failCheck();
@@ -147,7 +148,7 @@ public class ScheduleGameMenu {
         System.out.println("------------------------");
         System.out.println("Welcome to the second day!");
         readyCheck();
-        sgame.Day2();
+        sgame.DayTwoCycle();
         endDayAction(sgame);
 
         return sgame.failCheck();
@@ -158,7 +159,7 @@ public class ScheduleGameMenu {
         System.out.println("------------------------");
         System.out.println("Welcome to the final day!");
         readyCheck();
-        sgame.Day3();
+        sgame.DayThreeCycle();
         endDayAction(sgame);
 
         return sgame.finalFailCheck();
@@ -232,6 +233,7 @@ public class ScheduleGameMenu {
     // Method that allows the user to create an Attraction
     private void createAttraction(ScheduleGame sgame) {
         String name = ConsoleInput.readLine("What would you like to name your attraction? ");
+        System.out.println("\nTip: Balance allowing enough visitors per day without over-working the attraction");
         int capacity = ConsoleInput.readInt("Would you like default attraction capacity (Enter 0) or custom (Pick 1-10): ", 0, 10);
         sgame.setUpAttraction(name, capacity);
     }
