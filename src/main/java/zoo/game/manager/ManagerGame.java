@@ -71,11 +71,11 @@ public final class ManagerGame {
         this.budget = level.getStartingBudget();
         this.manager = new Manager("MGR", managerName, MANAGER_SALARY, true); // checks the name
 
-        animals.add(new Animal("Lion", false));
+        animals.add(new Animal("Lion", true));
         animals.add(new Animal("Elephant", true));
         animals.add(new Animal("Red Panda", false));
-        animals.add(new Animal("Penguin", true));
-        animals.add(new Animal("Giraffe", true));
+        animals.add(new Animal("Penguin", false));
+        animals.add(new Animal("Giraffe", false));
 
         // starting team: covers the starting demand exactly, with no overtime
         for (int i = 0; i < 3; i++) {
@@ -398,5 +398,11 @@ public final class ManagerGame {
 
     public boolean hasWon() {
         return won;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("ManagerGame{level=%d, week=%d/%d, budget=$%,.2f, team=%d, bonusesEarned=%d, over=%b, won=%b}",
+                level.getNumber(), week, getWeeksToWin(), budget, manager.getTeamSize(), bonusesEarned, over, won);
     }
 }

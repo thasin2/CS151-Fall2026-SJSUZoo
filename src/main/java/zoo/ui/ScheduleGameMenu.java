@@ -90,7 +90,7 @@ public class ScheduleGameMenu {
             }
             else  if (ichoice == 2) {
                 System.out.println("------------------------");
-                System.out.println(sgame.inventory);
+                System.out.println(sgame.getInventory());
             }
         }
         System.out.println("------------------------");
@@ -122,7 +122,7 @@ public class ScheduleGameMenu {
                 sgame.displayAttraction();
             }
             else if (achoice == 3) {
-                if (sgame.attraction == null) {
+                if (sgame.getAttraction() == null) {
                     System.out.println("Cannot leave without creating an attraction. Try again");
                     achoice = 1;
                 }
@@ -135,9 +135,9 @@ public class ScheduleGameMenu {
     private boolean runDayOne(ScheduleGame sgame) {
         System.out.println("------------------------");
         System.out.println("Welcome to the first day!");
-        System.out.println("The day will run it's duration.");
+        System.out.println("The day will run its duration.");
         readyCheck();
-        sgame.DayOneCycle();
+        sgame.dayOneCycle();
         endDayAction(sgame);
 
         return sgame.failCheck();
@@ -148,7 +148,7 @@ public class ScheduleGameMenu {
         System.out.println("------------------------");
         System.out.println("Welcome to the second day!");
         readyCheck();
-        sgame.DayTwoCycle();
+        sgame.dayTwoCycle();
         endDayAction(sgame);
 
         return sgame.failCheck();
@@ -159,7 +159,7 @@ public class ScheduleGameMenu {
         System.out.println("------------------------");
         System.out.println("Welcome to the final day!");
         readyCheck();
-        sgame.DayThreeCycle();
+        sgame.dayThreeCycle();
         endDayAction(sgame);
 
         return sgame.finalFailCheck();
@@ -183,7 +183,7 @@ public class ScheduleGameMenu {
             endAction = ConsoleInput.readInt("\nWhat would you like to do? ", 1, 4);
             if (endAction == 1) {
                 System.out.println("------------------------");
-                System.out.println(sgame.inventory);;
+                System.out.println(sgame.getInventory());
             }
             else if (endAction ==2 ) {
                 System.out.println("------------------------");
@@ -198,8 +198,8 @@ public class ScheduleGameMenu {
     // Allows the user to view condition and perform maintenance if needed
     private void checkMaintenance(ScheduleGame sgame) {
         System.out.println("------------------------");
-        System.out.println("The condition of your attraction is: " + sgame.attraction.getCondition());
-        if (sgame.attraction.needsMaintenance()) {
+        System.out.println("The condition of your attraction is: " + sgame.getAttraction().getCondition());
+        if (sgame.getAttraction().needsMaintenance()) {
             System.out.println("The attraction is in poor condition and needs maintenance soon");
         }
         boolean answer = ConsoleInput.readYesNo("Would you like to perform maintenance? enter y or n ");
@@ -219,20 +219,20 @@ public class ScheduleGameMenu {
         int amount = ConsoleInput.readInt("How much? (1 to 15 units per purchase) ", 1, 15);
         switch (buyChoice) {
             case 1:
-                sgame.inventory.stock("food", amount);
+                sgame.getInventory().stock("food", amount);
                 break;
             case 2:
-                sgame.inventory.stock("medicine", amount);
+                sgame.getInventory().stock("medicine", amount);
                 break;
             case 3:
-                sgame.inventory.stock("supplies", amount);
+                sgame.getInventory().stock("supplies", amount);
                 break;
         }
     }
     
     // Method that allows the user to create an Attraction
     private void createAttraction(ScheduleGame sgame) {
-        String name = ConsoleInput.readLine("What would you like to name your attraction? ");
+        String name = ConsoleInput.readNonEmptyLine("What would you like to name your attraction? ");
         System.out.println("\nTip: Balance allowing enough visitors per day without over-working the attraction");
         int capacity = ConsoleInput.readInt("Would you like default attraction capacity (Enter 0) or custom (Pick 1-10): ", 0, 10);
         sgame.setUpAttraction(name, capacity);

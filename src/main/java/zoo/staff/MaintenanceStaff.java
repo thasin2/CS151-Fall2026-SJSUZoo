@@ -1,5 +1,4 @@
 package zoo.staff;
-import java.util.ArrayList;
 import zoo.Maintainable;
 import zoo.exception.JobLimitException;
 
@@ -36,7 +35,7 @@ public class MaintenanceStaff extends Staff {
         if (target == null) {
             throw new IllegalArgumentException("Maintenance target cannot be null.");
         }
-        if (jobsThisWeek >= getShiftsThisWeek() * MAX_JOBS_PER_SHIFT) {
+        if (!hasJobsLeft()) {
             throw new JobLimitException("Job limit reached. Each shift worked allows " + MAX_JOBS_PER_SHIFT + " jobs. Work another shift to do more jobs.");
         }
         if (!target.needsMaintenance()) {
@@ -46,30 +45,14 @@ public class MaintenanceStaff extends Staff {
         jobsThisWeek++;
     }
 
-    // returns a new list of only the targets that need maintenance, worst condition first
-    // ties keep the order they had in the original list
-    public ArrayList<Maintainable> getUrgentTargets(ArrayList<Maintainable> targets) {
-        if (targets == null) {
-            throw new IllegalArgumentException("Target list cannot be null.");
-        }
+    // true while the shifts worked this week still allow another job
+    public boolean hasJobsLeft() {
+        return jobsThisWeek < getShiftsThisWeek() * MAX_JOBS_PER_SHIFT;
+    }
 
-        ArrayList<Maintainable> urgent = new ArrayList<>();
-        for (Maintainable target : targets) {
-            if (target == null) {
-                throw new IllegalArgumentException("Target list cannot contain null.");
-            }
-            if (!target.needsMaintenance()) {
-                continue;
-            }
-
-            // insert after every target with the same or worse condition, so the list stays sorted
-            int index = 0;
-            while (index < urgent.size() && urgent.get(index).getCondition() <= target.getCondition()) {
-                index++;
-            }
-            urgent.add(index, target);
-        }
-        return urgent;
+    @Override
+    public String toString() {
+        return super.toString() + " jobsThisWeek=" + jobsThisWeek;
     }
 
     @Override

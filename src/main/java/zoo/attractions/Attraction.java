@@ -20,6 +20,9 @@ public class Attraction implements zoo.Maintainable {
 
     // Creates an attraction with a custom capacity
     public Attraction(int capacity) {
+        if (capacity < 1) {
+            throw new IllegalArgumentException("Attraction capacity must be at least 1.");
+        }
         this.isOpen = true;
         this.capacity = capacity;
         this.condition = 100;
@@ -98,7 +101,10 @@ public class Attraction implements zoo.Maintainable {
     }
 
     public void setName(String name) {
-        this.name = name;
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("Attraction name cannot be blank.");
+        }
+        this.name = name.trim();
     }
 
     public String getName() {
@@ -106,14 +112,17 @@ public class Attraction implements zoo.Maintainable {
     }
 
     // Maintainable interface methods
+    @Override
     public int getCondition() {
         return condition;
     }
 
+    @Override
     public boolean needsMaintenance() {
         return condition < 25; // needs maintenance if condition is below 25
     }
 
+    @Override
     public void performMaintenance() {
         condition = 100; // restore condition to 100
         System.out.println("Attraction " + name + " successfully repaired");

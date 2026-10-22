@@ -6,13 +6,13 @@ import zoo.staff.*;
 import zoo.ui.*;
 
 public class AnimalGame {
-    Inventory aniGameInv = new Inventory();
-    Veterinarian vetAniGame = new Veterinarian("1234", "John", 10000, true);
-    Zookeeper zooAniGame = new Zookeeper("1235", "Pam", 10000, true);
+    private Inventory aniGameInv = new Inventory();
+    private Veterinarian vetAniGame = new Veterinarian("1234", "John", 10000, true);
+    private Zookeeper zooAniGame = new Zookeeper("1235", "Pam", 10000, true);
 
     public String nameAnimal() {
     System.out.println("Let's start by naming your Animal.");
-    String name = ConsoleInput.readLine("What do you want to name your Animal? ");
+    String name = ConsoleInput.readNonEmptyLine("What do you want to name your Animal? ");
     System.out.println("This is what we have: " + name);
     String value = ConsoleInput.readLine("Say yes or no if this is correct. ");
     if (value.equalsIgnoreCase("yes")){
@@ -20,7 +20,7 @@ public class AnimalGame {
     }
     else {
         while (value.equalsIgnoreCase("no")) {
-            name = ConsoleInput.readLine("What do you want to name your Animal? ");
+            name = ConsoleInput.readNonEmptyLine("What do you want to name your Animal? ");
             System.out.println("This is what we have: " + name);
             value = ConsoleInput.readLine("Say yes or no if this is correct. ");
         }
@@ -41,18 +41,13 @@ public class AnimalGame {
         }
         if (choice == 2){
             System.out.println("Great! You chose Terrestrial.");
-            String skin = ConsoleInput.readLine("What skin type should this animal have? ");
+            String skin = ConsoleInput.readNonEmptyLine("What skin type should this animal have? ");
             return new TerrestrialAnimals(name, skin);
         }
-        if (choice == 3) {
-            System.out.println("Great! You chose Sky.");
-            int height = ConsoleInput.readInt("What is the max height this animal can fly to? The range is between 0 and 5000. ", 0, 5000);
-            return new SkyAnimal(name, height);
-        }
-        else { // any edge cases, but ConsoleInput should already catch this
-            System.out.println("You did not enter a valid number. Try again");
-            return createAnimalObj(name);
-        }
+        // choice is 3, since ConsoleInput only accepts 1 to 3
+        System.out.println("Great! You chose Sky.");
+        int height = ConsoleInput.readInt("What is the max height this animal can fly to? The range is between 0 and 5000. ", 0, 5000);
+        return new SkyAnimal(name, height);
     }
 
     public void firstPart(Animal a){
@@ -86,7 +81,7 @@ public void stockingProcess(String item){
             int amount = ConsoleInput.readInt("What amount should we add to our budget to purchase more inventory stock? Enter between 1 and 100. ", 1, 100);
             aniGameInv.addBudget(amount);
     }
-    if (value.equalsIgnoreCase("yes")){
+    else if (value.equalsIgnoreCase("yes")){
         System.out.println("Good! Let's move on then.");
     }
     else {
@@ -101,6 +96,11 @@ public void stockingProcess(String item){
     }
     if (item.equals("medicine")){
         numberAvail = ((int)(aniGameInv.getBudget() / 20));
+    }
+    if (numberAvail < 1){
+        System.out.println("There is not enough money to buy even one. Let's add more to the budget.");
+        stockingProcess(item);
+        return;
     }
     int numberToStock = ConsoleInput.readInt("How much do you want to stock? Enter a reasonable number in our budget. " , 1, numberAvail);
     aniGameInv.stock(item, numberToStock);

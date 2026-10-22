@@ -156,4 +156,9 @@ public class ZooBuilderGame {
     public Zoo getZoo() {
         return zoo;
     }
+
+    @Override
+    public String toString() {
+        return "ZooBuilderGame{zoo='" + zoo.getName() + "', habitats=" + habitats.size() + ", animals=" + countAnimals() + "}";
+    }
 }

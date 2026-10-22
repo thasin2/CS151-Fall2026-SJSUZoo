@@ -1,36 +1,22 @@
 package zoo.animal;
 
 public class AquaticAnimals extends Animal {
-	private int depthResided; // how many feet deep does the animal live
-	
+	private final int depthResided; // how many feet deep does the animal live
+
 	// constructors
-	
-	//default
-	public AquaticAnimals() {
-		super();
-		this.depthResided = 100;
-			
-	}
-	
-	public AquaticAnimals(String name, boolean dangerous, int depthResided) {
-		super(name, dangerous);
-		this.depthResided = depthResided;
-	}
 	public AquaticAnimals(String name, int depthResided){
 		super(name);
+		if (depthResided < 0) {
+			throw new IllegalArgumentException("Depth cannot be negative.");
+		}
 		this.depthResided = depthResided;
 	}
-	public AquaticAnimals(String name) {
-		super(name);
-		this.depthResided = 100;
-	}
-	
+
 	// methods
 	@Override
 	public boolean doATrick() {
 		System.out.println("The cool trick was jumping out of the water! It swam from the depth of " + depthResided + " feet all the way to the top!");
-		super.doATrick();
-		return tired(getTrickCount());
+		return super.doATrick(); // super already checks if the animal is tired
 	}
 
 	@Override
@@ -40,15 +26,9 @@ public class AquaticAnimals extends Animal {
 		return x;
 	}
 
-	
-	// getters and setters
-
-	public int getDepthResided() {
-		return depthResided;
-	}
-
-	public void setDepthResided(int depthResided) {
-		this.depthResided = depthResided;
+	@Override
+	public String toString() {
+		return super.toString() + " depthResided=" + depthResided + " ft";
 	}
 
 }

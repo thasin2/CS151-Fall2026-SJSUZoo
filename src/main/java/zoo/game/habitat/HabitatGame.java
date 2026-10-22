@@ -6,22 +6,24 @@ import zoo.animal.Animal;
 import zoo.game.animal.AnimalGame;
 import zoo.habitat.Habitat;
 import zoo.inventory.Inventory;
+import zoo.staff.MaintenanceStaff;
 import zoo.staff.Zookeeper;
 import zoo.ui.ConsoleInput;
 
 
 public class HabitatGame {
-    Inventory habGameInv = new Inventory();
-    Zookeeper zooHabGame = new Zookeeper("1245", "Greta", 10000, true);
-    AnimalGame temp = new AnimalGame();
+    private Inventory habGameInv = new Inventory();
+    private Zookeeper zooHabGame = new Zookeeper("1245", "Greta", 10000, true);
+    private MaintenanceStaff maintHabGame = new MaintenanceStaff("1246", "Max", 25, true);
+    private AnimalGame temp = new AnimalGame();
     private boolean opened = false;
 
     public Habitat makeHabitat(){
         System.out.println("Let's get some basic info to create your habitat!");
-        String habitatName = ConsoleInput.readLine("What do you want to name your Habitat? ");
+        String habitatName = ConsoleInput.readNonEmptyLine("What do you want to name your Habitat? ");
         int capacity = ConsoleInput.readInt("How many animals can your habitat hold? ", 1, 10);
         System.out.println("You need to create a beginner Animal object to add to your habitat. A note - whatever type of Animal you choose, you have to ensure that all other animals added are of the same type.");
-        String animalName = ConsoleInput.readLine("What do you want to name your Animal? ");
+        String animalName = ConsoleInput.readNonEmptyLine("What do you want to name your Animal? ");
         Animal firstAnimal = temp.createAnimalObj(animalName);
         Habitat habitat = new Habitat(habitatName, capacity, firstAnimal);
         System.out.println("Cool, your habitat is made!");
@@ -34,12 +36,9 @@ public class HabitatGame {
         if (choice == 1){
             add(hab);
         }
-        else if (choice == 2){
+        else {
             setOpened(true);
             open(hab);
-        }
-        else {
-            System.out.println("Please enter a correct number.");
         }
     }
 
@@ -61,7 +60,7 @@ public class HabitatGame {
             option3(hab);
         }
         else {
-            System.out.println("Please enter a correct number.");
+            System.out.println("The habitat is not open yet, so it cannot be closed. Open it first.");
         }
     }
 
@@ -73,13 +72,10 @@ public class HabitatGame {
             add(hab);
             secondPart(hab);
         }
-        else if ((choice == 2) && (isOpened())){
+        else { // the habitat is always open here, since option2 runs right after opening it
             setOpened(false);
             close(hab);
             option3(hab);
-        }
-        else {
-            System.out.println("Please enter a correct number.");
         }
     }
 
@@ -91,19 +87,16 @@ public class HabitatGame {
             open(hab);
             option2(hab);
         }
-        else if (choice == 2){
+        else {
             add(hab);
             secondPart(hab);
-        }
-        else {
-            System.out.println("Please enter a correct number.");
         }
     }
 
 
     public void add(Habitat x){
-        System.out.println("You chose add an animal. But there are safety checks with this process, so please bear with the system.");
-        String animalName = ConsoleInput.readLine("What do you want to name your Animal? ");
+        System.out.println("You chose to add an animal. But there are safety checks with this process, so please bear with the system.");
+        String animalName = ConsoleInput.readNonEmptyLine("What do you want to name your Animal? ");
         Animal animalAddition = temp.createAnimalObj(animalName);
         boolean y = x.addToAnimals(animalAddition);
         while(!y){
@@ -125,7 +118,7 @@ public class HabitatGame {
     public void open(Habitat x){
         boolean y = x.habitatOpen();
         if (!y){
-            System.out.println("We have to maintain the habitat. Let's go to the zookeeper.");
+            System.out.println("We have to maintain the habitat. Let's call the maintenance staff.");
             maintenance(x, habGameInv);
         }
         else {
@@ -143,15 +136,35 @@ public class HabitatGame {
 
         
     }
+    // maintenance staff repair the habitat, which uses one supply piece
     public void maintenance(Habitat hab, Inventory stor){
-        if (zooHabGame.maintainHabitat(hab, stor)){
+        if (!hab.needsMaintenance()){
+            System.out.println("The habitat does not need maintenance.");
             return;
         }
-        else {
+        System.out.println("Oh no! Your habitat needs some maintenance! Let's call in the maintenance staff.");
+        if (!stor.use("supplies")){
             System.out.println("Let's go to the stocking area!");
             stockingProcesses("supplies");
             maintenance(hab, stor);
+            return;
         }
+        startShiftIfNeeded();
+        maintHabGame.service(hab);
+        System.out.println(hab.getName() + " has been maintained! " + maintHabGame.getName() + " did a great job!");
+    }
+
+    // the maintenance worker starts a new shift when this week's shifts allow no more jobs
+    // after the most shifts in a week, the week is paid out and a new week starts
+    private void startShiftIfNeeded(){
+        if (maintHabGame.hasJobsLeft()){
+            return;
+        }
+        if (maintHabGame.getShiftsThisWeek() >= maintHabGame.getMaximumShifts()){
+            double weeklyPay = maintHabGame.closeOutWeek();
+            System.out.printf("A new week starts. %s was paid $%,.2f for last week.%n", maintHabGame.getName(), weeklyPay);
+        }
+        maintHabGame.workShift();
     }
 
     public void stockingProcesses(String item){
@@ -165,7 +178,7 @@ public class HabitatGame {
             int amount = ConsoleInput.readInt("What amount should we add to our budget to purchase more inventory stock? Enter between 1 and 1000. ", 1, 1000);
             habGameInv.addBudget(amount);
     }
-    if (value.equalsIgnoreCase("yes")){
+    else if (value.equalsIgnoreCase("yes")){
         System.out.println("Good! Let's move on then.");
     }
     else {
@@ -183,6 +196,11 @@ public class HabitatGame {
     }
     if (item.equals("supplies")){
         numberAvail = ((int)(habGameInv.getBudget()/45.99));
+    }
+    if (numberAvail < 1){
+        System.out.println("There is not enough money to buy even one. Let's add more to the budget.");
+        stockingProcesses(item);
+        return;
     }
     int numberToStock = ConsoleInput.readInt("How much do you want to stock? Enter a reasonable number in our budget. " , 1, numberAvail);
     habGameInv.stock(item, numberToStock);
