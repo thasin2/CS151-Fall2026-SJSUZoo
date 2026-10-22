@@ -34,6 +34,7 @@ public class Habitat implements zoo.Maintainable { // Extends Maintainable inter
 	public Habitat(String name, int capacity, Animal animal) {
 		this.name = name;
 		this.capacity = capacity;
+		this.animals = new ArrayList<Animal>();
 		addToAnimals(animal);
 		this.condition = 100;
 	
@@ -44,17 +45,17 @@ public class Habitat implements zoo.Maintainable { // Extends Maintainable inter
 	// method 1 - has some random events that cause condition to worsen
 	public boolean habitatOpen(){
 		System.out.println("The habitat is open! Visitors can come and see all the animals!");
-		System.out.println("We will feed the animals to give them energy for the day!");
+		
 		for (Animal x: animals){
-			System.out.println(x.getName() + " has been fed.");
-			x.setHungry(false);
+
 			System.out.println(x.getName() + " is now awake and active.");
 			x.setActive(true);
+			x.setHungry(true);
 		}
 		int x = getAnimals().size();
 		int y = (int)(Math.random() * 10); // will generate random numbers from 0 to 9
 		if (x>capacity/2) { // Capacity is nearing a high level, damage is more likely to be incurred.
-			if (y<6){ // 60% chance of damage with a near capacity habitat
+			if (y<7){ // 70% chance of damage with a near capacity habitat
 				setCondition(25);
 				System.out.println("It looks like your habitat got damaged");
 				if (needsMaintenance()){
@@ -75,10 +76,10 @@ public class Habitat implements zoo.Maintainable { // Extends Maintainable inter
 	
 	// method 2 - closes the habitat
 	public void habitatClose(){
-		System.out.println("You asked to close the habitat. Going through the steps to do this!");
+		System.out.println("Putting the animals to sleep, going through the steps to close the habitat!");
 		for (Animal x: animals){
-			System.out.println(x.getName() + " has been fed.");
-			x.setHungry(false);
+			//System.out.println(x.getName() + " has been fed.");
+			//x.setHungry(false);
 			System.out.println(x.getName() + " is now sleeping and inactive.");
 			x.setActive(false);
 		}
@@ -90,10 +91,11 @@ public class Habitat implements zoo.Maintainable { // Extends Maintainable inter
 		System.out.println("You wanted to add an animal to your habitat. The Zoo system has to check if this animal is compatible.");
 		// All habitats can only have one type of animal (Terrestrial, SkyAnimal, AquaticAnimal, etc.)
 		// Hence we just check one of the elements, and ensure that the new Animal to-be added is of that type as well
-		if (animals.size() == 0){
+		if (animals.isEmpty()){
 			System.out.println("Animal added!");
 			return true;
 		}
+		if (animals.size() <= capacity) {
 		Animal current = animals.get(0);
 		if ((current instanceof AquaticAnimals) && (animal instanceof AquaticAnimals)){
 			System.out.println("The animal you want to add is an aquatic animal, and is thus, compatible.");
@@ -113,6 +115,11 @@ public class Habitat implements zoo.Maintainable { // Extends Maintainable inter
 			return false;
 
 		}
+	}
+	else {
+		System.out.println("You reached capacity, sorry.");
+		return false;
+	}
 	}
 
 	// GETTERS and SETTERS, and Interface methods -------------------------------------------------------------------------------------------
@@ -160,12 +167,14 @@ public class Habitat implements zoo.Maintainable { // Extends Maintainable inter
 	}
 
 	// customized, includes ensureSafeAdd method
-	public void addToAnimals(Animal animal) {
+	public boolean addToAnimals(Animal animal) {
 		if (ensureSafeAdd(animal)) {
 			animals.add(animal);
+			return true;
 		}
 		else {
 			System.out.println("Result: Animal not added.");
+			return false;
 		}
 	}
 

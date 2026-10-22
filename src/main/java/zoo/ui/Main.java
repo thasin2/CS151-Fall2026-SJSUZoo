@@ -12,7 +12,8 @@ public class Main {
                 System.out.println("2. Schedule the zoo for 3 days");
                 System.out.println("3. Observe an Animal!");
                 System.out.println("4. Build your own zoo");
-                int choice = ConsoleInput.readInt("Choose a role: ", 1, 4); // will change this when my game is ready
+                System.out.println("5. Observe a Habitat!");
+                int choice = ConsoleInput.readInt("Choose a role: ", 1, 5); // will change this when my game is ready
                 if (choice == 1) {
                     new ManagerGameMenu().run();
                 } else if (choice == 2) {
@@ -21,7 +22,10 @@ public class Main {
                     new AnimalGameMenu().run();
                 } else if (choice == 4) {
                     new ZooBuilderMenu().run();
+                } else if (choice == 5) {
+                    new HabitatGameMenu().run();
                 }
+
                 System.out.println();
             }
         } catch (ExitRequestedException e) {
