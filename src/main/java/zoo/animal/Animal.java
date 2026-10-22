@@ -9,9 +9,8 @@ public class Animal {
     private boolean isActive;
     private String name;
     private boolean injured;
-    // CONSTRUCTORS
     private int trickCount;
-    
+    // CONSTRUCTORS
     //Default
     public Animal() {
     	this.dangerous = false;
@@ -36,20 +35,24 @@ public class Animal {
     // METHODS ------------------------------------------
     
 	// method 1
-    public void doATrick() {
+    public boolean doATrick() {
 		if ((getTrickCount() < 3)) {
-    	System.out.println(getName() + "did a cool trick!");
+    	System.out.println(" " + getName() + ", good job!");
 		setTrickCount(getTrickCount() + 1);
-    	setHungry(true); // every time a zoo animal does a trick, they will get hungry, they get hungry after 3, but the user can keep calling until 5 tricks are done
+    	boolean g = setHungry(true); // every time a zoo animal does a trick, they will get hungry, they get hungry after 3, but the user can keep calling until 5 tricks are done
+		return g;
 		}
-		System.out.println(getName() + "can not do anymore tricks right now.");
+		else {
+		System.out.println(getName() + " can not do anymore tricks right now.");
+		}
+		return tired(getTrickCount()); // double checking here, incase it was not caught earlier
     }
     
 	// method 2
     public boolean tired(int trickCount) {
     	if ((trickCount>2) && (isHungry())) {
     		setActive(false);
-    		System.out.println(getName() + "is tired. Please feed the animal");
+    		System.out.println(getName() + " is tired. Please feed the animal");
 			return true;
     	}
 		return false;
@@ -57,10 +60,10 @@ public class Animal {
 	
 	// method 3
 	public boolean existInZoo(){ // just a regular method that talks through the Animal walking, prancing, running in the Zoo - can get randomly injured
-		System.out.println(getName() + "is in front of the visitors. So cool!");
+		System.out.println(getName() + " is in front of the visitors right now. So cool!");
 
 		int x = (int)(Math.random() * 10); // will generate random numbers from 0 to 10
-		if ((x<5) && (getTrickCount()>=2)){
+		if ((x<5) && (getTrickCount()>=1)){
 			setInjured(true);
 			System.out.println("Aw man! The animal was just existing, and it got randomly injured. Please get the vet to fix the animal.");
 			setActive(false);
@@ -89,7 +92,7 @@ public class Animal {
 		return isHungry;
 	}
 
-	public void setHungry(boolean isHungry) {
+	public boolean setHungry(boolean isHungry) {
 		this.isHungry = isHungry;
 
 		// should have a check here that asks the zookeeper to feed (zoo keeper can say no or yes, can lead to animal becoming hungry)
@@ -98,7 +101,8 @@ public class Animal {
 			setActive(true);
 			setTrickCount(0);
 		}
-		tired(trickCount); // checking if the animal had 2 tricks and are hungry, animal will print out am tired
+		boolean y = tired(trickCount); // checking if the animal had 2 tricks and are hungry, animal will print out am tired
+		return y;
 	}
 
 	public boolean isActive() {

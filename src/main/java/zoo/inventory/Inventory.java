@@ -102,6 +102,12 @@ public class Inventory {
             System.out.println("Bought and stocked item for $" + purchaseCost);
             return amount;
         }
+
+
     }
+    // Added a getter for budget, since it is a private value and needs access in AnimalGame.java
+        public double getBudget() {
+            return budget;
+        }
 
 }

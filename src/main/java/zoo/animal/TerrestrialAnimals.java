@@ -16,17 +16,22 @@ public class TerrestrialAnimals extends Animal {
 		super(name);
 		this.skinType = "Thick fur";
 	}
+
+	public TerrestrialAnimals(String name, String skinType) {
+		super(name);
+		this.skinType = skinType;
+	}
 	
 	@Override
-	public void doATrick() {
-		super.doATrick();
+	public boolean doATrick() {
 		System.out.print("The cool trick was a twirl!");
-		
+		super.doATrick();
+		return tired(getTrickCount());
 	}
 	@Override
 	public boolean existInZoo(){
 		
-		System.out.println(getName() + "decided to run across the habitat. We can see the skin type of the animal - " + skinType + ".");
+		System.out.println(getName() + " decided to run across the habitat. We can see the skin type of the animal - " + skinType + ".");
 		boolean x = super.existInZoo();
 		return x;
 	}
