@@ -51,11 +51,6 @@ public class Zookeeper extends Staff {
                 return false;
 
             }
-        
-
-        }
-        else {
-            System.out.println("For some reason " + x.getName() + "will not eat the food the zookeeper provides.");
         }
     }
 
