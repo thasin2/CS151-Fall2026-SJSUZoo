@@ -34,17 +34,22 @@ public class Veterinarian extends Staff {
     }
 
     @Override
+    public String toString() {
+        return super.toString() + " emergenciesThisWeek=" + emergenciesThisWeek;
+    }
+
+    @Override
     public StaffRole getRole() {
         return StaffRole.VETERINARIAN;
     }
 
-    public boolean fixAnimal(Animal x, Inventory y){
+    public boolean fixAnimal(Animal animal, Inventory storage){
         System.out.println("The vet is here!");
-        if (x.isInjured()){
-            System.out.println("The vet found the injury on " + x.getName() + "! The vet is making a prompt diagnosis and treatment plan.");
-            if (y.use("medicine")) {
-                x.setInjured(false);
-                x.setActive(true);
+        if (animal.isInjured()){
+            System.out.println("The vet found the injury on " + animal.getName() + "! The vet is making a prompt diagnosis and treatment plan.");
+            if (storage.use("medicine")) {
+                animal.setInjured(false);
+                animal.setActive(true);
                 System.out.println("The animal is healed! It is back out and active!");
                 return true;
             }
@@ -53,7 +58,7 @@ public class Veterinarian extends Staff {
                 return false;
             }
         }
-        System.out.println("The vet could not find a injury.");
+        System.out.println("The vet could not find an injury.");
         return true;
     }
 

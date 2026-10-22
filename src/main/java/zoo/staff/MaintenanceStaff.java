@@ -51,6 +51,11 @@ public class MaintenanceStaff extends Staff {
     }
 
     @Override
+    public String toString() {
+        return super.toString() + " jobsThisWeek=" + jobsThisWeek;
+    }
+
+    @Override
     public StaffRole getRole() {
         return StaffRole.MAINTENANCE;
     }

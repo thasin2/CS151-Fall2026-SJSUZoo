@@ -399,4 +399,10 @@ public final class ManagerGame {
     public boolean hasWon() {
         return won;
     }
+
+    @Override
+    public String toString() {
+        return String.format("ManagerGame{level=%d, week=%d/%d, budget=$%,.2f, team=%d, bonusesEarned=%d, over=%b, won=%b}",
+                level.getNumber(), week, getWeeksToWin(), budget, manager.getTeamSize(), bonusesEarned, over, won);
+    }
 }

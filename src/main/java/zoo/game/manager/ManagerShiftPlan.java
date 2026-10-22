@@ -113,6 +113,12 @@ public class ManagerShiftPlan {
         }
     }
 
+    @Override
+    public String toString() {
+        return "ManagerShiftPlan{workers=" + workers.size() + ", demand=" + demand + ", planned=" + filled
+                + ", unfilled=" + getUnfilledShifts() + ", carriedOut=" + carriedOut + "}";
+    }
+
     private void addShift(int index) {
         Staff worker = workers.get(index);
         plannedShifts[index]++;

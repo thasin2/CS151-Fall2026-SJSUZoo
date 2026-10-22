@@ -54,6 +54,11 @@ public class Zookeeper extends Staff {
         }
 
     @Override
+    public String toString() {
+        return super.toString() + " hazardShiftsThisWeek=" + hazardShiftsThisWeek;
+    }
+
+    @Override
     public StaffRole getRole() {
         return StaffRole.ZOOKEEPER;
     }
