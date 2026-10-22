@@ -7,10 +7,7 @@ import zoo.habitat.*;
 public class Habitat {
 	private String name;
 	private int capacity;
-	private ArrayList<Animal> Animals; // figure out getter and setter for this
-	// we want to add animals to this list, and when we return dont
-	// want to return the object itself
-	
+	private ArrayList<Animal> Animals;
 	private int condition;
 	private boolean isDamaged;
 	private int size;

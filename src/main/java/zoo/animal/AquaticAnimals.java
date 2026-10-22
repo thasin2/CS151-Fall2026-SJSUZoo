@@ -1,48 +1,41 @@
 package zoo.animal;
 
 public class AquaticAnimals extends Animal {
-	private String waterEnvironment; // freshwater, sea water, mix, etc.
 	private int depthResided; // how many feet deep does the animal live
-	private int speed; // with what speed does the animal swim
-	
-
 	
 	// constructors
 	
 	//default
 	public AquaticAnimals() {
 		super();
-		this.waterEnvironment = null;
-		this.depthResided = 0;
-		this.speed = 0;
+		this.depthResided = 100;
 			
 	}
 	
-	public AquaticAnimals(boolean dangerous, boolean isEndangered, String scientificName, String diet, String waterEnvironment) {
-		super(dangerous, isEndangered, scientificName, diet);
-		this.waterEnvironment = waterEnvironment;
+	public AquaticAnimals(String name, boolean dangerous, int depthResided) {
+		super(name, dangerous);
+		this.depthResided = depthResided;
 	}
-	public AquaticAnimals(boolean dangerous, boolean isEndangered, String scientificName, String name, String diet, String waterEnvironment) {
-		super(dangerous, isEndangered, scientificName, name, diet);
-		this.waterEnvironment = waterEnvironment;
+	public AquaticAnimals(String name) {
+		super(name);
+		this.depthResided = 100;
 	}
 	
-	// methods ? 
+	// methods
 	@Override
 	public void doATrick() {
 		super.doATrick();
-		System.out.println("The cool trick was jumping out of the water!");
-	}
-	
-	
-	// getters and setters
-	public String getWaterEnvironment() {
-		return waterEnvironment;
+		System.out.println("The cool trick was jumping out of the water! It swam from the depth of " + depthResided + " feet all the way to the top!");
 	}
 
-	public void setWaterEnvironment(String waterEnvironment) {
-		this.waterEnvironment = waterEnvironment;
+	@Override 
+	public void existInZoo(){
+		System.out.println(getName() + "decided to swim on top of the water, and a bunch of visitors took pictures with it.");
+		super.existInZoo();
 	}
+
+	
+	// getters and setters
 
 	public int getDepthResided() {
 		return depthResided;
@@ -50,14 +43,6 @@ public class AquaticAnimals extends Animal {
 
 	public void setDepthResided(int depthResided) {
 		this.depthResided = depthResided;
-	}
-
-	public int getSpeed() {
-		return speed;
-	}
-
-	public void setSpeed(int speed) {
-		this.speed = speed;
 	}
 
 }

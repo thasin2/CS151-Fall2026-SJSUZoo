@@ -37,4 +37,17 @@ public class Veterinarian extends Staff {
         return StaffRole.VETERINARIAN;
     }
 
+    public void fixAnimal(Animal x){
+        System.out.println("The vet is here!");
+        if (x.isInjured()){
+            System.out.println("The vet found the injury on " + x.getName() + "! The vet is making a prompt diagnosis and treatment plan.");
+            x.setInjured(false);
+            x.setActive(true);
+            System.out.println("The animal is healed! It is back out and active!");
+        }
+        else{
+            System.out.println("The vet could not find a injury.");
+        }
+    }
+
 }

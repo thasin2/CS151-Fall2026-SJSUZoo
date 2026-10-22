@@ -1,17 +1,14 @@
 package zoo.animal;
 
+
 public class Animal {
-	
 	
 	// no attributes made final, as we may want to enter or change values later based on constructor used
     private boolean dangerous;
-    private boolean isHungry; // can implement this as a int level
+    private boolean isHungry; 
     private boolean isActive;
-    private boolean isEndangered; 
     private String name;
-    private String scientificName;
-    private String diet; // can be used by Staff/Inventory to check what food to be given
-    private boolean injured; // can add a health level as well, will talk with team
+    private boolean injured; 
     // CONSTRUCTORS
     private int trickCount;
     
@@ -20,48 +17,54 @@ public class Animal {
     	this.dangerous = false;
     	this.isHungry = false;
     	this.isActive = false;
-    	this.isEndangered = false;
     	this.name = "Unnamed";
-    	this.scientificName = "Unknown";
-    	this.setDiet("Unknown");
     	this.trickCount = 0;
     }
     
     //most "required" attributes constructor
-    public Animal(boolean dangerous, boolean isEndangered, String scientificName, String diet) {
+    public Animal(String name, boolean dangerous) {
+		this.name = name;
         this.dangerous = dangerous;
-        this.isEndangered = isEndangered;
-        this.scientificName = scientificName;
-        this.diet = diet;
-        
     }
     
-    //another constructor with personal name for animal
-    public Animal(boolean dangerous, boolean isEndangered, String scientificName, String name, String diet) {
-        this.dangerous = dangerous;
-        this.isEndangered = isEndangered;
-        this.scientificName = scientificName;
+    //another constructor with name for only
+    public Animal(String name) {
+        this.dangerous = false;
         this.name = name;
-        this.diet = diet;
-    } 
+    }
     
     // methods
     
     public void doATrick() {
+		if ((trickCount < 6)) {
     	System.out.println(getName() + "did a cool trick!");
-    	setHungry(true);
-    	trickCount++;
+		trickCount++;
+    	setHungry(true); // every time a zoo animal does a trick, they will get hungry, they get hungry after 3, but the user can keep calling until 5 tricks are done
+		}
+
+		System.out.println(getName() + "can not do anymore tricks right now. Maybe feed the animal or let it sleep?");
     }
     
     public void tired(int trickCount) {
-    	if ((trickCount>3) && (isHungry)) {
+    	if ((trickCount>3) && (isHungry())) {
     		setActive(false);
-    		System.out.println(getName() + "is tired.");
+    		System.out.println(getName() + "is tired. Please feed the animal");
     	}
     	
     }
-    
-    
+	
+	public void existInZoo(){ // just a regular method that talks through the Animal walking, prancing, running in the Zoo - can get randomly injured
+		System.out.println(getName() + "is in front of the visitors. So cool!");
+
+		int x = (int)(Math.random() * 10); // will generate random numbers from 0 to 10
+		if ((x<5) && (trickCount>=3)){
+			setInjured(true);
+			System.out.println("Aw man! The animal was just existing, and it got randomly injured. Please get the vet to fix the animal.");
+			setActive(false);
+		}
+
+	}
+
     // GETTERS and SETTERS for all private attributes
     public boolean isDangerous() {
         return dangerous;
@@ -84,11 +87,14 @@ public class Animal {
 
 	public void setHungry(boolean isHungry) {
 		this.isHungry = isHungry;
-		
+
+		// should have a check here that asks the zookeeper to feed (zoo keeper can say no or yes, can lead to animal becoming hungry)
+
 		if (!isHungry) {
 			setActive(true);
 			setTrickCount(0);
 		}
+		tired(trickCount); // checking if the animal had 3 tricks and are hungry, animal will print out am tired
 	}
 
 	public boolean isActive() {
@@ -97,28 +103,6 @@ public class Animal {
 
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
-	}
-
-	public boolean isEndangered() {
-		return isEndangered;
-	}
-	public void setEndangered(boolean isEndangered) {
-		this.isEndangered = isEndangered;
-	}
-
-	public String getScientificName() {
-		return scientificName;
-	}
-	public void setScientificName(String scientificName) {
-		this.scientificName = scientificName;
-	}
-
-	public String getDiet() {
-		return diet;
-	}
-
-	public void setDiet(String diet) {
-		this.diet = diet;
 	}
 
 	public boolean isInjured() {

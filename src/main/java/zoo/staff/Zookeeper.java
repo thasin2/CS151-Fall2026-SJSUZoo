@@ -1,5 +1,8 @@
 package zoo.staff;
+
+
 import zoo.animal.Animal;
+import zoo.inventory.Inventory;
 
 // For a zookeeper, pay is the hourly rate.
 public class Zookeeper extends Staff {
@@ -32,6 +35,27 @@ public class Zookeeper extends Staff {
         workShift(); // throws if at the shift limit, so a failed shift is never counted
         if (animal.isDangerous()) {
             hazardShiftsThisWeek++;
+        }
+    }
+
+    public boolean feedAnimal(Animal x, Inventory y){
+        if (x.isHungry()){
+            if (y.use("food")) {
+            x.setHungry(false);
+            System.out.println(x.getName() + " has been fed. It is not hungry anymore! Also the animal is active!");
+            x.setActive(true);
+            return true;
+            }
+            else {
+                System.out.println("Stock the inventory!");
+                return false;
+
+            }
+        
+
+        }
+        else {
+            System.out.println("For some reason " + x.getName() + "will not eat the food the zookeeper provides.");
         }
     }
 
