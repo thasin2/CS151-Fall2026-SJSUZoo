@@ -28,10 +28,11 @@ public class SkyAnimal extends Animal {
 	}
 
 	@Override
-	public void existInZoo(){
+	public boolean existInZoo(){
 		
 		System.out.println(getName() + "decided to fly close to the ground, visitors are able to observe the feathers it has!");
-		super.existInZoo();
+		boolean x = super.existInZoo();
+		return x;
 	}
 	
 	// getters and setters

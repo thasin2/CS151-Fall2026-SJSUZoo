@@ -46,18 +46,12 @@ public class Zookeeper extends Staff {
             x.setActive(true);
             return true;
             }
-            else {
-                System.out.println("Stock the inventory!");
-                return false;
-
+            System.out.println("Stock the inventory!");
+            return false;
             }
-        
-
+        System.out.println("The animal is not hungry!");
+        return true;
         }
-        else {
-            System.out.println("For some reason " + x.getName() + "will not eat the food the zookeeper provides.");
-        }
-    }
 
     @Override
     public StaffRole getRole() {
