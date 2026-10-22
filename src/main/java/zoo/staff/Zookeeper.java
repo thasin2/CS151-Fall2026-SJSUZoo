@@ -2,7 +2,6 @@ package zoo.staff;
 
 
 import zoo.animal.Animal;
-import zoo.habitat.Habitat;
 import zoo.inventory.Inventory;
 
 // For a zookeeper, pay is the hourly rate.
@@ -53,21 +52,6 @@ public class Zookeeper extends Staff {
         System.out.println("The animal is not hungry!");
         return true;
         }
-
-    public boolean maintainHabitat(Habitat environ, Inventory storage){
-        if (environ.needsMaintenance()){
-            System.out.println("Oh no! Your habitat needs some maintenance! Let's call in the Zookeeper.");
-            if (storage.use("supplies")){
-                environ.setCondition(100);
-                System.out.println(environ.getName() + " has been maintained! The zookeeper did a great job!");
-                return true;
-            }
-            System.out.println("Stock the inventory!");
-            return false;
-        }
-        System.out.println("The environment does not need maintenance.");
-        return true;
-    }
 
     @Override
     public StaffRole getRole() {

@@ -36,7 +36,7 @@ public class MaintenanceStaff extends Staff {
         if (target == null) {
             throw new IllegalArgumentException("Maintenance target cannot be null.");
         }
-        if (jobsThisWeek >= getShiftsThisWeek() * MAX_JOBS_PER_SHIFT) {
+        if (!hasJobsLeft()) {
             throw new JobLimitException("Job limit reached. Each shift worked allows " + MAX_JOBS_PER_SHIFT + " jobs. Work another shift to do more jobs.");
         }
         if (!target.needsMaintenance()) {
@@ -44,6 +44,11 @@ public class MaintenanceStaff extends Staff {
         }
         target.performMaintenance();
         jobsThisWeek++;
+    }
+
+    // true while the shifts worked this week still allow another job
+    public boolean hasJobsLeft() {
+        return jobsThisWeek < getShiftsThisWeek() * MAX_JOBS_PER_SHIFT;
     }
 
     // returns a new list of only the targets that need maintenance, worst condition first

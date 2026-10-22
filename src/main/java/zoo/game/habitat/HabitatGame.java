@@ -6,6 +6,7 @@ import zoo.animal.Animal;
 import zoo.game.animal.AnimalGame;
 import zoo.habitat.Habitat;
 import zoo.inventory.Inventory;
+import zoo.staff.MaintenanceStaff;
 import zoo.staff.Zookeeper;
 import zoo.ui.ConsoleInput;
 
@@ -13,6 +14,7 @@ import zoo.ui.ConsoleInput;
 public class HabitatGame {
     Inventory habGameInv = new Inventory();
     Zookeeper zooHabGame = new Zookeeper("1245", "Greta", 10000, true);
+    private MaintenanceStaff maintHabGame = new MaintenanceStaff("1246", "Max", 25, true);
     AnimalGame temp = new AnimalGame();
     private boolean opened = false;
 
@@ -125,7 +127,7 @@ public class HabitatGame {
     public void open(Habitat x){
         boolean y = x.habitatOpen();
         if (!y){
-            System.out.println("We have to maintain the habitat. Let's go to the zookeeper.");
+            System.out.println("We have to maintain the habitat. Let's call the maintenance staff.");
             maintenance(x, habGameInv);
         }
         else {
@@ -143,15 +145,35 @@ public class HabitatGame {
 
         
     }
+    // maintenance staff repair the habitat, which uses one supply piece
     public void maintenance(Habitat hab, Inventory stor){
-        if (zooHabGame.maintainHabitat(hab, stor)){
+        if (!hab.needsMaintenance()){
+            System.out.println("The habitat does not need maintenance.");
             return;
         }
-        else {
+        System.out.println("Oh no! Your habitat needs some maintenance! Let's call in the maintenance staff.");
+        if (!stor.use("supplies")){
             System.out.println("Let's go to the stocking area!");
             stockingProcesses("supplies");
             maintenance(hab, stor);
+            return;
         }
+        startShiftIfNeeded();
+        maintHabGame.service(hab);
+        System.out.println(hab.getName() + " has been maintained! " + maintHabGame.getName() + " did a great job!");
+    }
+
+    // the maintenance worker starts a new shift when this week's shifts allow no more jobs
+    // after the most shifts in a week, the week is paid out and a new week starts
+    private void startShiftIfNeeded(){
+        if (maintHabGame.hasJobsLeft()){
+            return;
+        }
+        if (maintHabGame.getShiftsThisWeek() >= maintHabGame.getMaximumShifts()){
+            double weeklyPay = maintHabGame.closeOutWeek();
+            System.out.printf("A new week starts. %s was paid $%,.2f for last week.%n", maintHabGame.getName(), weeklyPay);
+        }
+        maintHabGame.workShift();
     }
 
     public void stockingProcesses(String item){
