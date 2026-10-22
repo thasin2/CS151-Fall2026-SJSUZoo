@@ -24,10 +24,11 @@ public class TerrestrialAnimals extends Animal {
 		
 	}
 	@Override
-	public void existInZoo(){
+	public boolean existInZoo(){
 		
 		System.out.println(getName() + "decided to run across the habitat. We can see the skin type of the animal - " + skinType + ".");
-		super.existInZoo();
+		boolean x = super.existInZoo();
+		return x;
 	}
 	
 	// Getters and Setters

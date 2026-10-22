@@ -28,10 +28,11 @@ public class AquaticAnimals extends Animal {
 		System.out.println("The cool trick was jumping out of the water! It swam from the depth of " + depthResided + " feet all the way to the top!");
 	}
 
-	@Override 
-	public void existInZoo(){
+	@Override
+	public boolean existInZoo(){
 		System.out.println(getName() + "decided to swim on top of the water, and a bunch of visitors took pictures with it.");
-		super.existInZoo();
+		boolean x = super.existInZoo();
+		return x;
 	}
 
 	

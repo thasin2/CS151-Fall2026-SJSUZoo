@@ -71,11 +71,11 @@ public final class ManagerGame {
         this.budget = level.getStartingBudget();
         this.manager = new Manager("MGR", managerName, MANAGER_SALARY, true); // checks the name
 
-        animals.add(new Animal(true, false, "Lion"));
-        animals.add(new Animal(true, true, "Elephant"));
-        animals.add(new Animal(false, true, "Red Panda"));
-        animals.add(new Animal(false, false, "Penguin"));
-        animals.add(new Animal(false, false, "Giraffe"));
+        animals.add(new Animal("Lion", false));
+        animals.add(new Animal("Elephant", true));
+        animals.add(new Animal("Red Panda", false));
+        animals.add(new Animal("Penguin", true));
+        animals.add(new Animal("Giraffe", true));
 
         // starting team: covers the starting demand exactly, with no overtime
         for (int i = 0; i < 3; i++) {
