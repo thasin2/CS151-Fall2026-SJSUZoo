@@ -5,7 +5,7 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("Welcome to the SJSU Zoo! Type EXIT at any prompt to quit.");
         try {
-            while 3
+            while
             (true) {
                 System.out.println();
                 System.out.println("Pick what you want to do:");
