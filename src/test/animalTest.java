@@ -65,11 +65,11 @@ public class animalTest {
   
         for (int i = 0; i < Zoo.MAXIMUM_INSTANCES; i++) {
             String fillName = "Animal" + i;
-            zoo.registerAnimal(new Animal(fillName));
+            zoo.registerAnimal(new Animal(fillName, false));
         }
         Assert.assertEquals(100, zoo.getRegisteredAnimals().size());
         try {
-            zoo.registerAnimal(new Animal("Animal101"));
+            zoo.registerAnimal(new Animal("Animal101", false));
             Assert.fail("The 101st animal should be rejected");
         } catch (ZooFullException e) {
             Assert.assertEquals(100, zoo.getRegisteredAnimals().size());

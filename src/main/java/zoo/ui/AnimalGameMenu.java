@@ -44,11 +44,12 @@ public class AnimalGameMenu { // This mainly just has the front end elements, al
 
     
 
-        while (ConsoleInput.readYesNo("Do you want to keep playing with " + userAnimal.getName() + "? (y/n) ")){
+        while(game.secondPart(userAnimal)){
             System.out.println("----------------------------------------------------");
-            game.secondPart(userAnimal);
         }
         System.out.println("Thanks for playing! Going back to the main menu.");
+
+        return;
 
 
     }

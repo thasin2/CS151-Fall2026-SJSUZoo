@@ -4,6 +4,12 @@ public class AquaticAnimals extends Animal {
 	private final int depthResided; // how many feet deep does the animal live
 
 	// constructors
+	// Note - default constructor not used by any methods/classes in program - so it was removed (dead-code requirement)
+		
+	public AquaticAnimals(String name, boolean dangerous, int depthResided) {
+		super(name, dangerous);
+		this.depthResided = depthResided;
+	}
 	public AquaticAnimals(String name, int depthResided){
 		super(name);
 		if (depthResided < 0) {

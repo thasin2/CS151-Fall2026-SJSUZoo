@@ -3,11 +3,12 @@ package zoo.animal;
 public class SkyAnimal extends Animal {
 	private int maxHeight; // how high does the animal fly
 
-
+	
 	// constructors
-	public SkyAnimal(String name) {
-		super(name);
-		this.setMaxHeight(100);
+	
+	public SkyAnimal(String name, boolean dangerous, int maxHeight) {
+		super(name, dangerous);
+		this.setMaxHeight(maxHeight);
 	}
 
 	public SkyAnimal(String name, int maxHeight) {

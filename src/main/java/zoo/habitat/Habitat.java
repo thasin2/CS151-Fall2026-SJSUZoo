@@ -17,13 +17,7 @@ public class Habitat implements zoo.Maintainable { // Extends Maintainable inter
 
 	// CONSTRUCTORS ----------------------------------------------------------------------------------------------------------
 
-	// Default: No args, but set with some basic values
-	public Habitat() {
-		this("Meadow"); // Assuming this as a baseline habitat
-	}
-	public Habitat(String name) {
-		this(name, DEFAULT_CAPACITY, new ArrayList<Animal>());
-	}
+	// Removed non-essential constructors
 
 	// Constructor, in the case that the user has a prespecified animal list
 	public Habitat(String name, int capacity, ArrayList<Animal> animals) {

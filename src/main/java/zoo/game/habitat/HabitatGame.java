@@ -42,22 +42,31 @@ public class HabitatGame {
         }
     }
 
-    public void secondPart(Habitat hab){
+    public boolean secondPart(Habitat hab){
         System.out.println("You can either 1 - Add animals to your habitat, or 2 - Open your habitat. 3 - Close your habitat. Note - you can only close a habitat after it has been open. You can continue 'opening' a habitat, as this acts like opening shifts to continue the simulation.");
-        int choice = ConsoleInput.readInt("1, 2, or 3 ", 1, 3);
+        System.out.println("You can also enter number 4 - to get back to the main menu and pick another game.");
+        int choice = ConsoleInput.readInt("1, 2, 3, or 4 ", 1, 4);
         if (choice == 1){
             add(hab);
-            secondPart(hab);
+            boolean y = secondPart(hab);
+            return y;
         }
         else if (choice == 2){
             setOpened(true);
             open(hab);
-            option2(hab);
+            boolean y = option2(hab);
+            return y;
+
         }
         else if ((choice == 3) && (isOpened())){
             setOpened(false);
             close(hab);
-            option3(hab);
+            boolean y = option3(hab);
+            return y;
+        }
+        else if ((choice == 4)){
+            System.out.println("Okay, we are going back to the main menu. The game will restart.");
+            return false;
         }
         else {
             System.out.println("The habitat is not open yet, so it cannot be closed. Open it first.");
@@ -65,31 +74,47 @@ public class HabitatGame {
     }
 
   
-    public void option2(Habitat hab){
+    public boolean option2(Habitat hab){
             System.out.println("Now, you can 1 - Add animals. 2 - Close your habitat");
-        int choice = ConsoleInput.readInt("1 or 2 ", 1, 2);
+            System.out.println("You can also enter 3 to get back to the main menu and choose another game.");
+
+        int choice = ConsoleInput.readInt("1, 2, 3 ", 1, 3);
         if (choice == 1){
             add(hab);
-            secondPart(hab);
+            boolean y = secondPart(hab);
+            return y;
         }
         else { // the habitat is always open here, since option2 runs right after opening it
             setOpened(false);
             close(hab);
-            option3(hab);
+            boolean y = option3(hab);
+            return y;
+        }
+        else if(choice == 3){
+            System.out.println("Okay, we are going back to the main menu. The game will restart.");
+            return false;
         }
     }
 
-    public void option3(Habitat hab){
+    public boolean option3(Habitat hab){
             System.out.println("Now, you can 1 - Open your habitat. 2 - Add animals");
-        int choice = ConsoleInput.readInt("1 or 2 ", 1, 2);
+            System.out.println("You can also enter 3 to get back to the main menu and choose another game.");
+
+        int choice = ConsoleInput.readInt("1, 2, 3 ", 1, 3);
         if (choice == 1){
             setOpened(true);
             open(hab);
-            option2(hab);
+            boolean y = option2(hab);
+            return y;
         }
         else {
             add(hab);
-            secondPart(hab);
+            boolean y = secondPart(hab);
+            return y;
+        }
+            else if(choice == 3){
+            System.out.println("Okay, we are going back to the main menu.");
+            return false;
         }
     }
 
@@ -197,8 +222,9 @@ public class HabitatGame {
     if (item.equals("supplies")){
         numberAvail = ((int)(habGameInv.getBudget()/45.99));
     }
-    if (numberAvail < 1){
-        System.out.println("There is not enough money to buy even one. Let's add more to the budget.");
+
+    if (numberAvail==0){
+        System.out.println("It seems you need more money.");
         stockingProcesses(item);
         return;
     }

@@ -5,8 +5,10 @@ public class TerrestrialAnimals extends Animal {
 	private final String skinType;  // furry, waterproof, etc.
 
 	// Constructors - can add more (ask during meeting)
-	public TerrestrialAnimals(String name){
-		this(name, DEFAULT_SKIN_TYPE);
+
+	public TerrestrialAnimals(String name, boolean dangerous, String skinType) {
+		super(name, dangerous);
+		this.skinType = skinType;
 	}
 
 	public TerrestrialAnimals(String name, String skinType) {
