@@ -70,6 +70,7 @@ public class HabitatGame {
         }
         else {
             System.out.println("The habitat is not open yet, so it cannot be closed. Open it first.");
+            return true;
         }
     }
 
@@ -84,15 +85,15 @@ public class HabitatGame {
             boolean y = secondPart(hab);
             return y;
         }
+        else if (choice == 3) {
+            System.out.println("Okay, we are going back to the main menu. The game will restart.");
+            return false;
+        }
         else { // the habitat is always open here, since option2 runs right after opening it
             setOpened(false);
             close(hab);
             boolean y = option3(hab);
             return y;
-        }
-        else if(choice == 3){
-            System.out.println("Okay, we are going back to the main menu. The game will restart.");
-            return false;
         }
     }
 
@@ -107,14 +108,14 @@ public class HabitatGame {
             boolean y = option2(hab);
             return y;
         }
+        else if (choice == 3){
+            System.out.println("Okay, we are going back to the main menu.");
+            return false; 
+        }
         else {
             add(hab);
             boolean y = secondPart(hab);
             return y;
-        }
-            else if(choice == 3){
-            System.out.println("Okay, we are going back to the main menu.");
-            return false;
         }
     }
 

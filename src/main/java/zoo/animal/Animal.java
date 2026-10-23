@@ -11,6 +11,9 @@ public class Animal {
     private boolean injured;
     private int trickCount;
     // CONSTRUCTORS
+
+	// removed default and other constructors - not used in UI (only kept most essential) - deadcode requirement
+
     //most "required" attributes constructor
     public Animal(String name, boolean dangerous) {
 		this.name = requireName(name);

@@ -7,7 +7,7 @@ public class Habitat implements zoo.Maintainable { // Extends Maintainable inter
 
 	// PRIVATE INSTANCE VARIABLES ------------------------------------------------------------------------------------------
 	
-	private static final int DEFAULT_CAPACITY = 10;
+	
 	private static final int MAX_CONDITION = 100;
 
 	private final String name; // Name of Habitat; Example: Savannah, Rainforest, Meadow, etc.

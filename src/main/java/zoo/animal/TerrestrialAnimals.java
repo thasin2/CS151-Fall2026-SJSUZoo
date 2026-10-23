@@ -1,7 +1,7 @@
 package zoo.animal;
 
 public class TerrestrialAnimals extends Animal {
-	private static final String DEFAULT_SKIN_TYPE = "Thick fur";
+	
 	private final String skinType;  // furry, waterproof, etc.
 
 	// Constructors - can add more (ask during meeting)

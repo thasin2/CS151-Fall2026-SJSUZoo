@@ -76,11 +76,12 @@ public class habitatTest {
 
     for (int i = 0; i < Zoo.MAXIMUM_INSTANCES; i++) {
         String fillName = "Habitat" + i;
-        zoo.registerHabitat(new Habitat(fillName, 5, new Animal()));
+        String fillName2 = "Animal" + i;
+        zoo.registerHabitat(new Habitat(fillName, 5, new Animal(fillName2, false)));
     }
         Assert.assertEquals(100, zoo.getRegisteredHabitats().size());
     try {
-        zoo.registerHabitat(new Habitat("Habitat101", 5, new Animal()));
+        zoo.registerHabitat(new Habitat("Habitat101", 5, new Animal("AnotherName", false)));
         Assert.fail("The 101st Habitat should be rejected");
     } catch (ZooFullException e) {
         Assert.assertEquals(100, zoo.getRegisteredHabitats().size());
