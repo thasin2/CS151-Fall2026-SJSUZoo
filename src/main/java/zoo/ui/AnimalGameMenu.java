@@ -44,10 +44,11 @@ public class AnimalGameMenu { // This mainly just has the front end elements, al
 
     
 
-        while(true){
+        while(game.secondPart(userAnimal)){
             System.out.println("----------------------------------------------------");
-            game.secondPart(userAnimal);
         }
+
+        return;
 
 
     }

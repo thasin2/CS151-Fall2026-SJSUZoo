@@ -102,24 +102,38 @@ public void stockingProcess(String item){
     if (item.equals("medicine")){
         numberAvail = ((int)(aniGameInv.getBudget() / 20));
     }
+    if (numberAvail==0){
+        System.out.println("It seems you need more money.");
+        stockingProcess(item);
+        return;
+    }
     int numberToStock = ConsoleInput.readInt("How much do you want to stock? Enter a reasonable number in our budget. " , 1, numberAvail);
     aniGameInv.stock(item, numberToStock);
 
     System.out.println(aniGameInv.toString());
 
 }
-public void secondPart(Animal a){
+public boolean secondPart(Animal a){
     String value = ConsoleInput.readLine("Do you want to make the Animal do a trick? yes/no ");
     if (value.equalsIgnoreCase("yes")){
         if(a.doATrick()) {
             System.out.println("It seems we need to feed the animal.");
             feed(a);
+            return true;
         }
     }
     else {
-        System.out.println("Let's let the animal just exist then.");
-        firstPart(a);
+        value = ConsoleInput.readLine("Do you just want to let the Animal exist and observe it? If you don't type yes, you will go back to the main menu. yes/no ");
+        if (value.equalsIgnoreCase("yes")){
+            System.out.println("Let's let the animal just exist then.");
+            firstPart(a);
+            return true;
+        }
+        else {
+            return false;
+        }
     }
+    return true;
 }
 
 public void feed(Animal a){

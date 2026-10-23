@@ -27,7 +27,7 @@ public class Animal {
 		this.isActive = true;
     }
     
-    //another constructor with name for only
+    //another constructor with name - 
     public Animal(String name) {
         this.dangerous = false;
         this.name = name;

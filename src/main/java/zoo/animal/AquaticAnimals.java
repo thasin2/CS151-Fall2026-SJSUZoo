@@ -4,14 +4,8 @@ public class AquaticAnimals extends Animal {
 	private int depthResided; // how many feet deep does the animal live
 	
 	// constructors
-	
-	//default
-	public AquaticAnimals() {
-		super();
-		this.depthResided = 100;
-			
-	}
-	
+	// Note - default constructor not used by any methods/classes in program - so it was removed (dead-code requirement)
+		
 	public AquaticAnimals(String name, boolean dangerous, int depthResided) {
 		super(name, dangerous);
 		this.depthResided = depthResided;
@@ -20,10 +14,7 @@ public class AquaticAnimals extends Animal {
 		super(name);
 		this.depthResided = depthResided;
 	}
-	public AquaticAnimals(String name) {
-		super(name);
-		this.depthResided = 100;
-	}
+
 	
 	// methods
 	@Override

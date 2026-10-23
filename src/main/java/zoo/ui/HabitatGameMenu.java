@@ -27,16 +27,10 @@ public class HabitatGameMenu {
 
         System.out.println("Now that you get the jist of the simulation, play on until you do not want to, by typing EXIT");
 
-        while(true){
+        while(game.secondPart(userHabitat)){
             System.out.println("----------------------------------------------------");
-            game.secondPart(userHabitat);
         }
-
-
-
-        
-
-
+        return;
 
     }
     

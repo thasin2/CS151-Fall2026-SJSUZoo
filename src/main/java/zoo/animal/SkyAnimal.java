@@ -5,19 +5,10 @@ public class SkyAnimal extends Animal {
 
 	
 	// constructors
-	public SkyAnimal() {
-		super();
-		this.setMaxHeight(0);
-	}
 	
 	public SkyAnimal(String name, boolean dangerous, int maxHeight) {
 		super(name, dangerous);
 		this.setMaxHeight(maxHeight);
-	}
-
-	public SkyAnimal(String name) {
-		super(name);
-		this.setMaxHeight(100);
 	}
 
 	public SkyAnimal(String name, int maxHeight) {
