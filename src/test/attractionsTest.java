@@ -64,8 +64,8 @@ public class attractionsTest {
         // Repairs the attraction
         Inventory inventory = new Inventory();
         inventory.addBudget(50);
-        inventory.stock("supplies", 1);
-        if (inventory.use("supplies")) {
+        inventory.stock(Item.SUPPLIES, 1);
+        if (inventory.use(Item.SUPPLIES)) {
             joyRide.performMaintenance();
         }
         Assert.assertEquals(joyRide.getCondition(), 100);

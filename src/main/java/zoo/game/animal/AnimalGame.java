@@ -2,6 +2,7 @@ package zoo.game.animal;
 
 import zoo.animal.*;
 import zoo.inventory.Inventory;
+import zoo.inventory.Item;
 import zoo.staff.*;
 import zoo.ui.*;
 
@@ -65,12 +66,12 @@ public class AnimalGame {
         }
         else {
             System.out.println("Let's go to the stocking area!");
-            stockingProcess("medicine");
+            stockingProcess(Item.MEDICINE);
             healingAnimalProcess(a);
         }
     }
 
-public void stockingProcess(String item){
+public void stockingProcess(Item item){
     System.out.println("Welcome to the stocking area! Here is everything you have:");
     System.out.println(aniGameInv.toString());
     System.out.println("---------------------------------------------------");
@@ -91,10 +92,10 @@ public void stockingProcess(String item){
     }
     System.out.println(aniGameInv.toString());
     int numberAvail = 1;
-    if (item.equals("food")){
+    if (item == Item.FOOD){
         numberAvail = ((int)(aniGameInv.getBudget() / 3.49));
     }
-    if (item.equals("medicine")){
+    if (item == Item.MEDICINE){
         numberAvail = ((int)(aniGameInv.getBudget() / 20));
     }
     if (numberAvail < 1){
@@ -126,7 +127,7 @@ public void feed(Animal a){
     boolean hunger = zooAniGame.feedAnimal(a, aniGameInv);
     if (!hunger){
         System.out.println("Let's go to the stocking area!");
-        stockingProcess("food");
+        stockingProcess(Item.FOOD);
         feed(a);
     }
 }

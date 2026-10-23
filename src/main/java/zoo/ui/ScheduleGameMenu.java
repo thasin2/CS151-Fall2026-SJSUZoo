@@ -1,6 +1,7 @@
 package zoo.ui;
 
 import zoo.game.schedule.*;
+import zoo.inventory.*;
 
 public class ScheduleGameMenu {
     private boolean win = false;
@@ -219,13 +220,13 @@ public class ScheduleGameMenu {
         int amount = ConsoleInput.readInt("How much? (1 to 15 units per purchase) ", 1, 15);
         switch (buyChoice) {
             case 1:
-                sgame.getInventory().stock("food", amount);
+                sgame.getInventory().stock(Item.FOOD, amount);
                 break;
             case 2:
-                sgame.getInventory().stock("medicine", amount);
+                sgame.getInventory().stock(Item.MEDICINE, amount);
                 break;
             case 3:
-                sgame.getInventory().stock("supplies", amount);
+                sgame.getInventory().stock(Item.SUPPLIES, amount);
                 break;
         }
     }

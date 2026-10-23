@@ -13,19 +13,18 @@ public class inventoryTest {
         Assert.assertEquals(budget, 150);
 
         System.out.println(inventory); // show empty inventory
-        inventory.stock("food", 10);
-        inventory.stock("medicine", 3);
-        inventory.stock("supplies", 2); // shouldn't add, not enough money
-        inventory.stock("supplies", 1);
+        inventory.stock(Item.FOOD, 10);
+        inventory.stock(Item.MEDICINE, 3);
+        inventory.stock(Item.SUPPLIES, 2); // shouldn't add, not enough money
+        inventory.stock(Item.SUPPLIES, 1);
         System.out.println(inventory); // show inventory with stuff
 
         for (int i = 0; i < 10; ++i) {
-            Assert.assertEquals(inventory.use("food"), true);
+            Assert.assertEquals(inventory.use(Item.FOOD), true);
         }
 
-        Assert.assertEquals(inventory.use("food"), false); // should run out of food
-        inventory.stock("money", 100); // should print invalid item
-        inventory.use("medicine");
+        Assert.assertEquals(inventory.use(Item.FOOD), false); // should run out of food
+        inventory.use(Item.MEDICINE);
         System.out.println(inventory);
 
     }

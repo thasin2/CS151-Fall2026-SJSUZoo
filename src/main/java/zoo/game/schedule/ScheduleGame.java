@@ -85,13 +85,13 @@ public class ScheduleGame {
             feedAnimals(15);
             break;
        }
-       health = inventory.use("medicine");
+       health = inventory.use(Item.MEDICINE);
        visitors.clear();
     }
 
     // performs maintenance work if possible
     public void maintenanceWork() {
-        if (inventory.use("supplies")) {
+        if (inventory.use(Item.SUPPLIES)) {
             attraction.performMaintenance();
             System.out.println("------------------------");
             System.out.println("Successfully performed maintenance.");
@@ -139,7 +139,7 @@ public class ScheduleGame {
     // feeds animal and tallies how many animals are not fed.
     private void feedAnimals(int amount) {
        for (int i = 0; i < amount; ++i) {
-        if (!inventory.use("food")) {
+        if (!inventory.use(Item.FOOD)) {
             leftHungry++;
         }
        }
