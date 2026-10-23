@@ -7,31 +7,39 @@ public class Habitat implements zoo.Maintainable { // Extends Maintainable inter
 
 	// PRIVATE INSTANCE VARIABLES ------------------------------------------------------------------------------------------
 	
-	private String name; // Name of Habitat; Example: Savannah, Rainforest, Meadow, etc.
-	private int capacity; // Maximum number of animals habitat can hold
+	private static final int DEFAULT_CAPACITY = 10;
+	private static final int MAX_CONDITION = 100;
+
+	private final String name; // Name of Habitat; Example: Savannah, Rainforest, Meadow, etc.
+	private final int capacity; // Maximum number of animals habitat can hold
 	private ArrayList<Animal> animals; // An ArrayList of all the animals that are currently in the habitat
 	private int condition; // The condition of the habitat (0-100)
-	
+
 	// CONSTRUCTORS ----------------------------------------------------------------------------------------------------------
 
 	// Removed non-essential constructors
 
 	// Constructor, in the case that the user has a prespecified animal list
 	public Habitat(String name, int capacity, ArrayList<Animal> animals) {
-		this.name = name;
+		if (name == null || name.trim().isEmpty()) {
+			throw new IllegalArgumentException("Habitat name cannot be blank.");
+		}
+		if (capacity < 1) {
+			throw new IllegalArgumentException("Habitat capacity must be at least 1.");
+		}
+		if (animals == null || animals.size() > capacity) {
+			throw new IllegalArgumentException("The animal list cannot be null or bigger than the capacity.");
+		}
+		this.name = name.trim();
 		this.capacity = capacity;
 		this.animals = new ArrayList<Animal>(animals);
-		this.condition = 100;
+		this.condition = MAX_CONDITION;
 	}
 
 	//Constructor, adding one animal to the habitat during creation
 	public Habitat(String name, int capacity, Animal animal) {
-		this.name = name;
-		this.capacity = capacity;
-		this.animals = new ArrayList<Animal>();
+		this(name, capacity, new ArrayList<Animal>());
 		addToAnimals(animal);
-		this.condition = 100;
-	
 	}
 	
 	// METHODS ---------------------------------------------------------------------------------------------------------------
@@ -58,7 +66,7 @@ public class Habitat implements zoo.Maintainable { // Extends Maintainable inter
 			}
 		}
 		if (y < 4){
-			System.out.println("It looks like a terrible thunderstorm occured which tore down some of the infrastructure in the habitat.");
+			System.out.println("It looks like a terrible thunderstorm occurred which tore down some of the infrastructure in the habitat.");
 			setCondition(20);
 			if (needsMaintenance()){
 				return false;
@@ -81,7 +89,7 @@ public class Habitat implements zoo.Maintainable { // Extends Maintainable inter
 	}
 
 	// method 3 - makes sure the animals added make sense with the other habitat
-	public boolean ensureSafeAdd(Animal animal){
+	public final boolean ensureSafeAdd(Animal animal){
 		System.out.println("You wanted to add an animal to your habitat. The Zoo system has to check if this animal is compatible.");
 		// All habitats can only have one type of animal (Terrestrial, SkyAnimal, AquaticAnimal, etc.)
 		// Hence we just check one of the elements, and ensure that the new Animal to-be added is of that type as well
@@ -104,13 +112,6 @@ public class Habitat implements zoo.Maintainable { // Extends Maintainable inter
 			return true;
 		}
 		else {
-			if(current.getClass().getSimpleName().equals("Animal") && (animal.getClass().getSimpleName().equals("Animal"))){
-				System.out.println(current.getClass().getSimpleName());
-				System.out.println(animal.getClass().getSimpleName());
-				System.out.println("The animal is compatible with the habitat. It has been added.");
-				return true;
-
-			}
 			System.out.println("The animal you want to add is not compatible with the habitat.");
 			System.out.println("Try again with another animal! The following type will be compatible: " + current.getClass().getSimpleName());
 			return false;
@@ -130,6 +131,9 @@ public class Habitat implements zoo.Maintainable { // Extends Maintainable inter
 		return condition;
 	}
 	public void setCondition(int condition){
+		if (condition < 0 || condition > MAX_CONDITION) {
+			throw new IllegalArgumentException("Condition must be from 0 to " + MAX_CONDITION + ".");
+		}
 		this.condition = condition;
 	}
 
@@ -144,30 +148,31 @@ public class Habitat implements zoo.Maintainable { // Extends Maintainable inter
 	@Override
 	public void performMaintenance() {
 		System.out.println("Maintenance performed!");
-		this.condition = 100;
-	}
-	
-	public String getName() {
-		return name;
+		this.condition = MAX_CONDITION;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public String getName() {
+		return name;
 	}
 
 	public int getCapacity() {
 		return capacity;
 	}
 
-	public void setCapacity(int capacity) {
-		this.capacity = capacity;
-	}
 	public ArrayList<Animal> getAnimals() {
 		return new ArrayList<Animal>(animals); // safe copy return
 	}
 
-	// customized, includes ensureSafeAdd method
-	public boolean addToAnimals(Animal animal) {
+	// customized, includes ensureSafeAdd method; an animal with the same name is a duplicate
+	public final boolean addToAnimals(Animal animal) {
+		if (animal == null) {
+			throw new IllegalArgumentException("Animal cannot be null.");
+		}
+		if (animals.contains(animal)) {
+			System.out.println("There is already an animal named " + animal.getName() + " in this habitat.");
+			System.out.println("Result: Animal not added.");
+			return false;
+		}
 		if (ensureSafeAdd(animal)) {
 			animals.add(animal);
 			return true;
@@ -176,6 +181,28 @@ public class Habitat implements zoo.Maintainable { // Extends Maintainable inter
 			System.out.println("Result: Animal not added.");
 			return false;
 		}
+	}
+
+	// two habitats are the same if they have the same name (ignoring case)
+	@Override
+	public boolean equals(Object other) {
+		if (this == other) {
+			return true;
+		}
+		if (!(other instanceof Habitat)) {
+			return false;
+		}
+		return name.equalsIgnoreCase(((Habitat) other).name);
+	}
+
+	@Override
+	public int hashCode() {
+		return name.toLowerCase().hashCode();
+	}
+
+	@Override
+	public String toString() {
+		return "Habitat{name='" + name + "', animals=" + animals.size() + "/" + capacity + ", condition=" + condition + "}";
 	}
 
 }

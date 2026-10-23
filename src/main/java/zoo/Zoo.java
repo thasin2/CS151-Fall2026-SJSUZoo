@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-
+ 
 import zoo.animal.Animal;
 import zoo.attractions.Attraction;
 import zoo.exception.DuplicateEntryException;
@@ -18,9 +18,9 @@ import zoo.habitat.Habitat;
     the zoo tracks how many attraction visits happen each day and in total, so games can check a quota
     MAXIMUM_INSTANCES is defined only here, and every class uses Zoo.checkLimit to enforce it
  */
-
+ 
 // Thaneesha edit: I added a List<Animal>, as I wanted to test the 100 instances using the tools in Zoo
-
+ 
 public class Zoo {
     public static final int MAXIMUM_INSTANCES = 100;
  
@@ -116,7 +116,7 @@ public class Zoo {
         }
         return null;
     }
-
+ 
     // Animal addition - Thaneesha (100 limit enforced) - not associated with a habitat, this is Zoo-wide (100 total)
     // did not implement find, remove, as this functionality is not important to my class
     public void registerAnimal(Animal animal) {
@@ -124,12 +124,12 @@ public class Zoo {
             throw new IllegalArgumentException("Animal cannot be empty.");
         }
         if (registeredAnimals.contains(animal)) {
-            throw new DuplicateEntryException("A animal named " + animal.getName() + " is already registered.");
+            throw new DuplicateEntryException("An animal named " + animal.getName() + " is already registered.");
         }
         checkLimit(registeredAnimals, "animal");
         registeredAnimals.add(animal);
     }
-
+ 
     // Habitat addition
     public void registerHabitat(Habitat habitat) {
         if (habitat == null) {
@@ -141,7 +141,15 @@ public class Zoo {
         checkLimit(registeredHabitats, "habitat");
         registeredHabitats.add(habitat);
     }
-
+ 
+    // removes a habitat from the zoo, along with every animal living in it
+    public void unregisterHabitat(Habitat habitat) {
+        if (!registeredHabitats.remove(habitat)) {
+            throw new IllegalArgumentException("There is no habitat called " + habitat.getName() + ".");
+        }
+        registeredAnimals.removeAll(habitat.getAnimals());
+    }
+ 
  
     // OPEN/CLOSING =====
  

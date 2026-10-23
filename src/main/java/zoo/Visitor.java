@@ -46,7 +46,7 @@ public class Visitor {
     }
  
     // adds money to the visitor's wallet
-    public void addFunds(double amount) {
+    public final void addFunds(double amount) {
         if (amount <= 0) {
             throw new IllegalArgumentException("Amount must be more than $0.");
         }
@@ -147,10 +147,6 @@ public class Visitor {
  
     public String getName() {
         return name;
-    }
- 
-    public int getAge() {
-        return age;
     }
  
     public TicketType getTicketType() {

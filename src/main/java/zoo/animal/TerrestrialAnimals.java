@@ -1,8 +1,9 @@
 package zoo.animal;
 
 public class TerrestrialAnimals extends Animal {
-	private String skinType;  // furry, waterproof, etc.
-	
+	private static final String DEFAULT_SKIN_TYPE = "Thick fur";
+	private final String skinType;  // furry, waterproof, etc.
+
 	// Constructors - can add more (ask during meeting)
 
 	public TerrestrialAnimals(String name, boolean dangerous, String skinType) {
@@ -12,31 +13,28 @@ public class TerrestrialAnimals extends Animal {
 
 	public TerrestrialAnimals(String name, String skinType) {
 		super(name);
-		this.skinType = skinType;
+		if (skinType == null || skinType.trim().isEmpty()) {
+			throw new IllegalArgumentException("Skin type cannot be blank.");
+		}
+		this.skinType = skinType.trim();
 	}
-	
+
 	@Override
 	public boolean doATrick() {
 		System.out.print("The cool trick was a twirl!");
-		super.doATrick();
-		return tired(getTrickCount());
+		return super.doATrick(); // super already checks if the animal is tired
 	}
 	@Override
 	public boolean existInZoo(){
-		
+
 		System.out.println(getName() + " decided to run across the habitat. We can see the skin type of the animal - " + skinType + ".");
 		boolean x = super.existInZoo();
 		return x;
 	}
-	
-	// Getters and Setters
 
-	public String getSkinType() {
-		return skinType;
-	}
-
-	public void setSkinType(String skinType) {
-		this.skinType = skinType;
+	@Override
+	public String toString() {
+		return super.toString() + " skinType='" + skinType + "'";
 	}
 
 }

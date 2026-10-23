@@ -4,9 +4,9 @@ public class Inventory {
     private int food;
     private int medicine;
     private int supplies;
-    private double foodPrice = 3.49;
-    private double medicinePrice = 20.00;
-    private double suppliesPrice = 45.99;
+    private final double foodPrice = 3.49;
+    private final double medicinePrice = 20.00;
+    private final double suppliesPrice = 45.99;
     private double budget = 0;
 
     // Creates an empty inventory
@@ -20,11 +20,15 @@ public class Inventory {
     @Override
     public String toString() {
         return "Current inventory:\n" + "Food: " + food + "\nMedicine: " + medicine +
-        "\nSupplies: " + supplies + "\nRemaining budget: $" + budget;
+        "\nSupplies: " + supplies + "\nRemaining budget: $" + String.format("%.2f", budget);
     }
 
     // stocks the inventory with X amount of an item
     public void stock (String item, int amount) {
+        if (amount < 1) {
+            System.out.println("Must stock at least 1 item.");
+            return;
+        }
         if (item.equalsIgnoreCase("food")) {
             this.food += buyFood(amount);
         }
@@ -104,7 +108,7 @@ public class Inventory {
         }
         else {
             budget -= purchaseCost;
-            System.out.println("Bought and stocked item for $" + purchaseCost);
+            System.out.printf("Bought and stocked item for $%.2f%n", purchaseCost);
             return amount;
         }
 

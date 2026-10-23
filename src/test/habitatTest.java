@@ -56,7 +56,7 @@ public class habitatTest {
     x = true;
     count = 1;
     while (x){
-        String name = "Animal" + count;
+        String name = "LandAnimal" + count; // a new name, since Animal1 to Animal3 are already in this habitat
         count++;
         x = testHabitat2.addToAnimals(new TerrestrialAnimals(name, "Thick Fur"));
     }

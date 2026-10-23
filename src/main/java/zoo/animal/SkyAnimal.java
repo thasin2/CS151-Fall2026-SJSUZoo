@@ -17,29 +17,36 @@ public class SkyAnimal extends Animal {
 	}
 
 	//methods
-	
+
 	@Override
 	public boolean doATrick() {
 		System.out.println("The cool trick was flying all the way to " + getMaxHeight() + " ft and all the way back down. Super awesome!");
-		super.doATrick();
-		return tired(getTrickCount());
+		return super.doATrick(); // super already checks if the animal is tired
 	}
 
 	@Override
 	public boolean existInZoo(){
-		
+
 		System.out.println(getName() + " decided to fly close to the ground, visitors are able to observe the feathers it has!");
 		boolean x = super.existInZoo();
 		return x;
 	}
-	
+
 	// getters and setters
 	public int getMaxHeight() {
 		return maxHeight;
 	}
 
-	public void setMaxHeight(int maxHeight) {
+	public final void setMaxHeight(int maxHeight) {
+		if (maxHeight < 0) {
+			throw new IllegalArgumentException("Max height cannot be negative.");
+		}
 		this.maxHeight = maxHeight;
+	}
+
+	@Override
+	public String toString() {
+		return super.toString() + " maxHeight=" + maxHeight + " ft";
 	}
 
 }

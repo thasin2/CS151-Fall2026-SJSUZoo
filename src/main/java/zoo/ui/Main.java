@@ -13,7 +13,7 @@ public class Main {
                 System.out.println("3. Observe an Animal!");
                 System.out.println("4. Build your own zoo");
                 System.out.println("5. Observe a Habitat!");
-                int choice = ConsoleInput.readInt("Choose a role: ", 1, 5); // will change this when my game is ready
+                int choice = ConsoleInput.readInt("Choose a role: ", 1, 5);
                 if (choice == 1) {
                     new ManagerGameMenu().run();
                 } else if (choice == 2) {

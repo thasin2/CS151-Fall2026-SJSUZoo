@@ -1,5 +1,7 @@
 package zoo.staff;
 import java.util.ArrayList;
+import zoo.Zoo;
+import zoo.exception.ZooFullException;
 
 // For a manager, pay is the yearly salary.
 // They also earn a flat weekly bonus for each staff member on their team.
@@ -31,6 +33,11 @@ public class Manager extends Staff {
         }
         if (team.contains(member)) {
             throw new IllegalArgumentException(member.getName() + " is already on this team.");
+        }
+        // the manager counts too, so there are never more than MAXIMUM_INSTANCES staff
+        if (team.size() + 1 >= Zoo.MAXIMUM_INSTANCES) {
+            throw new ZooFullException("The team is full. The zoo can have at most " + Zoo.MAXIMUM_INSTANCES
+                    + " staff, including the manager.");
         }
         team.add(member);
     }
@@ -91,6 +98,11 @@ public class Manager extends Staff {
         int shifts = staff.getShiftsThisWeek(); // read before closeOutWeek resets it
         double amount = staff.closeOutWeek();
         return new PayStub(staff.getId(), staff.getName(), staff.getRole(), shifts, amount);
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + " teamSize=" + team.size();
     }
 
     @Override

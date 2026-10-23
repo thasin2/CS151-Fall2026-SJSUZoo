@@ -1,5 +1,8 @@
 package test;
 import org.junit.*;
+import zoo.habitat.Habitat;
+import zoo.animal.Animal;
+import java.util.ArrayList;
 import zoo.Visitor;
 import zoo.Zoo;
 import zoo.attractions.Attraction;
@@ -100,4 +103,16 @@ public class zooTest {
         Assert.assertEquals(2, zoo.getTotalAttractionVisits());
     }
  
+    @Test
+    public void removingAHabitatAlsoRemovesItsAnimals() {
+        Habitat savannah = new Habitat("Savannah", 3, new ArrayList<Animal>());
+        Animal leo = new Animal("Leo");
+        savannah.addToAnimals(leo);
+        zoo.registerHabitat(savannah);
+        zoo.registerAnimal(leo);
+        zoo.unregisterHabitat(savannah);
+        Assert.assertTrue(zoo.getRegisteredHabitats().isEmpty());
+        Assert.assertTrue(zoo.getRegisteredAnimals().isEmpty());
+    }
 }
+ 

@@ -29,17 +29,17 @@ public class AnimalGameMenu { // This mainly just has the front end elements, al
         game.firstPart(userAnimal);
         System.out.println("----------------------------------------------------");
         System.out.println(".....................................................");
-        System.out.println("Cool! Now you know what it is like to observe an animal it it's habitat. You can make it do tricks now, but just a note - the animal is more likely to get injured once it does a trick. It can also get tired and become hungry.");
+        System.out.println("Cool! Now you know what it is like to observe an animal in its habitat. You can make it do tricks now, but just a note - the animal is more likely to get injured once it does a trick. It can also get tired and become hungry.");
 
         System.out.println(".....................................................");
         game.secondPart(userAnimal);
 
         System.out.println("=====================================================");
-        System.out.println("When your animal is tired, you might get multiple notifications! The main way to respond to this is by feeding the animal.");
+        System.out.println("When your animal is tired, you will get a notification! The main way to respond to this is by feeding the animal.");
         System.out.println("----------------------------------------------------");
 
 
-        System.out.println("Now that you get the jist of the game, you can keep playing until you want to stop. To stop, just type EXIT.");
+        System.out.println("Now that you get the gist of the game, you can keep playing until you want to stop. Answer n to go back to the main menu, or type EXIT to quit.");
         System.out.println("----------------------------------------------------");
 
     
@@ -47,6 +47,7 @@ public class AnimalGameMenu { // This mainly just has the front end elements, al
         while(game.secondPart(userAnimal)){
             System.out.println("----------------------------------------------------");
         }
+        System.out.println("Thanks for playing! Going back to the main menu.");
 
         return;
 
