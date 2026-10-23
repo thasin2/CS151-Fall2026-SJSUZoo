@@ -24,22 +24,19 @@ public class Inventory {
     }
 
     // stocks the inventory with X amount of an item
-    public void stock (String item, int amount) {
+    public void stock (Item item, int amount) {
         if (amount < 1) {
             System.out.println("Must stock at least 1 item.");
             return;
         }
-        if (item.equalsIgnoreCase("food")) {
+        if (item == Item.FOOD) {
             this.food += buyFood(amount);
         }
-        else if (item.equalsIgnoreCase("medicine")) {
+        else if (item == Item.MEDICINE) {
             this.medicine += buyMedicine(amount);
         }
-        else if (item.equalsIgnoreCase("supplies")) {
+        else if (item == Item.SUPPLIES) {
             this.supplies += buySupplies(amount);
-        }
-        else {
-            System.out.println("Invalid item. Could not stock.");
         }
     }
 
@@ -59,8 +56,8 @@ public class Inventory {
     }
 
     // One unit at a time, "uses" an item, returns false if cannot retrieve
-    public boolean use(String item) {
-        if (item.equalsIgnoreCase("food")) {
+    public boolean use(Item item) {
+        if (item == Item.FOOD) {
             if (food < 1) {
                 System.out.println("Not enough food in inventory.");
                 return false;
@@ -68,7 +65,7 @@ public class Inventory {
             food--;
             return true;
         }
-        else if (item.equalsIgnoreCase("medicine")) {
+        else if (item == Item.MEDICINE) {
             if (medicine < 1) {
                 System.out.println("Not enough medicine in inventory.");
                 return false;
@@ -76,7 +73,7 @@ public class Inventory {
             medicine--;
             return true;
         }
-        else if (item.equalsIgnoreCase("supplies")) {
+        else if (item == Item.SUPPLIES) {
             if (supplies < 1) {
                 System.out.println("Not enough supplies in inventory.");
                 return false;

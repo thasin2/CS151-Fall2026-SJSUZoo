@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import zoo.animal.Animal;
 import zoo.game.animal.AnimalGame;
 import zoo.habitat.Habitat;
-import zoo.inventory.Inventory;
+import zoo.inventory.*;
 import zoo.staff.MaintenanceStaff;
 import zoo.staff.Zookeeper;
 import zoo.ui.ConsoleInput;
@@ -169,9 +169,9 @@ public class HabitatGame {
             return;
         }
         System.out.println("Oh no! Your habitat needs some maintenance! Let's call in the maintenance staff.");
-        if (!stor.use("supplies")){
+        if (!stor.use(Item.SUPPLIES)){
             System.out.println("Let's go to the stocking area!");
-            stockingProcesses("supplies");
+            stockingProcesses(Item.SUPPLIES);
             maintenance(hab, stor);
             return;
         }
@@ -193,7 +193,7 @@ public class HabitatGame {
         maintHabGame.workShift();
     }
 
-    public void stockingProcesses(String item){
+    public void stockingProcesses(Item item){
     System.out.println("Welcome to the stocking area! Here is everything you have:");
     System.out.println(habGameInv.toString());
     System.out.println("---------------------------------------------------");
@@ -214,13 +214,13 @@ public class HabitatGame {
     }
     System.out.println(habGameInv.toString());
     int numberAvail = 1;
-    if (item.equals("food")){
+    if (item == Item.FOOD){
         numberAvail = ((int)(habGameInv.getBudget() / 3.49));
     }
-    if (item.equals("medicine")){
+    if (item == Item.MEDICINE){
         numberAvail = ((int)(habGameInv.getBudget() / 20));
     }
-    if (item.equals("supplies")){
+    if (item == Item.SUPPLIES){
         numberAvail = ((int)(habGameInv.getBudget()/45.99));
     }
 
@@ -238,7 +238,7 @@ public void feed(Animal a){
     boolean hungerNotSolved = zooHabGame.feedAnimal(a, habGameInv);
     if (!hungerNotSolved){
         System.out.println("Let's go to the stocking area!");
-        stockingProcesses("food");
+        stockingProcesses(Item.FOOD);
         feed(a);
     }
 }
