@@ -57,7 +57,7 @@ Contributions:
 
 Nam Vo - Implemented Attraction, Inventory, Item classes. Implemented Schedule Game Menu & Schedule Game classes.
 
-Thaneesha Singh - Implemented Animal & Habitat classes. Implemented AquaticAnimals, SkyAnimal, and TerrestialAnimals subclasses. Implemented Animal 
+Thaneesha Singh - Implemented Animal & Habitat classes. Implemented AquaticAnimals, SkyAnimal, and TerrestialAnimals subclasses. Implemented AnimalGame, AnimalGameMenu, HabitatGame, and HabitatGameMenu, as well as the respective unit tests for Animal and Habitat (animalTest and habitatTest).
 
 Bao Tran - 
 
