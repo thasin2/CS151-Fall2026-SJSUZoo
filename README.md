@@ -1,13 +1,15 @@
 # CS151-Fall2026-SJSUZoo
 
-## Initial Commits Contributions
+## Read Me Information
 
 **Overview:**
+
 Our project simulates a working zoo simulation.
 In the zoo, there will be visitors who can look at animals or visit attractions.
 Additionally, there will be a variety of staff members and an Inventory.
 
 **Developers:**
+
 Thaneesha Singh: Animal, Habitat, Animal & Habitat game, and related specifics
 
 Nam Vo: Inventory, Attraction, Schedule Game, and related specifics
@@ -37,10 +39,11 @@ Errors such as a full zoo, a duplicate entry, or not enough money are handled by
 Both the attraction & habitat class implement the Maintainable interface, meaning they must be actively repaired after a certain amount of usage. Otherwise, they will not function.
 
 **Installation Instructions:**
-#1 Clone the github repository
-#2 Open the project on your preferred Java IDE
-#3 Run Main.java
-# Play the games of your choosing
+
+1. Clone the github repository
+2. Open the project on your preferred Java IDE
+3. Run Main.java
+4. Play the games of your choosing
 
 **Usage:**
 
